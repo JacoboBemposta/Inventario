@@ -23,6 +23,7 @@ if($ctrl=="usuarios"){
         case 'ver':
             $objeto->listarUsuarios();
             header("Location: " . USR_PATH . 'lista.php');
+            exit();  // Asegúrate de detener la ejecución después de la redirección
             break;
         case 'editar':
             $objeto->editarusuario($_GET['usuario']);
@@ -165,14 +166,15 @@ if($ctrl=="usuarios"){
             # code...
             break;
     }
-}else if($ctrl=="bien"){
+}else if($ctrl=="bienes"){
     $objeto = new BienesController();
     $entrada = new EntradaBienesController();
     switch ($opcion) {
-        // case 'ver':          
-        //     $objeto->listarBienes();
-        //     header("Location: " . ENT_PATH . 'lista.php');
-        //     break;
+        case 'ver':          
+            $objeto->listarBienes();
+            
+            header("Location: " . BIEN_PATH . 'lista.php');
+            break;
         case 'editar':
             $objeto->editar($_GET['bien']);
             header("Location: " . BIEN_PATH . 'editar.php');
@@ -192,6 +194,29 @@ if($ctrl=="usuarios"){
             $entrada->listarEntradas();
             header("Location: " . ENT_PATH . 'lista.php');
             break;
+        case 'generarEtiquetas':
+            $_SESSION["bienes"] = [];
+            if (!empty($_POST['bienes'])) {
+                foreach ($_POST['bienes'] as $bienSeleccionado) {
+                    $bien = $objeto->listarBienesporID($bienSeleccionado);
+                    if ($bien) {
+                        $_SESSION["bienes"][] = $bien; // Agrega el bien al array
+                    }
+                }
+                var_dump($_SESSION["bienes"]);die;
+                $bienesDetalles = [];
+                var_dump($bienesDetalles);
+                // Generar el PDF 
+                // $pdf = new PDF();
+                // Aquí añades los códigos QR y demás información al PDF
+        
+                // Muestra el PDF al usuario
+                // $pdf->Output();
+            } else {
+                // Manejo de error si no se selecciona ningún bien
+                echo "Debes seleccionar al menos un bien.";
+            }
+            break;            
         default:
             # code...
             break;

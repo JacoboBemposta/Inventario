@@ -1,6 +1,6 @@
 <?php 
 include "config/config.php";
-
+ob_start();
 @session_start();
 if(!isset($_SESSION["login"])){
     $_SESSION["login"]="Invitado";
@@ -65,7 +65,7 @@ if($_SESSION["login"]!="Invitado"){?>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=ver" id="proveedoresDropdown">
-                            Bienes
+                            Etiquetas
                         </a>
                     </li>
                 </ul>
@@ -96,4 +96,4 @@ if($_SESSION["login"]!="Invitado"){?>
 </html>
 
 
-<?php }?>
+<?php  }?>

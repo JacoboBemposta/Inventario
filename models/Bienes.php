@@ -25,6 +25,14 @@ class Bienes {
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+    // Obtener todos los bienes
+    public function obtenerBienes() {
+        $sql = "SELECT * FROM bienes";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 
     // Agregar un nuevo bien a una entrada
     public function agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id) {

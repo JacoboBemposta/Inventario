@@ -13,8 +13,18 @@ class BienesController {
         $bienModel = new Bienes();
         $bienModel->obtenerPorEntradaId($entrada_bien_id); // Obtener bienes por entrada
 
-        require_once 'views/bienes/lista.php';
+        //require_once 'views/bienes/lista.php';
     }
+    public function listarBienes() {
+        $bienModel = new Bienes();
+        $_SESSION["bienes"] = $bienModel->obtenerBienes(); 
+
+    }
+    public function listarBienesporID($id) {
+        $bienModel = new Bienes();
+        return $bienModel->obtenerPorId($id);
+    }
+
 
 
     // Maneja la creación de un nuevo bien

@@ -162,7 +162,8 @@ if (isset($_SESSION['entradas'])) {
         infoFiltered: '(filtrado de _MAX_ registros totales)',
         lengthMenu: 'Mostrar _MENU_ registros por página',
         zeroRecords: 'No se encontraron registros',
-    }
+    },
+
 });
 
 
