@@ -1,0 +1,590 @@
+*{ 
+  margin: 0px;  
+  padding: 0px;  
+  box-sizing: border-box; 
+  } 
+  
+   
+  
+  body, html { 
+  height: 100%; 
+  font-family: Verdana, Geneva, Tahoma, sans-serif, cursive; 
+  
+  } 
+  
+   
+  
+  input { 
+  outline: none; 
+  border: none; 
+  } 
+  
+   
+  
+  button { 
+  outline: none !important; 
+  border: none; 
+  background: transparent; 
+  } 
+  
+   
+  
+  button:hover { 
+  cursor: pointer; 
+  } 
+  
+   
+  
+  .oficina {
+    position: relative;
+    overflow: hidden;
+    color: #9b0e34; /* Asegura que el texto sea visible sobre la imagen */
+}
+
+.oficina::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("public/images/despacho.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(5px); /* Difumina la imagen */
+    opacity: 0.5; /* Ajusta la transparencia de la imagen */
+    z-index: -1; /* Asegura que la imagen esté detrás del contenido */
+}
+
+/* Estilos opcionales para el texto dentro del div */
+.oficina h1 {
+    z-index: 1; /* Asegura que el texto esté delante de la imagen */
+    font-size: 5em; /* Aumenta el tamaño de la letra */
+    text-align: left; /* Centra el título */
+    padding-top: 20vh; /* Añade espacio superior para el título */
+    padding-left: 5vw;
+    color:black;
+}
+.oficina h2{
+  z-index: 1; /* Asegura que el texto esté delante de la imagen */
+  font-size: 2em; /* Aumenta el tamaño de la letra */
+  text-align: left; /* Centra el título */
+  padding-top: 2vh; /* Añade espacio superior para el título */
+  padding-left: 5vw;
+}
+   
+  
+  .wrap-login { 
+  width: 400px; 
+  background: #eceff1; 
+  border-radius: 20px; 
+  overflow: hidden; 
+  padding: 130px 55px 53px 55px; 
+
+  /* -webkit-box-shadow: 25px 40px 28px 0px rgba(0, 0, 0, 0.38);  */
+  } 
+  .wrap-error { 
+    width: 50vw; 
+    background: #eceff1; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    padding: 80px 55px 53px 55px; 
+  
+    /* -webkit-box-shadow: 25px 40px 28px 0px rgba(0, 0, 0, 0.38);  */
+    } 
+
+   .container-volver{
+          display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+  
+  /*----Formulario de user y password----*/ 
+  
+   
+  
+  .login-form { 
+  width: 100%; 
+  } 
+  
+   
+  
+  .login-form-title { 
+  display: block; 
+  font-family: 'Verdana', cursive; 
+  font-size: 40px; 
+  color: #333333; 
+  line-height: 1.5; 
+  text-align: center; 
+  } 
+  
+   
+  
+  .avatar{ 
+  
+   /*Centrar imagen*/ 
+  
+  display: block; 
+  margin:auto; 
+  width: 80px;  
+  height: 80px; 
+   } 
+  
+   
+  /* .editarItem{
+    background-image: url("public/images/editar.webp");
+  } */
+  .iconovolver{
+      min-width: 3vw; /* Ancho mínimo del ícono */
+      min-height: 2vh; /* Alto mínimo del ícono */
+      
+      max-width: 10vw; /* Evita que sea más grande que la vista */
+
+  }
+
+  .iconoItem {
+    min-width: 50px; /* Ancho mínimo del ícono */
+     /*min-height: 100px; /* Alto mínimo del ícono */
+    
+     /*width: auto; /* Ajusta el ancho automáticamente */
+     /*height: auto; /* Mantiene la proporción de la imagen */
+    
+    max-width: 2vw; /* Evita que sea más grande que la vista */
+ } 
+  
+  /*------------------------------------------------------------------ 
+  
+  [ Input ]*/ 
+  
+   .wrap-input100 { 
+  width: 100%; 
+  position: relative; 
+  border-bottom: 2px solid #adadad; 
+  margin-bottom: 37px; 
+  } 
+  
+   
+  
+  .input100 { 
+  font-family: 'Verdana', cursive; 
+  font-size: 15px; 
+  color: #555555; 
+  line-height: 1.2; 
+  display: block; 
+  width: 100%; 
+  height: 45px; 
+  background: transparent; 
+  padding: 0 5px; 
+  } 
+  
+   
+  
+  /*---------------------------------------------*/  
+  
+  .focus-efecto { 
+  position: absolute; 
+  display: block; 
+  width: 100%; 
+  height: 100%; 
+  top: 0; 
+  left: 0; 
+  pointer-events: none; 
+  } 
+  
+   
+  efecto animacion inferior
+  .focus-efecto::before { 
+  content: ""; 
+  display: block; 
+  position: absolute; 
+  bottom: -2px; 
+  left: 0; 
+  width: 0; 
+  height: 4px; /*ancho de la linea que hace el efecto de barra de progeso en el input al hacer foco*/ 
+  -webkit-transition: all 0.4s; 
+  -o-transition: all 0.4s; 
+  -moz-transition: all 0.4s; 
+  transition: all 0.4s; 
+  background: #6a7dfe; 
+  background: -webkit-linear-gradient(left, #ffffff, #800000); 
+  background: -o-linear-gradient(left, #ffffff, #800000); 
+  background: -moz-linear-gradient(left, #ffffff, #800000); 
+  background: linear-gradient(left, #ffffff, #800000); 
+  } 
+  
+   
+  
+  .focus-efecto::after { 
+  
+  font-family: 'Verdana', cursive; 
+  
+  font-size: 15px; 
+  
+  color: #999999; 
+  
+  line-height: 1.2; 
+  
+   
+  
+  content: attr(data-placeholder); 
+  
+  display: block; 
+  
+  width: 100%; 
+  
+  position: absolute; 
+  
+  top: 16px; 
+  
+  left: 0px; 
+  
+  padding-left: 5px; 
+  
+   
+  
+  -webkit-transition: all 0.4s; 
+  
+  -o-transition: all 0.4s; 
+  
+  -moz-transition: all 0.4s; 
+  
+  transition: all 0.4s; 
+  
+  } 
+  
+   
+  
+  .input100:focus + .focus-efecto::after { 
+  
+  top: -15px; 
+  
+  } 
+  
+   
+  
+  .input100:focus + .focus-efecto::before { 
+  
+  width: 100%; 
+  
+  } 
+  
+   
+  
+  .has-val.input100 + .focus-efecto::after { 
+  
+  top: -15px; 
+  
+  } 
+  
+   
+  
+  .has-val.input100 + .focus-efecto::before { 
+  
+  width: 100%; 
+  
+  } 
+  
+   
+  
+  /*---------------------------------------------*/ 
+  
+   
+  
+   
+  
+  /*------------------------------------------------------------------ 
+  
+  [ Button ]*/ 
+  
+  .container-login-form-btn { 
+  
+  display: -webkit-box; 
+  
+  display: -webkit-flex; 
+  
+  display: -moz-box; 
+  
+  display: -ms-flexbox; 
+  
+  display: flex; 
+  
+  flex-wrap: wrap; 
+  
+  justify-content: center; 
+  
+  padding-top: 13px; 
+  
+  } 
+  
+   
+  
+  .wrap-login-form-btn { 
+  
+  /* width: 100%;  */
+  
+  display: block; 
+  
+  position: relative; 
+  
+  z-index: 1; 
+  
+  border-radius: 40px 5px; 
+  
+  overflow: hidden; 
+  
+  margin: 0 auto; 
+  
+  } 
+  
+   
+  /* animacion boton entrar */
+  .login-form-bgbtn { 
+  
+  position: absolute; 
+  
+  z-index: -1; 
+  
+  width: 300%; 
+  
+  height: 100%; 
+  
+  background: #9b0e34; 
+/*   
+  background: -webkit-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  
+  background: -o-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  
+  background: -moz-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  
+  background: linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+   */
+  top: 0; 
+  
+  left: -100%; 
+  
+   
+  
+  -webkit-transition: all 0.4s; 
+  
+  -o-transition: all 0.4s; 
+  
+  -moz-transition: all 0.4s; 
+  
+  transition: all 0.4s; 
+  
+  }  
+  
+   
+  
+  .login-form-btn { 
+  
+  font-family: 'Verdana', cursive; 
+  
+  font-size: 20px; 
+  
+  color: #fff; 
+  
+  line-height: 1.2; 
+  
+  text-transform: uppercase; 
+  
+   
+  
+  display: -webkit-box; 
+  
+  display: -webkit-flex; 
+  
+  display: -moz-box; 
+  
+  display: -ms-flexbox; 
+  
+  display: flex; 
+  
+  justify-content: center; 
+  
+  align-items: center; 
+  
+  padding: 0 20px; 
+  
+  width: 100%; 
+  
+  height: 50px; 
+  
+  } 
+  
+   
+  
+  .wrap-login-form-btn:hover .login-form-bgbtn { 
+  
+  left: 0; 
+  
+  }	 
+  
+   
+  
+  nav.navbar a.navbar-brand{ 
+  
+  font-size: 30px; 
+  
+  color: #fff; 
+  
+  display: inline-block; 
+  
+  font-family: 'Verdana', cursive; 
+  
+  padding: 0 20px; 
+  
+  } 
+  
+  a.navbar-brand::after{ 
+  
+  content: ''; 
+  
+  display: block; 
+  
+  width: 0; 
+  
+  height: 2px; 
+  
+  background: #fff; 
+  
+  transition: width .3s; 
+  
+  } 
+  
+  a.navbar-brand:hover::after{ 
+  
+  width: 100%; 
+  
+  transition: width .3s; 
+  
+  } 
+  
+   
+  
+   
+  
+   
+  
+  img .circular{ 
+  
+  border-radius: 50%; 
+  
+  } 
+  
+   
+  /* fondo navbar*/
+  nav.navbar  
+  
+  { 
+  
+  /* -webkit-box-shadow: 25px 40px 28px 0px rgba(0, 0, 0, 0.38);   */
+  
+  background: -webkit-linear-gradient(to right, #ffffff, #a2a8a4); 
+  
+  background: linear-gradient(to right, #ffffff, #a2a8a4);  
+  
+  border-radius: 0 0 10px 10px; 
+  
+  } 
+  
+   
+  
+  nav.navbar li.nav-item a.nav-link{ 
+  
+  font-size: 20px; 
+  
+  color: #000000; 
+  
+  display: inline-block; 
+  
+  font-family: 'Verdana', cursive; 
+  
+  padding: 0 20px; 
+  
+  } 
+  
+  nav.navbar li.nav-item a.nav-link::after{ 
+  
+   
+  
+  content: ''; 
+  
+  display: block; 
+  
+  width: 0; 
+  
+  height: 2px; 
+  
+  background: #fff; 
+  
+  transition: width .3s; 
+  
+  } 
+  
+   
+  
+  nav.navbar li.nav-item a.nav-link:hover::after{ 
+  
+  width: 100%; 
+  
+  transition: width .3s; 
+  
+  } 
+  
+   
+  
+  div .container-c { 
+    width: 100%;   
+    min-height: 100vh; 
+    display: -webkit-flex; 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 15px; 
+    background: -webkit-linear-gradient(210, #ffffff, #b1082b); /* Gradiente de 135 grados */
+    background: linear-gradient(210deg, #ffffff, #b1082b); /* Gradiente de 135 grados */
+}
+
+  
+  div .container-b{ 
+  
+    width: 100%;   
+    
+    min-height: 100vh; 
+    
+    display: -webkit-flex; 
+    
+    display: flex; 
+    
+    flex-wrap: wrap; 
+    
+    justify-content: center; 
+    
+    align-items: center; 
+    
+    padding: 15px; 
+    
+    background: -webkit-linear-gradient(to right, #ffffff, #b1082b); 
+    
+    background: linear-gradient(to right, #ffffff, #b1082b); 
+    
+    } 
+    
+    .button-container {
+      display: flex;          /* Hace que los elementos hijos estén en la misma línea */
+      justify-content: space-between; /* Coloca los botones a los extremos del contenedor */
+      width: 100%;            /* El contenedor ocupa el ancho completo disponible */
+  }
+  
+  .wrap-login-form-btn {
+      flex: 1;                /* Hace que cada botón ocupe el mismo espacio */
+      margin: 0 10px;         /* Añade un pequeño margen entre los botones */
+  }
+  
+  .login-form-btn {
+      width: 100%;            /* Asegura que el botón ocupe el ancho completo de su contenedor */
+  }
+  
