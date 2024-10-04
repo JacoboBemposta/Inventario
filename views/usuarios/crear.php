@@ -7,7 +7,7 @@ if(isset($_SESSION["login"])){
     }
 }
 ?>
-<div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="height: 50vh;" >
+<div class="container d-flex flex-column align-items-center mt-5" style="height: 50vh;" >
 <h1 class="text-center">Crear nuevo usuario</h1>
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=crear" method="POST" >
         <div class="mb-3">

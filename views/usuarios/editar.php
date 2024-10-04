@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario'])) {
 }
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
-    <h1 class="text-center mb-5">Editar Usuario</h1>
+    <h1 class="text-center">Editar Usuario</h1>
 
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=actualizar&usuario=<?php echo $usuario[0]['id'] ?>" method="POST">
         <div class="mb-3">

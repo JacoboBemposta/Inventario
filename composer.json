@@ -1,5 +1,6 @@
 {
     "require": {
-        "spipu/html2pdf": "^4.6"
+        "spipu/html2pdf": "^4.6",
+        "phpoffice/phpword": "^1.3"
     }
 }
