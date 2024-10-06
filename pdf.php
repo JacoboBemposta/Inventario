@@ -54,6 +54,7 @@ $pdf->Image('public/images/sigalogo.png');
 
 // Definición de la cabecera de la tabla
 $pdf->SetFillColor(255, 37, 48); // Color de fondo para la cabecera
+//$pdt->Cell(ancho, alto, $txt, borde, posicion (0 la derecha,1 debajo,2 sigiuente linea), $align, fondo);
 $pdf->Cell(40, 10, 'Precio', 1, 0, 'C', true);
 $pdf->Cell(40, 10, 'Centro', 1, 0, 'C', true);
 $pdf->Cell(40, 10, 'Departamento', 1, 0, 'C', true);
