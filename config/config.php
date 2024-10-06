@@ -14,6 +14,6 @@ define('TEMP_PATH', RAIZ_PATH  . 'public/temp/');
 define('QR_PATH', RAIZ_PATH . 'libs/phpqrcode/');
 define('FPDF_PATH', RAIZ_PATH . 'libs/fpdf/');
 //define('FPDF_FONTPATH', ROOT_PATH.'/fpdf/fpdf.php');
-define('FPDF_FONTPATH', ROOT_PATH.'libs/fpdf/font/');
+define('FPDF_FONTPATH', RAIZ_PATH.'libs/fpdf/font/');
 $base_url = 'http://localhost/proyects/inventario/';
 ?>
