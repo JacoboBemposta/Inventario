@@ -1,85 +1,59 @@
-<?php
-require 'vendor/autoload.php'; // Incluye PHPWord
-require 'vendor/phpoffice/index.php';
-use PhpOffice\PhpWord\IOFactory;
+<?php 
+require 'config/config.php';
+require('libs/fpdf/fpdf.php');
+set_include_path(get_include_path() . PATH_SEPARATOR . 'C:/xampp/htdocs/proyects/inventario/libs/fpdf/font');
 
+class PDF extends FPDF {
+    function Header() {
+        $this->SetFont('Arial', 'B', 12);
+        $this->Cell(0, 10, 'Tabla generada con FPDF', 0, 1, 'C');
+        $this->Ln(10);
+    }
 
-$plantillaDocx = '/public/plantillas/entradas.docx';
+    function Footer() {
+        $this->SetY(-15);
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 10, 'Pagina ' . $this->PageNo(), 0, 0, 'C');
+    }
 
-// Cargar el documento .docx
-$phpWord = IOFactory::load($plantillaDocx);
+    function agregarTextoPlantilla($textoPlantilla) {
+        $this->SetFont('Arial', '', 12);
+        foreach ($textoPlantilla as $linea) {
+            $this->Cell(0, 10, ($linea), 0, 1);
+        }
+        $this->Ln(10); // Espacio antes de la tabla
+    }
 
-// Obtener el contenido del documento
-$contenido = '';
+    function crearTabla($header, $data) {
+        // Ancho de las columnas
+        $w = array(40, 40, 40);
 
-foreach ($phpWord->getSections() as $section) {
-    foreach ($section->getElements() as $element) {
-        if (method_exists($element, 'getText')) {
-            $contenido .= $element->getText() . "\n";
+        // Cabecera
+        $this->SetFont('Arial', 'B', 12);
+        for ($i = 0; $i < count($header); $i++)
+            $this->Cell($w[$i], 7, $header[$i], 1);
+        $this->Ln();
+
+        // Datos
+        $this->SetFont('Arial', '', 12);
+        foreach ($data as $row) {
+            foreach ($row as $col) {
+                $this->Cell($w[0], 6, $col, 1);
+            }
+            $this->Ln();
         }
     }
 }
 
-require 'vendor/autoload.php'; // Incluye PHPWord y FPDF
-require 'fpdf/fpdf.php'; // Asegúrate de incluir FPDF en tu proyecto
-
-
-
-$plantillaDocx = '/public/plantillas/entradas.docx';
-
-// Cargar el documento .docx
-$phpWord = IOFactory::load($plantillaDocx);
-
-// Obtener el contenido del documento
-$contenido = '';
-
-foreach ($phpWord->getSections() as $section) {
-    foreach ($section->getElements() as $element) {
-        if (method_exists($element, 'getText')) {
-            $contenido .= $element->getText() . "\n";
-        }
-    }
-}
-
-// Crear el PDF
-$pdf = new FPDF();
+$pdf=new FPDF();
 $pdf->AddPage();
-$pdf->SetFont('Arial', '', 12);
+$pdf->AddFont('Times', '', 'libs/fpdf/font/times.php');
+$pdf->SetFont('Times','',12,);
+$pdf->Cell(40,10,'�Hola, Mundo!');
+$pdf->Image('public/images/sigalogo.png');
 
-// Agregar el contenido del documento .docx al PDF
-$pdf->MultiCell(0, 10, utf8_decode($contenido));
 
-// Dejar un espacio antes de agregar la tabla
-$pdf->Ln(10);
+$pdf->Output();
 
-// Agregar una tabla después del contenido
-$header = array('Columna 1', 'Columna 2', 'Columna 3');
-$data = array(
-    array('Dato 1', 'Dato 2', 'Dato 3'),
-    array('Dato 4', 'Dato 5', 'Dato 6'),
-    array('Dato 7', 'Dato 8', 'Dato 9')
-);
 
-function crearTabla($pdf, $header, $data)
-{
-    // Imprimir el header
-    foreach ($header as $col) {
-        $pdf->Cell(40, 7, $col, 1);
-    }
-    $pdf->Ln();
-    
-    // Imprimir las filas
-    foreach ($data as $row) {
-        foreach ($row as $col) {
-            $pdf->Cell(40, 6, $col, 1);
-        }
-        $pdf->Ln();
-    }
-}
-
-// Crear la tabla
-crearTabla($pdf, $header, $data);
-
-// Guardar el archivo PDF
-$pdf->Output('F', 'salida.pdf'); 
 ?>

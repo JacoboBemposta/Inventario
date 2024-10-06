@@ -1,5 +1,6 @@
 <?php
 include "../../menu.php";
+require QR_PATH.'qrlib.php';
 @session_start();
 
 if (!isset($_SESSION["login"]) || ($_SESSION["login"] == "Invitado")) {
@@ -24,7 +25,7 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
                     <th style="text-align: center; padding: 10px;">Departamento</th>
                     <th style="text-align: center; padding: 10px;">Tipo bien</th>
                     <th style="text-align: center; padding: 10px;">Fecha alta</th>
-                    <th style="text-align: center; padding: 10px;">Acciones</th>
+                    <th style="text-align: center; padding: 10px;">QR</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,15 +45,24 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
                         <td style="text-align: center; padding: 10px;"><?php echo $bien["tipo_bien"]; ?></td>
                         <td style="text-align: center; padding: 10px;"><?php echo $bien["fecha_alta"]; ?></td>
                         <td style="text-align: center; padding: 10px;" class="d-flex align-items-center">
-                            <button onclick="window.location.href='<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=editar&bien=<?php echo $bien['id']; ?>'">
-                                <img src="<?php echo ROOT_PATH; ?>public/images/editar.webp" alt="Editar" class="iconoItem">
-                            </button>
-                            <button onclick="if(confirm('¿Estás seguro de eliminar esta bien y sus bienes asociados?')) { window.location.href='<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=eliminar&bien=<?php echo $bien['id']; ?>'; }">
-                                <img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem">
-                            </button>
-                            <button onclick="showBienesModal(<?php echo $bien['id']; ?>)">
-                                <img src="<?php echo ROOT_PATH; ?>public/images/play.jpg" alt="Ver Bienes" class="iconoItem">
-                            </button>
+                            <?php 
+                                if(isset($bien)) $nombre=$bien["codigo"].$bien["departamento"].$bien["tipo_bien"].$bien["fecha_alta"];
+                                else {
+                                    echo "no nombre";die;
+                                }
+                                if(!file_exists(TEMP_PATH)) mkdir(TEMP_PATH);
+
+                                $filename = TEMP_PATH.$nombre.'.png';
+                                //Echo $filename;die;
+                                $tamanho=2; // tamaño de la imagen
+                                $level='H'; // tipo de precision (baja l, media M, alta Q ,maxima H)
+                                $framesize=3; //marco del qr en blanco
+                                $contenido=$nombre;
+
+                                QRcode::png($contenido,$filename,$level,$tamanho,$framesize);
+
+                                echo '<img src="'.ROOT_PATH.'public/temp/'.$nombre.'.png">'; 
+                            ?>
                         </td>
                     </tr>
                 <?php } ?>
