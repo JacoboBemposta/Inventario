@@ -6,7 +6,7 @@ if(isset($_SESSION["bien"])) $nombre=$_SESSION["bien"];
 else $nombre="test";
 if(!file_exists(TEMP_PATH)) mkdir(TEMP_PATH);
 
-$filename = TEMP_PATH.$nombre.'png';
+$filename = TEMP_PATH.$nombre.'.png';
 echo $filename;die;
 $tamanho=2; // tamaño de la imagen
 $level='H'; // tipo de precision (baja l, media M, alta Q ,maxima H)

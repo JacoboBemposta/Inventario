@@ -203,15 +203,7 @@ if($ctrl=="usuarios"){
                         $_SESSION["bienes"][] = $bien; // Agrega el bien al array
                     }
                 }
-                var_dump($_SESSION["bienes"]);die;
-                $bienesDetalles = [];
-                var_dump($bienesDetalles);
-                // Generar el PDF 
-                // $pdf = new PDF();
-                // Aquí añades los códigos QR y demás información al PDF
-        
-                // Muestra el PDF al usuario
-                // $pdf->Output();
+                header("Location: " . ROOT_PATH . 'pdf.php');
             } else {
                 // Manejo de error si no se selecciona ningún bien
                 echo "Debes seleccionar al menos un bien.";
