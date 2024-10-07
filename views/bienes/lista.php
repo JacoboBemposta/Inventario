@@ -13,7 +13,8 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center">Lista de Bienes</h1>
 
-  
+    <!-- Formulario para la generación de etiquetas -->
+    <form action="<?php echo ROOT_PATH; ?>controllers/indexController.php?ctrl=bienes&opcion=generarEtiquetas" method="post" id="form-generar-etiquetas"target="_blank">
         <table class="display" id="bienes-table" style="width: 100%;" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>
@@ -74,12 +75,12 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
         <div class="d-flex justify-content-center">
             <div class="wrap-login-form-btn">
                 <div class="login-form-bgbtn"></div>
-                    <a href="<?php echo ROOT_PATH ?>pdf.php" target="_blank">
-                        <button type="submit" class="login-form-btn">Generar etiquetas</button>
-                    </a>
-                </div>
+                <button type="submit" class="login-form-btn" id="generar-pdf">Generar etiquetas</button>
+                    
             </div>
         </div>
+        </div>
+    </form>
 </div>
 
 
@@ -96,4 +97,7 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
 </script>

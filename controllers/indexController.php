@@ -197,6 +197,7 @@ if($ctrl=="usuarios"){
         case 'generarEtiquetas':
             $_SESSION["bienes"] = [];
             if (!empty($_POST['bienes'])) {
+                
                 foreach ($_POST['bienes'] as $bienSeleccionado) {
                     $bien = $objeto->listarBienesporID($bienSeleccionado);
                     if ($bien) {
