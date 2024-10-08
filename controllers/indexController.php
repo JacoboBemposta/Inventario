@@ -11,6 +11,7 @@ use controllers\BienesController;
 use models\Bienes;
 use models\Proveedor;
 
+// Controlador de rutas, recibe los parámetros por formulario y los envía al correspondiente controlador
 if(isset($_GET["ctrl"])) $ctrl= $_GET["ctrl"];
 else $ctrl="usuarios";
 if(isset($_GET["opcion"])) $opcion= $_GET["opcion"];
@@ -44,6 +45,7 @@ if($ctrl=="usuarios"){
             $objeto->listarUsuarios();
             header("Location: ".USR_PATH."lista.php");
             break;
+        //comprueba que el usuario y la contraseña son correctos
         case 'login':
             $validar="";
             $objeto = new UsuarioController();
@@ -52,20 +54,20 @@ if($ctrl=="usuarios"){
             $user = $objeto->login($usuario);
             if($user!=null) {
                 if($user[0]["usuario"]!=="Invitado"){
+                    // Si el usuario y la contraseña son correctos
                     if (strcasecmp($usuario, $user[0]["usuario"]) == 0 && password_verify($pass, $user[0]["contrasena"])) {
                         $_SESSION["login"]=$user[0]["usuario"];
                         $_SESSION["tipo_usuario"]=$user[0]["tipo_usuario"];
                         header("Location: ".USR_PATH."Bienvenida.php");
                     } else {
+                        // Si la contraseña no coincide
                         $_SESSION["login"]="Invitado";
                         $_SESSION["error"]="Contraseña incorrecta";
                         header("Location: ".ROOT_PATH."error.php");
                     }
-                }else {
-                    $_SESSION["error"]="Contraseña incorrecta";
-                    header("Location: ".ROOT_PATH."error.php");
                 }
             }else {
+                // Si el usuario no existe
                 $_SESSION["error"]="El usuario $usuario no existe";
                 header("Location: ".ROOT_PATH."error.php");
             }
@@ -151,6 +153,7 @@ if($ctrl=="usuarios"){
             
             break;
         case 'importar':
+            // Recibe un archivo CSV y lo envía al controlador para tratar los datos
             $archivo=$_FILES["archivocsv"];
             $objeto = new EntradaBienesController;
             $objeto->importarCSV($archivo);
@@ -158,9 +161,10 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;  
         case 'exportar':
-            $entradas = new EntradaBienesController();
-            $entradas->listarEntradas();
-            header("Location: " . ROOT_PATH . 'pdf.php');
+            // Exportar las entradas en formato pdf
+            // $entradas = new EntradaBienesController();
+            // $entradas->listarEntradas();
+            // header("Location: " . ROOT_PATH . 'pdf.php');
             break;                
         default:
             # code...
@@ -195,9 +199,24 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'generarEtiquetas':
-            $_SESSION["bienes"] = [];
-            if (!empty($_POST['bienes'])) {
+            // Manejo de error si no se envia la posicion 
+            if (empty($_POST['posicion'])) {
                 
+                $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
+                header("Location: " . BIEN_PATH . 'lista.php');
+                die;
+            }
+            // Manejo de error si no se envia un valor de posición correcto
+            if($_POST["posicion"]<=0 || $_POST["posicion"]>33) {
+                $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
+                header("Location: " . BIEN_PATH . 'lista.php');
+                die;                
+            }
+            //Asignamos el valor de la posición a una variable de sesión
+            $_SESSION["posicion"]=$_POST["posicion"];
+            // recibe una lista de bienes por id, recoge los bienes y llama al archivo para generar etiquetas
+            if (!empty($_POST['bienes']) && !empty($_POST["posicion"])) {
+                $_SESSION['bienes']=[];
                 foreach ($_POST['bienes'] as $bienSeleccionado) {
                     $bien = $objeto->listarBienesporID($bienSeleccionado);
                     if ($bien) {
@@ -207,8 +226,10 @@ if($ctrl=="usuarios"){
                 header("Location: " . ROOT_PATH . 'pdf.php');
             } else {
                 // Manejo de error si no se selecciona ningún bien
-                echo "Debes seleccionar al menos un bien.";
+                $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";
+                header("Location: " . BIEN_PATH . 'lista.php');
             }
+            
             break;            
         default:
             # code...

@@ -140,7 +140,6 @@ if (isset($_SESSION['entradas'])) {
                     </button> 
                 </form>
               </div>
-
     </div>    
 </div>
 

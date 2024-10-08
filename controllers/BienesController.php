@@ -11,15 +11,16 @@ class BienesController {
     // Muestra el listado de bienes de una entrada específica
     public function lista($entrada_bien_id) {
         $bienModel = new Bienes();
-        $bienModel->obtenerPorEntradaId($entrada_bien_id); // Obtener bienes por entrada
+        $bienModel->obtenerPorEntradaId($entrada_bien_id); 
 
-        //require_once 'views/bienes/lista.php';
+        
     }
     public function listarBienes() {
         $bienModel = new Bienes();
         $_SESSION["bienes"] = $bienModel->obtenerBienes(); 
 
     }
+    // Devuelve un bien buscando por su id
     public function listarBienesporID($id) {
         $bienModel = new Bienes();
         return $bienModel->obtenerPorId($id);

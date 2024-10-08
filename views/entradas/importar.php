@@ -19,7 +19,7 @@ if(isset($_SESSION["login"])){
         </button> 
     </form>
 </div>
-<div class="container justify-content-center align-items-center" style="min-height: 70vh; max-width: 20vw;">
+<div class="d-flex justify-content-center mt-5">
         <div class="wrap-login-form-btn">
             <div class="login-form-bgbtn"></div>
             <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo ENT_PATH; ?>lista.php';">

@@ -63,6 +63,7 @@ if($_SESSION["login"]!="Invitado"){?>
                             Entrada Bienes
                         </a>
                     </li>
+                        <!-- Etiquetas-->
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=ver" id="proveedoresDropdown">
                             Etiquetas

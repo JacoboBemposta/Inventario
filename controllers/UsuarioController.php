@@ -8,19 +8,20 @@ class UsuarioController {
 
     private $usuarioModel;
     
-
+    // lista todos los usuarios y los guarda en una variable de sesion
     public function listarUsuarios() {
 
         $usuario = new Usuario();
         $usuarios = $usuario->obtenerTodos();
         $_SESSION['usuarios'] = $usuarios; // Guarda los datos en la sesión
         }
-
+    //Recoge en una variable de sesion el usuario que se va a editar
     public function editarusuario($id) {
         $usuario = new Usuario();
         $usuario = $usuario->obtenerUno($id);
         $_SESSION['usuario'] = $usuario;
         }
+    // Actualiza los datos del usuario
     public function actualizarusuario() {
         $id=$_GET['usuario'];
         $usuario = new Usuario();

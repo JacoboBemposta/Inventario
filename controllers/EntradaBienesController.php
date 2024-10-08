@@ -68,6 +68,7 @@ class EntradaBienesController {
         return $entrada->eliminarEntrada($id);
     }
 
+    // Controlador para importar CSV
     public function importarCSV($archivo){
         
         //Recorrer el fichero
@@ -82,46 +83,48 @@ class EntradaBienesController {
                 $date = $data[10];
                 $date = str_replace('/', '-', $date);
                 $fecha = date('Y-m-d', strtotime($date));
-
-                //Añadir los items
-                $descripcion = $data[0];
+                //Elminiar el string "Descripción: " del primer elemento del array
+                $descripcion = substr($data[0],16);
                 $cuenta = $data[9];         
                 $fecha_compra = $fecha;
                 $fecha_inicio_amortizacion = $fecha;
                 $precio = $data[12];
                 $amortizacion = $data[13];
                 $objeto = new EntradaBienes();
-                $objeto -> agregarEntrada($descripcion, $numero_factura=NULL, $proveedor_id=NULL, $fecha_compra, $fecha_inicio_amortizacion, $amortizacion, $precio, $cuenta) ;
+                $resultado=$objeto -> agregarEntrada($descripcion, $numero_factura=NULL, $proveedor_id=NULL, $fecha_compra, $fecha_inicio_amortizacion, $amortizacion, $precio, $cuenta) ;
+
             }
 
 
         }
     }
-    public function exportarPDF(){
 
-        $objeto=new EntradaBienes();
-        $file = 'entrada-'.getdate()["year"].getdate()["mon"].getdate()["mday"].getdate()["hours"].getdate()["minutes"].'.html';
-        $contenido="hola";
+    //Controlador para exportar la lista de entradas en formato pdf
+    // public function exportarPDF(){
+
+    //     $objeto=new EntradaBienes();
+    //     $file = 'entrada-'.getdate()["year"].getdate()["mon"].getdate()["mday"].getdate()["hours"].getdate()["minutes"].'.html';
+    //     $contenido="hola";
 
         
-        $pdf=new FPDF();
-        $pdf->AddPage();
-        $pdf->SetFont('Arial','B',16);
-        $pdf->Cell(40,10,'¡Mi primera página pdf con FPDF!');
-        $pdf->Output();
+    //     $pdf=new FPDF();
+    //     $pdf->AddPage();
+    //     $pdf->SetFont('Arial','B',16);
+    //     $pdf->Cell(40,10,'¡Mi primera página pdf con FPDF!');
+    //     $pdf->Output();
    
         
         
 
-        die();
-        // Open the file to get existing content
-        $current = file_get_contents($file);
-        // Append a new person to the file
-        $current .= "John Smith\n";
-        // Write the contents back to the file
-        file_put_contents($file, $current);
+    //     die();
+    //     // Open the file to get existing content
+    //     $current = file_get_contents($file);
+    //     // Append a new person to the file
+    //     $current .= "John Smith\n";
+    //     // Write the contents back to the file
+    //     file_put_contents($file, $current);
 
 
-    }
+    // }
 }
 ?>

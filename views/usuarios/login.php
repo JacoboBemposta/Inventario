@@ -2,7 +2,7 @@
 include "../../menu.php";
 @session_start();
 ?>
-
+<!-- Formulario login -->
 <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
 <form action="<?php echo ROOT_PATH ?>public/index.php?ctrl=usuarios&opcion=ver method='POST' class='w-50'">
     <div class="mb-3">

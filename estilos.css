@@ -1,3 +1,9 @@
+/* colores por defecto
+rgb(195,68,83)
+#C34453
+
+*/
+
 *{ 
   margin: 0px;  
   padding: 0px;  
@@ -38,7 +44,7 @@
   .oficina {
     position: relative;
     overflow: hidden;
-    color: #9b0e34; /* Asegura que el texto sea visible sobre la imagen */
+    color: #c34453; /* Asegura que el texto sea visible sobre la imagen */
 }
 
 .oficina::before {
@@ -207,10 +213,10 @@
   -moz-transition: all 0.4s; 
   transition: all 0.4s; 
   background: #6a7dfe; 
-  background: -webkit-linear-gradient(left, #ffffff, #800000); 
-  background: -o-linear-gradient(left, #ffffff, #800000); 
-  background: -moz-linear-gradient(left, #ffffff, #800000); 
-  background: linear-gradient(left, #ffffff, #800000); 
+  background: -webkit-linear-gradient(left, #ffffff, #C34453); 
+  background: -o-linear-gradient(left, #ffffff, #C34453); 
+  background: -moz-linear-gradient(left, #ffffff, #C34453); 
+  background: linear-gradient(left, #ffffff, #C34453); 
   } 
   
    
@@ -351,13 +357,13 @@
   
   background: #9b0e34; 
 /*   
-  background: -webkit-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  background: -webkit-linear-gradient(right, #ffffff, #C34453, #ffffff, #C34453); 
   
-  background: -o-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  background: -o-linear-gradient(right, #ffffff, #C34453, #ffffff, #C34453); 
   
-  background: -moz-linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  background: -moz-linear-gradient(right, #ffffff, #C34453, #ffffff, #C34453); 
   
-  background: linear-gradient(right, #ffffff, #800000, #ffffff, #800000); 
+  background: linear-gradient(right, #ffffff, #C34453, #ffffff, #C34453); 
    */
   top: 0; 
   
