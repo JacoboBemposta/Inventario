@@ -54,7 +54,18 @@ class PDF extends FPDF {
 $pdf = new FPDF();
 $pdf->AddPage();
 $pdf->SetFont('Arial', '', 4);
-$posicion_inicial=round(fmod($_SESSION["posicion"],3));
+
+
+    // // Obtener la posición desde la variable de sesión (número secuencial)
+    // $posicion = $_SESSION["posicion"]; // Número de casilla (por ejemplo, 5)
+    // $columnas=3;
+    // // Calcular fila y columna a partir de la posición
+    // $fila = floor(($posicion - 1) / $columnas) + 1;   // Fila en la cuadrícula
+    // $columna = (($posicion - 1) % $columnas) + 1;     // Columna en la cuadrícula
+
+    // // Calcular coordenadas X e Y para la etiqueta
+    // $x = ($columna - 1) * ($ancho_etiqueta + $margen_x) + $margen_inicial_x; // Posición X
+    // $y = ($fila - 1) * ($alto_etiqueta + $margen_y) + $margen_inicial_y;     // Posición Y
 
 for ($i=1; $i <= 11; $i++) { 
     foreach ($_SESSION["bienes"] as $bien) {
@@ -69,25 +80,25 @@ for ($i=1; $i <= 11; $i++) {
         $contenido=$bien["descripcion"];
         
         QRcode::png($contenido,$filename,$level,$tamanho,$framesize);
-        
-        $pdf->Image(RAIZ_PATH.'public/images/sigalogo.png', $pdf->SetX($pdf->GetX()+1), $pdf->SetY($pdf->GetY()+1), 11);
-        // $x=$pdf->getX(); para color a la derecha del logo.
-        // $pdf->setX(50);
-        $pdf->Ln(1);
-        $pdf->Cell(30, 9, $bien['codigo'].$bien['tipo_bien'].$bien['fecha_alta'], 0, 1, 'L');
+        $pdf->setX(1);
+        $pdf->SetY($pdf->GetY() + 1);
+        $pdf->Image(RAIZ_PATH.'public/images/sigalogo.png', $pdf->GetX(), $pdf->GetY(), 20);
+        $pdf->Ln(10); // Ajusta la distancia entre el logo y el texto
+        $pdf->Cell(30, 9, $bien['codigo'].' '.$bien['tipo_bien'].' '.$bien['fecha_alta'], 0, 1, 'L');
     
-        // Obtener la posición Y actual para que la imagen se alinee con el texto
+        // Obtener la posición Y actual (después del texto)
         $y = $pdf->GetY();
         
-        // Volver a la posición Y anterior (para que no se mueva el cursor)
-        $pdf->SetY($y - 25); // Ajusta el valor según sea necesario
-        $x=$pdf->getX();
-        // Posicionar la imagen a la derecha
-        $pdf->SetX($x+25); // Ajusta el valor de X según el ancho de la página y la posición deseada
-        $pdf->Image($filename, $pdf->GetX(), $pdf->GetY(), 15); // Ajusta el ancho y altura según sea necesario
+        // Ajustar la posición del QR code debajo del texto, con espacio de 5 unidades
+        $pdf->SetY($y - 20);
+        $x = $pdf->GetX();
         
-        // Nueva línea para el siguiente texto
-        $pdf->Ln(40);
+        // Posicionar el QR code a la derecha del texto
+        $pdf->SetX($x + 30); // Ajustar el valor según sea necesario
+        $pdf->Image($filename, $pdf->GetX(), $pdf->GetY(), 15); // Tamaño del QR code
+        
+        // Nueva línea para el siguiente bien
+        $pdf->Ln(20);
     }
     
 }

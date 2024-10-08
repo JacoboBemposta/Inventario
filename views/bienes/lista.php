@@ -136,7 +136,7 @@ function activarBlank(checkbox) {
     var posicionValida = posicion !== '' && posicionNumero >= 1 && posicionNumero <= 33;
 
     // Si ambos criterios se cumplen, agregar el atributo target="_blank"
-    if (checkboxSeleccionado && posicionValida) {
+    if (checkboxSeleccionado) {
         formulario.setAttribute('target', '_blank');
     } else {
         // Si no se cumplen, remover el atributo target
