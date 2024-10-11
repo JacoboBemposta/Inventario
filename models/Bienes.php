@@ -20,13 +20,6 @@ class Bienes {
 
     // Obtener un bien por su ID
     public function obtenerPorId($id) {
-        $sql = "SELECT * FROM bienes WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$id]);
-        $bien = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $bien;
-    }
-    public function obtenerTodoporBien($id) {
         $query = "SELECT b.*, eb.* ,p.*
         FROM bienes AS b 
         JOIN entradas_bienes AS eb ON b.id = eb.id
@@ -39,7 +32,6 @@ class Bienes {
         $bien = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $bien;
     }
-
     // Obtener todos los bienes
     public function obtenerBienes() {
         $sql = "SELECT * FROM bienes";
