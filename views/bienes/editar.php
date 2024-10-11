@@ -7,10 +7,12 @@ if (isset($_SESSION['bien'])) {
 } else {
     $bien = []; // Manejar si no hay proveedores en la sesión
 }
+
 ?>
+
 <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
     <h1 class="text-center mb-4">Editar bien</h1>
-<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bien&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50">
+<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50">
     <div class="mb-3">
         <label for="descripcion">Descripción:</label>
         <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
@@ -100,20 +102,19 @@ if (isset($_SESSION['bien'])) {
             <?php endforeach; ?>
         </select>    
     </div>
-    <div class="d-flex justify-content-center mt-5">
+    <div class="button-container mt-5">
             <div class="wrap-login-form-btn"> 
                 <div class="login-form-bgbtn"></div>
-                    <button type="submit"  class="login-form-btn">Actualizar</button> 
-                </div> 
+                <button type="submit" class="login-form-btn">Actualizar</button> 
+            </div>
+
+            <div class="wrap-login-form-btn"> 
+                <div class="login-form-bgbtn"></div>
+                <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo ENT_PATH; ?>lista.php';">
+                    Volver
+                </button>
             </div>
         </div>
     </form>
-    <div class="container justify-content-center align-items-center mt-5" style="min-height: 70vh; max-width: 20vw;">
-        <div class="wrap-login-form-btn">
-            <div class="login-form-bgbtn"></div>
-            <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo ENT_PATH; ?>lista.php';">
-                Volver
-            </button>
-        </div>
-    </div>
+
 </div>

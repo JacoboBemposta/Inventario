@@ -2,7 +2,7 @@
 @session_start();
 require_once __DIR__ .'/../autoload.php';
 require __DIR__ .'/../menu.php';
-
+include_once RAIZ_PATH . 'csrf.php';
 use BienesController as GlobalBienesController;
 use controllers\UsuarioController;
 use controllers\ProveedorController;
@@ -47,6 +47,19 @@ if($ctrl=="usuarios"){
             break;
         //comprueba que el usuario y la contraseña son correctos
         case 'login':
+            //var_dump($_SESSION['csrf_token']);die;
+            // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //     // Verifica si el token CSRF fue enviado con el formulario
+            //     if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
+            //         die("Error: Token CSRF inválido o ausente.");
+            //     }
+            
+            //     // Procesar el formulario ya que el token es válido
+            //     echo "Formulario procesado correctamente. Token CSRF válido.";
+                
+            //     // Opcional: destruir el token después de usarlo
+            //     destruirTokenCSRF();
+            // }
             $validar="";
             $objeto = new UsuarioController();
             $usuario=htmlspecialchars($_POST["usuario"]);

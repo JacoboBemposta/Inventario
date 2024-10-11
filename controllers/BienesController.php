@@ -36,13 +36,13 @@ class BienesController {
             $bienModel = new Bienes();
             
             // Capturar los datos del formulario
-            $descripcion = $_POST['descripcion'];
-            $precio = $_POST['precio'];
-            $centro = $_POST['centro'];
-            $departamento = $_POST['departamento'];
-            $tipo_bien = $_POST['tipo_bien'];
-            $codigo = $_POST['codigo'];
-            $entrada_bien_id = $_POST['entrada_bien_id'];
+            $descripcion = htmlspecialchars($_POST['descripcion']);
+            $precio = htmlspecialchars($_POST['precio']);
+            $centro = htmlspecialchars($_POST['centro']);
+            $departamento = htmlspecialchars($_POST['departamento']);
+            $tipo_bien = htmlspecialchars($_POST['tipo_bien']);
+            $codigo = htmlspecialchars($_POST['codigo']);
+            $entrada_bien_id = htmlspecialchars($_POST['entrada_bien_id']);
             // Guardar el bien en la base de datos
             $bienModel->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id) ;
         }
@@ -53,19 +53,19 @@ class BienesController {
         $bienModel = new Bienes();
         $bienModel=$bienModel->obtenerPorId($id); // Obtener los datos del bien
         $_SESSION['bien']=$bienModel;
-
+        
     }
 
     // Maneja la actualización de un bien existente
     public function actualizar($id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bienModel = new Bienes();
-            $descripcion = $_POST['descripcion'];
-            $precio = $_POST['precio'];
-            $centro = $_POST['centro'];
-            $departamento = $_POST['departamento'];
-            $tipo_bien = $_POST['tipo_bien'];
-            $causa_baja = $_POST['causa_baja'];
+            $descripcion = htmlspecialchars($_POST['descripcion']);
+            $precio = htmlspecialchars($_POST['precio']);
+            $centro = htmlspecialchars($_POST['centro']);
+            $departamento = htmlspecialchars($_POST['departamento']);
+            $tipo_bien = htmlspecialchars($_POST['tipo_bien']);
+            $causa_baja = htmlspecialchars($_POST['causa_baja']);
 
             // Actualizar el bien en la base de datos
             $bienModel->editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja);

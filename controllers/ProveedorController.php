@@ -20,13 +20,13 @@ class ProveedorController {
     public function actualizarProveedor() {
         $id=$_GET['proveedor'];
         $Proveedor = new Proveedor();
-        $nombre=$_POST['nombre'];
+        $nombre=htmlspecialchars($_POST['nombre']);
         $Proveedor->editarProveedor($id, $nombre);
         }
 
     public function crearProveedor() {      
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $nombre = $_POST['nombre'];
+            $nombre = htmlspecialchars($_POST['nombre']);
             $user = new Proveedor();
             $user->agregarProveedor($nombre);
             }

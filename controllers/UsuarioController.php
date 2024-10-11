@@ -25,19 +25,19 @@ class UsuarioController {
     public function actualizarusuario() {
         $id=$_GET['usuario'];
         $usuario = new Usuario();
-        $nombre=$_POST['nombre'];
-        $contrasena = $_POST['contrasena'];
-        $tipo_usuario=$_POST['tipo_usuario'];
+        $nombre=htmlspecialchars($_POST['nombre']);
+        $contrasena = htmlspecialchars($_POST['contrasena']);
+        $tipo_usuario=htmlspecialchars($_POST['tipo_usuario']);
         $usuario->editarUsuario($id,$nombre, $contrasena, $tipo_usuario);
         }
 
     public function crearUsuario() {
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $nombre = $_POST['nombre'];
-            $usuario = $_POST['usuario'];
-            $contrasena = $_POST['contrasena'];
-            $tipo_usuario = $_POST['tipo_usuario'];
+            $nombre = htmlspecialchars($_POST['nombre']);
+            $usuario = htmlspecialchars($_POST['usuario']);
+            $contrasena = htmlspecialchars($_POST['contrasena']);
+            $tipo_usuario = htmlspecialchars($_POST['tipo_usuario']);
             $user = new Usuario();
             $user->agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario);
                 }

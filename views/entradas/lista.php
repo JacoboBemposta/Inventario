@@ -70,7 +70,7 @@ if (isset($_SESSION['entradas'])) {
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <!-- Título centrado -->
     <h1 class="text-center">Lista de Entradas</h1>
-    <!-- Tabla proveedores-->
+    <!-- Tabla entradas-->
 
     <table class="display" id="entradas-table" style="width:60vw" cellpadding="5" cellspacing="0">
         <thead>
