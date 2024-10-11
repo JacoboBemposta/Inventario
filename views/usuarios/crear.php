@@ -1,11 +1,8 @@
 <?php 
 include "../../menu.php";
+require_once "../../config/auth.php";
 @session_start();
-if(isset($_SESSION["login"])){
-    if($_SESSION["login"]==="Invitado"){
-        header("Location: ".ROOT_PATH)."inicio.php";
-    }
-}
+
 ?>
 <div class="container d-flex flex-column align-items-center mt-5" style="height: 50vh;" >
 <h1 class="text-center">Crear nuevo usuario</h1>

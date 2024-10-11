@@ -24,9 +24,9 @@ class Usuario {
     // Obtener un usuario por su id
     public function obtenerUno($id) {
         
-        $sql = "SELECT * FROM usuarios WHERE id = $id";
+        $sql = "SELECT * FROM usuarios WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$id]);
         $usuario = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $usuario;
     }
@@ -66,9 +66,9 @@ class Usuario {
 
     // Obtener un usuario por el nombre de usuario
     public function obtenerUSuario($usuario){
-        $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+        $sql = "SELECT * FROM usuarios WHERE usuario = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$usuario]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

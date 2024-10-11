@@ -1,11 +1,7 @@
 <?php 
 include "../../menu.php";
+require_once "../../config/auth.php";
 @session_start();
-if(isset($_SESSION["login"])){
-    if($_SESSION["login"]==="Invitado"){
-        header("Location: ".ROOT_PATH)."inicio.php";
-    }
-}
 if (isset($_SESSION['entradas'])) {
     $entrada = $_SESSION['entradas'];
 } else {
@@ -15,7 +11,7 @@ if (isset($_SESSION['entradas'])) {
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
 <h1 class="text-center">Nuevo bien</h1>
 <div class="container">
-<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bien&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
+<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
         <div class="mb-3 w-50">
             <label for="descripcion" class="form-label">Descripción:</label>
             <input type="text" name="descripcion" class="form-control"  required>

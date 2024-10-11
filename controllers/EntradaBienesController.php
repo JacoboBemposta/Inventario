@@ -36,14 +36,14 @@ class EntradaBienesController {
     public function actualizarentrada() {
         $id=$_GET['entrada'];
         $entrada = new EntradaBienes();
-        $descripcion=$_POST['descripcion'];
-        $numero_factura=$_POST['numero_factura'];
-        $proveedor_id=$_POST['proveedor_id'];
-        $fecha_compra=$_POST['fecha_compra'];
-        $fecha_inicio_amortizacion=$_POST['fecha_inicio_amortizacion'];
-        $porcentaje_amortizacion=$_POST['porcentaje_amortizacion'];
-        $precio=$_POST['precio'];
-        $cuenta_contable=$_POST['cuenta_contable'];
+        $descripcion=htmlspecialchars($_POST['descripcion']);
+        $numero_factura=htmlspecialchars($_POST['numero_factura']);
+        $proveedor_id=htmlspecialchars($_POST['proveedor_id']);
+        $fecha_compra=htmlspecialchars($_POST['fecha_compra']);
+        $fecha_inicio_amortizacion=htmlspecialchars($_POST['fecha_inicio_amortizacion']);
+        $porcentaje_amortizacion=htmlspecialchars($_POST['porcentaje_amortizacion']);
+        $precio=htmlspecialchars($_POST['precio']);
+        $cuenta_contable=htmlspecialchars($_POST['cuenta_contable']);
         $entrada->editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) ;
     }
 
@@ -51,14 +51,14 @@ class EntradaBienesController {
     public function crearEntrada() {
 
             $entrada = new EntradaBienes();
-            $descripcion = $_POST['descripcion'];
-            $numero_factura = $_POST['numero_factura'];
-            $proveedor_id = $_POST['proveedor_id'];
-            $fecha_compra = $_POST['fecha_compra'];
-            $fecha_inicio_amortizacion = $_POST['fecha_inicio_amortizacion'];
-            $porcentaje_amortizacion = $_POST['porcentaje_amortizacion'];
-            $precio = $_POST['precio'];
-            $cuenta_contable = $_POST['cuenta_contable'];
+            $descripcion = htmlspecialchars($_POST['descripcion']);
+            $numero_factura = htmlspecialchars($_POST['numero_factura']);
+            $proveedor_id = htmlspecialchars($_POST['proveedor_id']);
+            $fecha_compra = htmlspecialchars($_POST['fecha_compra']);
+            $fecha_inicio_amortizacion = htmlspecialchars($_POST['fecha_inicio_amortizacion']);
+            $porcentaje_amortizacion = htmlspecialchars($_POST['porcentaje_amortizacion']);
+            $precio = htmlspecialchars($_POST['precio']);
+            $cuenta_contable = htmlspecialchars($_POST['cuenta_contable']);
             
             $entrada->agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) ;
 
@@ -99,32 +99,5 @@ class EntradaBienesController {
         }
     }
 
-    //Controlador para exportar la lista de entradas en formato pdf
-    // public function exportarPDF(){
-
-    //     $objeto=new EntradaBienes();
-    //     $file = 'entrada-'.getdate()["year"].getdate()["mon"].getdate()["mday"].getdate()["hours"].getdate()["minutes"].'.html';
-    //     $contenido="hola";
-
-        
-    //     $pdf=new FPDF();
-    //     $pdf->AddPage();
-    //     $pdf->SetFont('Arial','B',16);
-    //     $pdf->Cell(40,10,'¡Mi primera página pdf con FPDF!');
-    //     $pdf->Output();
-   
-        
-        
-
-    //     die();
-    //     // Open the file to get existing content
-    //     $current = file_get_contents($file);
-    //     // Append a new person to the file
-    //     $current .= "John Smith\n";
-    //     // Write the contents back to the file
-    //     file_put_contents($file, $current);
-
-
-    // }
 }
 ?>

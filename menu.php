@@ -1,5 +1,5 @@
 <?php 
-include "config/config.php";
+require "config/config.php";
 ob_start();
 @session_start();
 if(!isset($_SESSION["login"])){

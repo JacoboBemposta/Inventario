@@ -1,10 +1,6 @@
 <?php 
 include "../../menu.php";
-if(isset($_SESSION["login"])){
-    if($_SESSION["login"]==="Invitado"){
-        header("Location: ".ROOT_PATH)."inicio.php";
-    }
-}
+require_once "../../config/auth.php";
 @session_start();
 ?>
 <div class="container d-flex flex-column  align-items-center mt-5" style="min-height: 50vh;">

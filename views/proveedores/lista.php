@@ -1,9 +1,8 @@
 <?php 
 include "../../menu.php";
+require_once "../../config/auth.php";
 @session_start();
-if(!isset($_SESSION["login"]) || ($_SESSION["login"]=="Invitado")){
-    header("Location: ".ROOT_PATH)."inicio.php";
-}
+if($_SESSION["tipo_usuario"]!="ADMIN") header("Location: ".ROOT_PATH)."inicio.php";
 if (isset($_SESSION['proveedores'])) {
     $proveedores = $_SESSION['proveedores'];
 } else {

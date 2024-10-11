@@ -49,8 +49,8 @@ if($ctrl=="usuarios"){
         case 'login':
             $validar="";
             $objeto = new UsuarioController();
-            $usuario=$_POST["usuario"];
-            $pass=$_POST["password"];
+            $usuario=htmlspecialchars($_POST["usuario"]);
+            $pass=htmlspecialchars($_POST["password"]);
             $user = $objeto->login($usuario);
             if($user!=null) {
                 if($user[0]["usuario"]!=="Invitado"){
@@ -194,20 +194,20 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'eliminar':
-            $objeto->eliminar($_GET['bien']);
+            $objeto->eliminar($_GET['bien'],$_GET['motivo']);
             $entrada->listarEntradas();
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'generarEtiquetas':
             // Manejo de error si no se envia la posicion 
-            if (empty($_POST['posicion'])) {
+            if (empty(htmlspecialchars($_POST['posicion']))) {
                 
                 $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;
             }
             // Manejo de error si no se envia un valor de posición correcto
-            if($_POST["posicion"]<=0 || $_POST["posicion"]>33) {
+            if(htmlspecialchars($_POST["posicion"])<=0 || htmlspecialchars($_POST["posicion"]>33)) {
                 $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;                
@@ -217,13 +217,13 @@ if($ctrl=="usuarios"){
             // recibe una lista de bienes por id, recoge los bienes y llama al archivo para generar etiquetas
             if (!empty($_POST['bienes']) && !empty($_POST["posicion"])) {
                 $_SESSION['bienes']=[];
-                foreach ($_POST['bienes'] as $bienSeleccionado) {
+                foreach ( $_POST['bienes'] as $bienSeleccionado) {
                     $bien = $objeto->listarBienesporID($bienSeleccionado);
                     if ($bien) {
                         $_SESSION["bienes"][] = $bien; // Agrega el bien al array
                     }
                 }
-                header("Location: " . ROOT_PATH . 'pdf.php');
+                header("Location: " . ROOT_PATH . 'imp_etiquetas.php');
             } else {
                 // Manejo de error si no se selecciona ningún bien
                 $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";

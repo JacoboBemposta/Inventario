@@ -1,11 +1,9 @@
 <?php
 include "../../menu.php";
-require QR_PATH.'qrlib.php';
+require_once "../../config/auth.php";
+require_once '../../libs/phpqrcode/qrlib.php';
 @session_start();
 
-if (!isset($_SESSION["login"]) || ($_SESSION["login"] == "Invitado")) {
-    header("Location: " . ROOT_PATH . "inicio.php");
-}
 $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
 
 
@@ -30,16 +28,18 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
     unset($_SESSION["erroretiquta"])?>>
         <table class="display" id="bienes-table" style="width: 100%;" cellpadding="5" cellspacing="0">
             <thead>
-                <tr>
-                    <th style="text-align: center; padding: 10px;">Seleccionar</th> <!-- Nueva columna para checkbox -->
-                    <th style="text-align: center; padding: 10px;">Descripción</th>
-                    <th style="text-align: center; padding: 10px;">Precio</th>
-                    <th style="text-align: center; padding: 10px;">Centro</th>
-                    <th style="text-align: center; padding: 10px;">Departamento</th>
-                    <th style="text-align: center; padding: 10px;">Tipo bien</th>
-                    <th style="text-align: center; padding: 10px;">Fecha alta</th>
-                    <th style="text-align: center; padding: 10px;">QR</th>
-                </tr>
+            <tr>
+                <th style="text-align: center; padding: 10px;min-width:10vw;">
+                    <input type="checkbox" id="seleccionarTodos"> Seleccionar todos<!-- Checkbox para seleccionar todos -->
+                </th>
+                <th style="text-align: center; padding: 10px;">Descripción</th>
+                <th style="text-align: center; padding: 10px;">Precio</th>
+                <th style="text-align: center; padding: 10px;">Centro</th>
+                <th style="text-align: center; padding: 10px;">Departamento</th>
+                <th style="text-align: center; padding: 10px;">Tipo bien</th>
+                <th style="text-align: center; padding: 10px;">Fecha alta</th>
+                <th style="text-align: center; padding: 10px;">QR</th>
+            </tr>
             </thead>
             <tbody>
                 <?php foreach ($bienes as $bien) { ?>
@@ -95,7 +95,7 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
         <div class="d-flex justify-content-center">
             <div class="wrap-login-form-btn">
                 <div class="login-form-bgbtn"></div>
-                <button type="submit" class="login-form-btn" id="generar-pdf">Comprobar posiciones</button>
+                <button type="submit" class="login-form-btn" id="generar-pdf">Imprimir</button>
                     
             </div>
         </div>
@@ -107,22 +107,38 @@ $bienes = isset($_SESSION['bienes']) ? $_SESSION['bienes'] : [];
 <!-- Script para inicializar DataTables -->
 <script>
 $(document).ready(function() {
-    $('#bienes-table').DataTable({
+    var table = $('#bienes-table').DataTable({
         language: {
             info: 'Mostrando página _PAGE_ de _PAGES_',
             infoEmpty: 'No hay registros disponibles',
             infoFiltered: '(filtrado de _MAX_ registros totales)',
             lengthMenu: 'Mostrar _MENU_ registros por página',
             zeroRecords: 'No se encontraron registros',
+        },
+        pageLength: 33 // Limitar a 33 registros por página
+    });
+
+    // Seleccionar/Deseleccionar todos los checkboxes cuando el checkbox en el encabezado es clicado
+    $('#seleccionarTodos').on('click', function(){
+        var rows = table.rows({ 'search': 'applied' }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    // Si un checkbox de la tabla es deseleccionado, también deselecciona el del encabezado
+    $('#bienes-table tbody').on('change', 'input[type="checkbox"]', function(){
+        if(!this.checked){
+            var el = $('#seleccionarTodos').get(0);
+            if(el && el.checked && ('indeterminate' in el)){
+                el.indeterminate = true;
+            }
         }
     });
 });
 
-
 function activarBlank(checkbox) {
     // Obtener el formulario por su ID
     var formulario = document.getElementById('form-generar-etiquetas');
-
+    var todos = document.getElementById('seleccionarTodos');
     // Obtener el valor del input con id="posicion"
     var posicion = document.getElementById('posicion').value;
 
@@ -130,7 +146,7 @@ function activarBlank(checkbox) {
     var posicionNumero = parseInt(posicion);
 
     // Verificar si al menos un checkbox está seleccionado
-    var checkboxSeleccionado = document.querySelector('input[name="bienes[]"]:checked') !== null;
+    var checkboxSeleccionado = (document.querySelector('input[name="seleccionarTodos"]:checked') !== null|| document.querySelector('input[name="bienes[]"]:checked') !== null);
 
     // Verificar si el campo 'posicion' no está vacío y su valor está entre 1 y 33
     var posicionValida = posicion !== '' && posicionNumero >= 1 && posicionNumero <= 33;

@@ -1,9 +1,9 @@
 <?php 
 include "../../menu.php";
+require "../../config/auth.php";
+if($_SESSION["tipo_usuario"]!="ADMIN") header("Location: ".ROOT_PATH)."inicio.php";
 @session_start();
-if(!isset($_SESSION["login"]) || ($_SESSION["login"]=="Invitado")){
-    header("Location: ".ROOT_PATH)."inicio.php";
-}
+
 if (isset($_SESSION['usuarios'])) {
     $usuarios = $_SESSION['usuarios'];
 } else {

@@ -2,7 +2,7 @@
 @session_start();
 
 require '../../menu.php';
-
+require_once "../../config/auth.php";
 // Guardar los botones seleccionados en la sesión
 if (isset($_POST['botones_seleccionados'])) {
     $_SESSION['botones_seleccionados'] = $_POST['botones_seleccionados'];

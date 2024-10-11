@@ -20,10 +20,17 @@ class Bienes {
 
     // Obtener un bien por su ID
     public function obtenerPorId($id) {
-        $sql = "SELECT * FROM bienes WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $query = "SELECT b.*, eb.* ,p.*
+        FROM bienes AS b 
+        JOIN entradas_bienes AS eb ON b.id = eb.id
+        JOIN proveedores AS p ON eb.proveedor_id = p.id;
+        WHERE b.id = :id_bien";
+
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':id_bien' => $id]);
+        $bien = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $bien;
     }
     // Obtener todos los bienes
     public function obtenerBienes() {
@@ -56,10 +63,11 @@ class Bienes {
     }
 
     // Eliminación lógica de un bien (marcar como inactivo)
-    public function eliminarBien($id) {
-        $sql = "UPDATE bienes SET activo = 0, fecha_baja = NOW() WHERE id = ?";
+    public function eliminarBien($motivo,$id) {
+
+        $sql = "UPDATE bienes SET activo = 0, causa_baja = ? , fecha_baja = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$id]);
+        return $stmt->execute([$id,$motivo]);
     }
 }
 ?>

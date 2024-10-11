@@ -28,6 +28,7 @@ class BienesController {
 
 
 
+
     // Maneja la creación de un nuevo bien
     public function crear() {
 
@@ -77,13 +78,13 @@ class BienesController {
     }
 
     // Elimina (lógicamente) un bien de la base de datos
-    public function eliminar($id) {
+    public function eliminar($id,$motivo) {
         $bienModel = new Bienes();
         $bienModel->obtenerPorId($id);
 
         if ($bienModel) {
             // Eliminación lógica del bien
-            $bienModel->eliminarBien($id);
+            $bienModel->eliminarBien($id,$motivo);
         }
     }
 }

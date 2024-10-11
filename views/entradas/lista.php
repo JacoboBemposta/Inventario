@@ -1,10 +1,9 @@
 <?php 
-include "../../menu.php";
+require "../../menu.php";
+require_once "../../config/auth.php";
 @session_start();
 
-if(!isset($_SESSION["login"]) || ($_SESSION["login"]=="Invitado")){
-      header("Location: ".ROOT_PATH)."inicio.php";
-}
+
 if (isset($_SESSION['entradas'])) {
     $entradas = $_SESSION['entradas'];
 } else {
@@ -183,7 +182,8 @@ document.getElementById('confirmarEliminar').addEventListener('click', function(
 
     // Si el usuario confirma, redirigir a la URL de eliminación con el motivo
     if (confirmacion) {
-        window.location.href = '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bien&opcion=eliminar&bien=' + bienAEliminar + '&motivo=' + encodeURIComponent(motivo);
+        console.log("confirmado");
+        window.location.href = '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=eliminar&bien=' + bienAEliminar + '&motivo=' + encodeURIComponent(motivo);
     }
 
     // Cerrar el modal
@@ -217,10 +217,10 @@ function showBienesModal(idEntrada) {
             bienesContent += '<td style="text-align: center;">' + bien['descripcion'] + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien['precio'] + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien['codigo'] + '</td>';
-            bienesContent += '<td style="text-align: center;">' + (bien['activo'] ? 'Activo' : 'Inactivo') + '</td>';
+            bienesContent += '<td style="text-align: center;">' + ((bien['activo']==1) ? 'Activo' : 'Inactivo') + '</td>';
             bienesContent += '<td style="text-align: center;">';
             // Botón "Editar"
-            bienesContent += '<button onclick="window.location.href=\'<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bien&opcion=editar&bien=' + bien['id'] + '\'">';
+            bienesContent += '<button onclick="window.location.href=\'<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=editar&bien=' + bien['id'] + '\'">';
             bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/editar.webp" alt="Editar" class="iconoItem"> ';
             bienesContent += '</button> ';
             // Botón "Eliminar"

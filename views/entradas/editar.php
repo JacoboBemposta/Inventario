@@ -1,11 +1,8 @@
 <?php 
 include "../../menu.php";
+require_once "../../config/auth.php";
 @session_start();
-if(isset($_SESSION["login"])){
-    if($_SESSION["login"]==="Invitado"){
-        header("Location: ".ROOT_PATH)."inicio.php";
-    }
-}
+
 if (isset($_SESSION['entrada'])) {
     $entrada = $_SESSION['entrada'];
 } else {
