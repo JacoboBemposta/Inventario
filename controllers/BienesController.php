@@ -71,7 +71,7 @@ class BienesController {
             $bienModel->editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja);
             //eliminar si se ha seleccionado una causa de baja
             if($causa_baja!="NULL") {
-                $bienModel->eliminarBien($id);
+                $bienModel->eliminarBien($causa_baja,$id);
             }
 
         }
