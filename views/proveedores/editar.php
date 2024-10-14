@@ -10,6 +10,7 @@ if (isset($_SESSION['proveedor'])) {
 ?>
 <div class="container d-flex flex-column align-items-center mt-5" style="height: 50vh;">
     <h1 class="text-center mb-4">Editar proveedor</h1>
+    <?php include_once('../error.php');?>
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=proveedores&opcion=actualizar&proveedor=<?php echo $proveedor['id'] ?>" method="POST">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Proveedor:</label>

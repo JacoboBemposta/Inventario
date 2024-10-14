@@ -213,16 +213,21 @@ if($ctrl=="usuarios"){
                 die;                
             }
             //Asignamos el valor de la posición a una variable de sesión
-            $_SESSION["posicion"]=$_POST["posicion"];
+            $_SESSION["posicion"]=htmlspecialchars($_POST["posicion"]);
+            
             // recibe una lista de bienes por id, recoge los bienes y llama al archivo para generar etiquetas
             if (!empty($_POST['bienes']) && !empty($_POST["posicion"])) {
                 $_SESSION['bienes']=[];
+                
                 foreach ( $_POST['bienes'] as $bienSeleccionado) {
+                    
                     $bien = $objeto->listarBienesporID($bienSeleccionado);
                     if ($bien) {
+                        
                         $_SESSION["bienes"][] = $bien; // Agrega el bien al array
                     }
                 }
+
                 header("Location: " . ROOT_PATH . 'imp_etiquetas.php');
             } else {
                 // Manejo de error si no se selecciona ningún bien

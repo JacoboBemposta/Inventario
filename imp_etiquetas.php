@@ -60,9 +60,11 @@ class PDF extends FPDF {
     $columnas = 3;
     $ancho = 70;
     $alto = 25;
+
+    
     
     foreach ($_SESSION["bienes"] as $bien) {
-
+        //var_dump($bien);die;
         //Dar formato al codigo 
         $contador=intval($bien["id"]);
         if($contador>9999) $contador=$contador-9999;
@@ -71,7 +73,7 @@ class PDF extends FPDF {
 
         if(isset($_SESSION["bienes"])) $nombre=$bien["codigo"];
         else $nombre="test";
-
+        
 
 
         //Información que será visible en el QR
@@ -213,30 +215,33 @@ class PDF extends FPDF {
                 $tipo_bien="Bien sin identificar";
                 break;
         }
-        $contenido = "Descripcion: " . $bien["descripcion"]."\n" ;
+        $contenido="";
+        //$contenido .= "Descripcion: " . $bien["descripcion"]."\n" ;
         $contenido .= "Cuenta de Facturacion: " . $bien["cuenta_contable"]."\n" ;
         $contenido .= "Código: " . $codigo."\n" ;
         $contenido .= "Fecha de compra: " . $bien["fecha_compra"]."\n" ;
-        $contenido .= "Fecha de inicio amortizacion: " . $bien["fecha_inicio_amortizacion"]."\n" ;
+        // $contenido .= "Fecha de inicio amortizacion: " . $bien["fecha_inicio_amortizacion"]."\n" ;
         $contenido .= "Precio: " . $bien["precio"]."\n" ;
-        $contenido .= "Porcentaje de amortizacion: " . $bien["porcentaje_amortizacion"]."\n" ;
-        $contenido .= "Centro: " . $centro."\n" ;
-        $contenido .= "Tipo de bien: " . $tipo_bien."\n" ;
-        $contenido .= "Departamento : " . $departamento."\n" ;
-        $contenido .= "Factua: " . $bien["numero_factura"]."\n" ;
-        $contenido .= "Proveedor: " . $bien["nombre"]."\n" ;
-        $contenido .= "Fecha de baja: " . $bien["fecha_baja"]."\n" ;
-        $contenido .= "Causa de baja: " . $bien["causa_baja"]."\n" ;
+        // $contenido .= "Porcentaje de amortizacion: " . $bien["porcentaje_amortizacion"]."\n" ;
+        // $contenido .= "Centro: " . $centro."\n" ;
+        // $contenido .= "Tipo de bien: " . $tipo_bien."\n" ;
+        // $contenido .= "Departamento : " . $departamento."\n" ;
+        // $contenido .= "Factua: " . $bien["numero_factura"]."\n" ;
+        // $contenido .= "Proveedor: " . $bien["nombre"]."\n" ;
+        // $contenido .= "Fecha de baja: " . $bien["fecha_baja"]."\n" ;
+        // $contenido .= "Causa de baja: " . $bien["causa_baja"]."\n" ;
 
-        $contenido_UTF8=utf8_encode($contenido);
+
         // // Obtener la posición desde la variable de sesión (número secuencial)
-        $posicion = intval($_SESSION["posicion"])+$n_bien;
-        $n_bien++; 
-
+        $posicion_inicial = intval($_SESSION["posicion"]); // Posición inicial
+        $posicion_actual = $posicion_inicial + $n_bien; //posicion actual
+        $n_bien =$n_bien+1; 
+        
+        
 
         // Calcular fila y columna a partir de la posición
-        $fila = floor(($posicion - 1) / $columnas) + 1;   
-        $columna = (($posicion - 1) % $columnas) +1;     
+        $fila = floor(($posicion_actual - 1) / $columnas) + 1;   
+        $columna = (($posicion_actual - 1) % $columnas) +1;     
 
         // // Calcular coordenadas X e Y para la etiqueta
   
@@ -252,7 +257,7 @@ class PDF extends FPDF {
         $tamanho=2; // tamaño de la imagen
         $level='H'; // tipo de precision (baja l, media M, alta Q ,maxima H)
         $framesize=3; //marco del qr en blanco
-        QRcode::png($contenido_utf8 ,$filename,$level,$tamanho,$framesize);
+        QRcode::png($contenido ,$filename,$level,$tamanho,$framesize);
         
         //posicion del sigalogo
         $pdf->SetXY($x+2,$y+13.5); 
@@ -273,6 +278,11 @@ class PDF extends FPDF {
         // Posicion del codigo QR a la derecha del texto
         $pdf->Image($filename, $pdf->GetX(), $pdf->GetY(), 12); // Tamaño del QR code
         // Nueva línea para el siguiente bien
+        if ($posicion_actual > 32) {
+            $n_bien = 0;
+            $_SESSION["posicion"] = 1; // Reiniciar la posición para la nueva página
+            $pdf->AddPage();
+        }
 
     }
     

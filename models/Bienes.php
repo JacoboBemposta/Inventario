@@ -20,17 +20,23 @@ class Bienes {
 
     // Obtener un bien por su ID
     public function obtenerPorId($id) {
-        $query = "SELECT b.*, eb.* ,p.*
+        $query = "SELECT 
+        b.*,
+        eb.descripcion as nombre,
+        eb.id as entradaID,
+        eb.cuenta_contable as cuenta_contable, 
+        eb.fecha_inicio_amortizacion as fecha_inicio_amortizacion,
+        eb.porcentaje_amortizacion as porcentaje_amortizacion,
+        eb.numero_factura as numero_factura,
+        eb.fecha_compra as fecha_compra,
+        p.id as proveedorID
         FROM bienes AS b 
-        JOIN entradas_bienes AS eb ON b.id = eb.id
-        JOIN proveedores AS p ON eb.proveedor_id = p.id;
-        WHERE b.id = :id_bien";
-
-
+        JOIN entradas_bienes AS eb ON b.entrada_bien_id = eb.id
+        JOIN proveedores AS p ON eb.proveedor_id = p.id
+        WHERE b.id = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->execute([':id_bien' => $id]);
-        $bien = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $bien;
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
     // Obtener todos los bienes
     public function obtenerBienes() {
@@ -39,7 +45,7 @@ class Bienes {
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-
+    
 
     // Agregar un nuevo bien a una entrada
     public function agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id) {
@@ -54,6 +60,7 @@ class Bienes {
 
     // Editar un bien
     public function editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja) {
+
         $sql = "UPDATE bienes 
                 SET descripcion = ?, precio = ?, centro = ?, departamento = ?, tipo_bien = ?, causa_baja = ?
                 WHERE id = ? AND activo = 1";

@@ -1,5 +1,6 @@
 <?php 
 require "config/config.php";
+
 ob_start();
 @session_start();
 if(!isset($_SESSION["login"])){
@@ -34,7 +35,7 @@ if($_SESSION["login"]!="Invitado"){?>
                 <img src="https://www.gestores.net/assets/images/logo-siga.png" alt="Imagen de navegación" style="width: 5vw; height: 5vh;">
             </a>
 
-           
+            
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                 <?php 

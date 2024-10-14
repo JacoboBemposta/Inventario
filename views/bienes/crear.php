@@ -10,6 +10,8 @@ if (isset($_SESSION['entradas'])) {
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
 <h1 class="text-center">Nuevo bien</h1>
+<?php include_once('../error.php');?>
+
 <div class="container">
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
         <div class="mb-3 w-50">
@@ -86,7 +88,7 @@ if (isset($_SESSION['entradas'])) {
         <label for="codigo" class="form-label">Entrada:</label>
             <select name="entrada_bien_id" required>
                 <?php foreach ($_SESSION['entradas'] as $entrada): ?>
-                    <option value="<?php  echo $entrada['id']; ?>" <?php if ($entrada['id'] == $_GET['entrada']) echo 'selected'; ?>>
+                    <option value="<?php  echo $entrada['id']; ?>">
                         <?php echo $entrada['descripcion'] ?>
                     </option>
                 <?php endforeach; ?>

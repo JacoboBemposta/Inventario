@@ -6,6 +6,7 @@ require_once "../../config/auth.php";
 ?>
 <div class="container d-flex flex-column align-items-center mt-5" style="height: 50vh;" >
 <h1 class="text-center">Crear nuevo usuario</h1>
+<?php include_once('../error.php');?>
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=crear" method="POST" >
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre:</label>

@@ -16,32 +16,32 @@ if (isset($_SESSION['entradas'])) {
 <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalEliminarLabel">Selecciona el motivo de eliminación</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="formEliminar">
-          <div class="form-group">
-            <label for="motivoSelect">Motivo de eliminación:</label>
-            <select class="form-control" id="motivoSelect" required>
-              <option value="NULL"></option>
-              <option value="Obsolescencia">Obsolescencia</option>
-              <option value="Deterioro">Deterioro</option>
-              <option value="Venta">Venta</option>
-              <option value="Averiado">Averiado</option>
-              <option value="Extravío">Extravío</option>
-              <option value="Otras causas">Otras causas</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" id="confirmarEliminar">Eliminar</button>
-      </div>
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEliminarLabel">Selecciona el motivo de eliminación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formEliminar">
+            <div class="form-group">
+              <label for="motivoSelect">Motivo de eliminación:</label>
+              <select class="form-control" id="motivoSelect" required>
+                <option value="NULL"></option>
+                <option value="Obsolescencia">Obsolescencia</option>
+                <option value="Deterioro">Deterioro</option>
+                <option value="Venta">Venta</option>
+                <option value="Averiado">Averiado</option>
+                <option value="Extravío">Extravío</option>
+                <option value="Otras causas">Otras causas</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="confirmarEliminar">Eliminar</button>
+        </div>        
     </div>
   </div>
 </div>

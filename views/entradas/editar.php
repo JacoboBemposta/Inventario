@@ -11,6 +11,7 @@ if (isset($_SESSION['entrada'])) {
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center mb-4">Editar Entrada</h1>
+    <?php include_once('../error.php');?>
 
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=actualizar&entrada=<?php echo $entrada['id'] ?>" method="POST" >
         <div class="mb-3">

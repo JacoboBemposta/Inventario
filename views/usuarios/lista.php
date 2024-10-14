@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require "../../config/auth.php";
+
 if($_SESSION["tipo_usuario"]!="ADMIN") header("Location: ".ROOT_PATH)."inicio.php";
 @session_start();
 

@@ -36,14 +36,63 @@ class EntradaBienesController {
     public function actualizarentrada() {
         $id=$_GET['entrada'];
         $entrada = new EntradaBienes();
-        $descripcion=htmlspecialchars($_POST['descripcion']);
-        $numero_factura=htmlspecialchars($_POST['numero_factura']);
-        $proveedor_id=htmlspecialchars($_POST['proveedor_id']);
-        $fecha_compra=htmlspecialchars($_POST['fecha_compra']);
-        $fecha_inicio_amortizacion=htmlspecialchars($_POST['fecha_inicio_amortizacion']);
-        $porcentaje_amortizacion=htmlspecialchars($_POST['porcentaje_amortizacion']);
-        $precio=htmlspecialchars($_POST['precio']);
-        $cuenta_contable=htmlspecialchars($_POST['cuenta_contable']);
+        $descripcion = $_POST["descripcion"];
+        if ($descripcion != strip_tags($descripcion)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }           
+        $numero_factura = $_POST["numero_factura"];
+        if ($numero_factura != strip_tags($numero_factura)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }   
+        $proveedor_id = $_POST["proveedor_id"];
+        if ($proveedor_id != strip_tags($proveedor_id)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }   
+        $fecha_compra = $_POST["fecha_compra"];
+        if ($fecha_compra != strip_tags($fecha_compra)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }   
+        $fecha_inicio_amortizacion = $_POST["fecha_inicio_amortizacion"];
+        if ($fecha_inicio_amortizacion != strip_tags($fecha_inicio_amortizacion)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }  
+        $porcentaje_amortizacion = $_POST["porcentaje_amortizacion"];
+        if ($porcentaje_amortizacion != strip_tags($porcentaje_amortizacion)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }         
+        $precio = $_POST["precio"];
+        if ($precio != strip_tags($precio)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }                 
+        $cuenta_contable = $_POST["cuenta_contable"];
+        if ($cuenta_contable != strip_tags($cuenta_contable)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".ENT_PATH."editar.php");
+            die;
+        }                  
+
         $entrada->editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) ;
     }
 
@@ -51,14 +100,62 @@ class EntradaBienesController {
     public function crearEntrada() {
 
             $entrada = new EntradaBienes();
-            $descripcion = htmlspecialchars($_POST['descripcion']);
-            $numero_factura = htmlspecialchars($_POST['numero_factura']);
-            $proveedor_id = htmlspecialchars($_POST['proveedor_id']);
-            $fecha_compra = htmlspecialchars($_POST['fecha_compra']);
-            $fecha_inicio_amortizacion = htmlspecialchars($_POST['fecha_inicio_amortizacion']);
-            $porcentaje_amortizacion = htmlspecialchars($_POST['porcentaje_amortizacion']);
-            $precio = htmlspecialchars($_POST['precio']);
-            $cuenta_contable = htmlspecialchars($_POST['cuenta_contable']);
+            $descripcion = $_POST["descripcion"];
+            if ($descripcion != strip_tags($descripcion)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }           
+            $numero_factura = $_POST["numero_factura"];
+            if ($numero_factura != strip_tags($numero_factura)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }   
+            $proveedor_id = $_POST["proveedor_id"];
+            if ($proveedor_id != strip_tags($proveedor_id)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }   
+            $fecha_compra = $_POST["fecha_compra"];
+            if ($fecha_compra != strip_tags($fecha_compra)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }   
+            $fecha_inicio_amortizacion = $_POST["fecha_inicio_amortizacion"];
+            if ($fecha_inicio_amortizacion != strip_tags($fecha_inicio_amortizacion)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }  
+            $porcentaje_amortizacion = $_POST["porcentaje_amortizacion"];
+            if ($porcentaje_amortizacion != strip_tags($porcentaje_amortizacion)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }         
+            $precio = $_POST["precio"];
+            if ($precio != strip_tags($precio)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }                 
+            $cuenta_contable = $_POST["cuenta_contable"];
+            if ($cuenta_contable != strip_tags($cuenta_contable)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".ENT_PATH."crear.php");
+                die;
+            }          
             
             $entrada->agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) ;
 

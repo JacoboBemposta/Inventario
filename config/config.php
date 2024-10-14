@@ -3,7 +3,7 @@
 // config.php
 
 // Definir la constante BASE_PATH para la ruta base del proyecto
-define('ROOT_PATH',  "http://192.168.200.21/proyects/inventario/"); // Ruta relativa
+define('ROOT_PATH',  "/proyects/inventario/"); // Ruta relativa
 define('RAIZ_PATH', $_SERVER['DOCUMENT_ROOT'].'/proyects//inventario/'); // Ruta absoluta
 
 define('USR_PATH', ROOT_PATH  . 'views/usuarios/');

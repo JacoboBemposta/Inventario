@@ -5,6 +5,7 @@ require_once "../../config/auth.php";
 ?>
 <div class="container d-flex flex-column  align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center">Agregar proveedor</h1>
+    <?php include_once('../error.php');?>
 
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=proveedores&opcion=crear" method="POST" >
         <div class="mb-3">

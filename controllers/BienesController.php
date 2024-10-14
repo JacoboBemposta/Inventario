@@ -36,13 +36,50 @@ class BienesController {
             $bienModel = new Bienes();
             
             // Capturar los datos del formulario
-            $descripcion = $_POST['descripcion'];
-            $precio = $_POST['precio'];
-            $centro = $_POST['centro'];
-            $departamento = $_POST['departamento'];
-            $tipo_bien = $_POST['tipo_bien'];
-            $codigo = $_POST['codigo'];
-            $entrada_bien_id = $_POST['entrada_bien_id'];
+            $descripcion = $_POST["descripcion"];
+            if ($descripcion != strip_tags($descripcion)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }        
+            $precio = $_POST["precio"];
+            if ($precio != strip_tags($precio)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }     
+            $centro = $_POST["centro"];
+            if ($centro != strip_tags($centro)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }                 
+            $departamento = $_POST["departamento"];
+            if ($departamento != strip_tags($departamento)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }         
+            $tipo_bien = $_POST["tipo_bien"];
+            if ($tipo_bien != strip_tags($tipo_bien)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }              
+            $codigo = $_POST["codigo"];
+            if ($codigo != strip_tags($codigo)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."crear.php");
+                die;
+            }          
+
+            $entrada_bien_id = htmlspecialchars($_POST["entrada_bien_id"]);
             // Guardar el bien en la base de datos
             $bienModel->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id) ;
         }
@@ -60,14 +97,52 @@ class BienesController {
     public function actualizar($id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bienModel = new Bienes();
-            $descripcion = $_POST['descripcion'];
-            $precio = $_POST['precio'];
-            $centro = $_POST['centro'];
-            $departamento = $_POST['departamento'];
-            $tipo_bien = $_POST['tipo_bien'];
-            $causa_baja = $_POST['causa_baja'];
+            $descripcion = $_POST["descripcion"];
+            if ($descripcion != strip_tags($descripcion)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }        
+            $precio = $_POST["precio"];
+            if ($precio != strip_tags($precio)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }     
+            $centro = $_POST["centro"];
+            if ($centro != strip_tags($centro)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }          
+            $departamento=$_POST["departamento"];
+            if ($departamento != strip_tags($departamento)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }         
+            $tipo_bien = $_POST["tipo_bien"];
+            if ($tipo_bien != strip_tags($tipo_bien)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }         
+            $causa_baja = $_POST["causa_baja"];
+            if ($causa_baja != strip_tags($causa_baja)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".BIEN_PATH."editar.php");
+                die;
+            }                    
+
 
             // Actualizar el bien en la base de datos
+
             $bienModel->editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja);
             //eliminar si se ha seleccionado una causa de baja
             if($causa_baja!="NULL") {

@@ -5,6 +5,9 @@ if(!isset($_SESSION["login"])){
     $_SESSION["login"]="Invitado";
     }
 if(isset($_SESSION["error"])) $mensaje=$_SESSION["error"];
+    if(isset($_SESSION["error"])){ 
+
+    }unset($_SESSION["error"]);
 ?>
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>estilos.css">
     <!-- Bootstrap CSS y datatables -->

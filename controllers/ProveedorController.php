@@ -20,13 +20,25 @@ class ProveedorController {
     public function actualizarProveedor() {
         $id=$_GET['proveedor'];
         $Proveedor = new Proveedor();
-        $nombre=$_POST['nombre'];
+        $nombre = $_POST["nombre"];
+        if ($nombre != strip_tags($nombre)) {
+            // Si contiene etiquetas HTML, lanzar un error
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".PROV_PATH."editar.php");
+            die;
+        }   
         $Proveedor->editarProveedor($id, $nombre);
         }
 
     public function crearProveedor() {      
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $nombre = $_POST['nombre'];
+            $nombre = $_POST["nombre"];
+            if ($nombre != strip_tags($nombre)) {
+                // Si contiene etiquetas HTML, lanzar un error
+                $_SESSION["error"] = "Formato incorrecto";
+                header("Location: ".PROV_PATH."crear.php");
+                die;
+            }   
             $user = new Proveedor();
             $user->agregarProveedor($nombre);
             }

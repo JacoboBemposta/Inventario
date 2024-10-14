@@ -8,7 +8,7 @@ if (isset($_SESSION['bienes'])) {
 } else {
     $entradas = []; // Manejar si no hay proveedores en la sesión
 }
-var_dump($bienes); die();
+echo "pagina en construccion";die;
 ?>
 
 
