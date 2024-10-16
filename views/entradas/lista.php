@@ -207,7 +207,7 @@ function showBienesModal(idEntrada) {
         bienesContent += '<th style="text-align: center;">Descripción</th>';
         bienesContent += '<th style="text-align: center;">Precio</th>';
         bienesContent += '<th style="text-align: center;">Código</th>';
-        bienesContent += '<th style="text-align: center;">Activo</th>';
+        bienesContent += '<th style="text-align: center;">Estado</th>';
         bienesContent += '<th style="text-align: center;">Acciones</th>';
         bienesContent += '</tr></thead><tbody>';
 
@@ -217,8 +217,16 @@ function showBienesModal(idEntrada) {
             bienesContent += '<td style="text-align: center;">' + bien['descripcion'] + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien['precio'] + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien['codigo'] + '</td>';
-            bienesContent += '<td style="text-align: center;">' + ((bien['activo']==1) ? 'Activo' : 'Inactivo') + '</td>';
-            bienesContent += '<td style="text-align: center;">';
+          //switch para activar/desactivar el estado del bien
+          bienesContent += '<td style="text-align: center;">';
+          bienesContent += '<div class="form-check form-switch ml-2">';
+    
+          // marcado del check segun el estado
+          let switchChecked = bien['estado'] == 1 ? 'checked' : '';
+            bienesContent += '<input class="form-check-input" type="checkbox" role="switch" id="switch' + bien['id'] + '" ' + switchChecked + ' onchange="cambiarEstado(' + bien['id'] +', this.checked)">';
+            bienesContent += '<label class="form-check-label" for="switch' + bien['id'] + '">' + (bien['estado'] == 1 ? 'Activo' : 'Inactivo') + '</label>';
+            bienesContent += '</div></td>';         
+            bienesContent += '<td style="text-align: center;" >';
             // Botón "Editar"
             bienesContent += '<button onclick="window.location.href=\'<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=editar&bien=' + bien['id'] + '\'">';
             bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/editar.webp" alt="Editar" class="iconoItem"> ';
@@ -226,12 +234,13 @@ function showBienesModal(idEntrada) {
             // Botón "Eliminar"
             bienesContent += '<button onclick="eliminarBien(' + bien['id'] + ')">';
             bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem"> ';
-            bienesContent += '</button>';
+            bienesContent += '</button>'; 
             bienesContent += '</td>';
             bienesContent += '</tr>';
+
         });        
         bienesContent += '</tbody></table>';
-        bienesContent +='<div class="container mt-5" style="display: flex;justify-content: center; align-items: center; ">'
+        bienesContent +='<div class="container mt-5" style="display: flex;justify-content: center; align-items: center; ">';
         bienesContent += '<button onclick="window.location.href=\'<?php echo BIEN_PATH ?>crear.php?entrada=' + idEntrada + '\'">';
         bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/add.png" alt="Añadir" class="iconoItem"> Añadir bien';
         bienesContent += '</button>';
@@ -274,4 +283,43 @@ function eliminarBien(idBien) {
 
 // Variable global para almacenar el ID del bien a eliminar
 let bienAEliminar = null;
+
+
+function cambiarEstado(bienId, estado) {
+    // Convertir el estado booleano a 1 o 0
+    var nuevoEstado = estado ? 1 : 0;
+
+    // Llamar al servidor para actualizar el estado en la base de datos
+    $.ajax({
+        url: '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=estadoBien',
+        type: 'POST',
+        data: {
+            ctrl: 'bienes',
+            opcion: 'estadoBien',
+            bien_id: bienId,
+            estado: nuevoEstado,
+        },
+        
+        success: function(response) {
+          
+            //console.log(response);  // Debug para ver la respuesta del servidor
+            if (response.success) {
+                // Cambiar el texto de "Activo" o "Inactivo" basado en el nuevo estado
+                var label = document.querySelector('label[for="switch' + bienId + '"]');
+                label.textContent = (nuevoEstado == 1) ? 'Activo' : 'Inactivo';
+            } else {
+                alert(response.message || 'Error al actualizar el estado'); 
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // Mostrar la respuesta completa del servidor para depuración
+            console.log("Error: ", textStatus, errorThrown);
+            console.log("Respuesta del servidor:", jqXHR.responseText);
+            alert('Error en la solicitud AJAX: ' + textStatus);
+        }
+    });
+}
+
+
+
 </script>

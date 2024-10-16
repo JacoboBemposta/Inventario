@@ -4,11 +4,11 @@ require_once "../../config/auth.php";
 include_once "../../csrf.php";
 @session_start();
 if (isset($_SESSION['entradas'])) {
-    $entrada = $_SESSION['entradas'];
+    $entradas = $_SESSION['entradas'];
 } else {
-    $entrada = []; // Manejar si no hay entradas en la sesión
+    $entradas = []; // Manejar si no hay entradas en la sesión
 }
-
+   $entrada=$_GET["entrada"];
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
 <h1 class="text-center">Nuevo bien</h1>
@@ -88,17 +88,16 @@ if (isset($_SESSION['entradas'])) {
             <input type="text" name="codigo" class="form-control"  required>
         </div>
         <div class="mb-3 w-50">
-        <label for="codigo" class="form-label">Entrada:</label>
-            <select name="entrada_bien_id" required>
-                <?php foreach ($entradas as $entrada): ?>
-                    <option value="<?php  echo $entrada['id']; ?>">
-                        <?php echo $entrada['descripcion'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>    
+        <label for="entrada" class="form-label">Entrada:</label>
+        <?php foreach ($entradas as $entrada): ?>
+            <?php if ($entrada['id'] == $_GET['entrada']): ?>
+                <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
+                <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
+            <?php endif; ?>
+        <?php endforeach; ?>
         </div>
     <div class="d-flex justify-content-center mt-5">
-    <div class="button-container mt-5">
+        <div class="button-container mt-5">
             <div class="wrap-login-form-btn"> 
                 <div class="login-form-bgbtn"></div>
                 <button type="submit" class="login-form-btn">Crear</button> 
@@ -111,6 +110,7 @@ if (isset($_SESSION['entradas'])) {
                 </button>
             </div>
         </div>
-        </div>
-    </form>
-
+    </div>
+</form>
+</div>
+</div>

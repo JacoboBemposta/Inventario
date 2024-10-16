@@ -261,22 +261,22 @@ class PDF extends FPDF {
         
         //posicion del sigalogo
         $pdf->SetXY($x+2,$y+13.5); 
-        $pdf->Image(RAIZ_PATH.'public/images/sigalogo.png', $pdf->GetX(), $pdf->GetY(), 22);
+        $pdf->Image(RAIZ_PATH.'public/images/sigalogo.png', $pdf->GetX(), $pdf->GetY(), 15);
         //posicion del texto
         $pdf->SetY($pdf->GetY() + 8); // Ajusta la distancia entre el logo y el texto
-        $pdf->setX($x+4);
+        $pdf->setX($x);
         //echo $codigo."<br>";
         $pdf->Cell(25, 5, $bien['centro'].' '.$bien['departamento'].' '.$bien['tipo_bien'].' '.$codigo, 0, 1, 'L');
         
         // posicion del codigo QR
         $y = $pdf->GetY();
-        $pdf->SetY($y - 12.5); //$pdf->SetY($y - 15);
+        $pdf->SetY($y - 15); //$pdf->SetY($y - 15);
 
 
         $pdf->SetX($x + 30); 
 
         // Posicion del codigo QR a la derecha del texto
-        $pdf->Image($filename, $pdf->GetX(), $pdf->GetY(), 12); // Tamaño del QR code
+        $pdf->Image($filename, $pdf->GetX(), $pdf->GetY(), 15); // Tamaño del QR code
         // Nueva línea para el siguiente bien
         if ($posicion_actual > 32) {
             $n_bien = 0;

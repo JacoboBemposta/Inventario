@@ -1,7 +1,8 @@
 <?php 
+
 @session_start();
 require_once __DIR__ .'/../autoload.php';
-require __DIR__ .'/../menu.php';
+require __DIR__ .'/../config/config.php';
 include_once '../csrf.php';
 
 use BienesController as GlobalBienesController;
@@ -211,13 +212,12 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'generarEtiquetas':
-           
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                     $_SESSION["error"]="Token no válido";
                     header("Location: ".ROOT_PATH."error.php");
 		            die;
-                    }
+                        }
                 destruirTokenCSRF();            
             
             // Manejo de error si no se selecciona ningún bien
@@ -226,7 +226,7 @@ if($ctrl=="usuarios"){
                 $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;
-                }     
+                }    
 
             // Manejo de error si no se envia la posicion 
             if (empty(htmlspecialchars($_POST['posicion']))) {
@@ -234,14 +234,14 @@ if($ctrl=="usuarios"){
                 $_SESSION["erroretiqueta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;
-            }
+                }
    
             // Manejo de error si no se envia un valor de posición correcto
             if(htmlspecialchars($_POST["posicion"])<=0 || htmlspecialchars($_POST["posicion"]>33)) {
                 $_SESSION["erroretiqueta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;                
-            }
+                }
     
             //Asignamos el valor de la posición a una variable de sesión
             $_SESSION["posicion"]=htmlspecialchars($_POST["posicion"]);
@@ -262,9 +262,10 @@ if($ctrl=="usuarios"){
                 header("Location: " . ROOT_PATH . 'imp_etiquetas.php');
                 } 
   
-        }
-            break;        
-            case 'generarPDF':
+                }
+            break;  
+
+        case 'generarPDF':
                 
                 // Manejo de error si no se selecciona ningún bien
                 if (empty($_POST["bienes"])) {
@@ -284,14 +285,52 @@ if($ctrl=="usuarios"){
                         }
                     }
                     header("Location: " . ROOT_PATH . 'pdf.php');
-                    } 
-      
-            
-                break;                       
+                    }             
+                break;
+
+        case 'estadoBien':
+            echo "hiola";
+            echo("Actualizando estado del bien ID");
+            //$resultado=$objeto->actualizaEstado();
+            if (isset($_POST['estado'], $_POST['bien_id'])) {
+                       
+                $nuevoEstado = $_POST['estado'];
+                $bienId = $_POST['bien_id'];
+        
+                // Log para depurar
+                error_log("Actualizando estado del bien ID: " . $bienId . " a estado: " . $nuevoEstado);
+                $bien =new Bienes();
+                // Conexión a la base de datos y actualización del estado
+                $query = "UPDATE bienes SET estado = ? WHERE id = ?";
+                $stmt = $this->db->prepare($query);
+        
+                // Asociar los parámetros
+                $stmt->bind_param('ii', $nuevoEstado, $bienId);
+        
+                if ($stmt->execute()) {
+                    // Asegúrate de que no haya salida antes de esta línea
+                    echo json_encode(['success' => true]);
+                } else {
+                    error_log("Error en la consulta SQL: " . $this->db->error);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la base de datos']);
+                }
+        
+                exit;
+            } else {
+                error_log("Parámetros faltantes: estado o bien_id no definidos");
+                echo json_encode(['success' => false, 'message' => 'Parámetros faltantes']);
+                exit;
+            }               
+
+            break;
+
         default:
             # code...
             break;
     }
-    
-}
+
+  
+    }
+        
+
 ?>

@@ -8,17 +8,23 @@ if (isset($_SESSION['bien'])) {
 } else {
     $bien = []; // Manejar si no hay proveedores en la sesión
 }
+
 ?>
+
 <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
     <h1 class="text-center mb-4">Editar bien</h1>
     <?php include_once('../error.php');?>
 
-<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50">
+<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50" >
 <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
     <div class="mb-3">
         <label for="descripcion">Descripción:</label>
         <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
     </div>
+    <div class="mb-3">
+        <label for="descripcion">Código:</label>
+        <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
+    </div>    
     <div class="mb-3">
     <label for="precio">Precio:</label>
     <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $bien['precio']; ?>" required>
@@ -83,26 +89,31 @@ if (isset($_SESSION['bien'])) {
     </select>
     </div>
     <div class="mb-3">
+        <label for="descripcion">Fecha de alta:</label>
+        <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
+    </div>       
+    <div class="mb-3">
     <label for="tipo_bien">Causa de baja: </label>
         <select name="causa_baja" >
-            <option value="NULL"></option>
-            <option value="Obsolescencia">Obsolescencia</option>
-            <option value="Deterioro">Deterioro</option>
-            <option value="Venta">Venta</option>
-            <option value="Averiado">Averiado</option>
-            <option value="Extravío">Extravío</option>
-            <option value="Otras causas">Otras causas</option>
+            <option value="NULL" <?php if ($bien['causa_baja'] == NULL) echo 'selected'; ?>></option>
+            <option value="Obsolescencia" <?php if ($bien['causa_baja'] == "Obsolescencia") echo 'selected'; ?>>Obsolescencia</option>
+            <option value="Deterioro" <?php if ($bien['causa_baja'] == "Deterioro") echo 'selected'; ?>>Deterioro</option>
+            <option value="Venta"<?php if ($bien['causa_baja'] == "Venta") echo 'selected'; ?>>Venta</option>
+            <option value="Averiado"<?php if ($bien['causa_baja'] == "Averiado") echo 'selected'; ?>>Averiado</option>
+            <option value="Extravío"<?php if ($bien['causa_baja'] == "Extravío") echo 'selected'; ?>>Extravío</option>
+            <option value="Otras causas"<?php if ($bien['causa_baja'] == "Otras causas") echo 'selected'; ?>>Otras causas</option>
         </select>
     </div>
     <div class="mb-3">
     <label for="entrada_id">Entrada : </label>
-        <select name="entrada_id" required>
-            <?php foreach ($_SESSION['entradas'] as $entrada): ?>
-                <option value="<?php  echo $entrada['id']; ?>" <?php if ($entrada['id'] == $bien['entrada_bien_id']) echo 'selected'; ?>>
-                    <?php echo $entrada['descripcion'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>    
+
+        <?php foreach ($_SESSION["entradas"] as $entrada): ?>
+            <?php if ($entrada['id'] == $bien["entrada_bien_id"]): ?>
+                <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
+                <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
+            <?php endif; ?>
+        <?php endforeach; ?>
+ 
     </div>
     <div class="button-container mt-5">
             <div class="wrap-login-form-btn"> 

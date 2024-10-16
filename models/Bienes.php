@@ -69,12 +69,47 @@ class Bienes {
         return $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja, $id]);
         }
 
+
+
     // Eliminación lógica de un bien (marcar como inactivo)
     public function eliminarBien($motivo,$id) {
-
         $sql = "UPDATE bienes SET activo = 0, causa_baja = ? , fecha_baja = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$id,$motivo]);
+        $stmt->execute([$motivo,$id]);
         }
+
+
+        public function actualizaEstado(){
+            if (isset($_POST['estado'], $_POST['bien_id'])) {
+                       
+                $nuevoEstado = $_POST['estado'];
+                $bienId = $_POST['bien_id'];
+        
+                // Log para depurar
+                error_log("Actualizando estado del bien ID: " . $bienId . " a estado: " . $nuevoEstado);
+        
+                // Conexión a la base de datos y actualización del estado
+                $query = "UPDATE bienes SET estado = ? WHERE id = ?";
+                $stmt = $this->db->prepare($query);
+        
+                // Asociar los parámetros
+                $stmt->bind_param('ii', $nuevoEstado, $bienId);
+        
+                if ($stmt->execute()) {
+                    // Asegúrate de que no haya salida antes de esta línea
+                    echo json_encode(['success' => true]);
+                } else {
+                    error_log("Error en la consulta SQL: " . $this->db->error);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la base de datos']);
+                }
+        
+                exit;
+            } else {
+                error_log("Parámetros faltantes: estado o bien_id no definidos");
+                echo json_encode(['success' => false, 'message' => 'Parámetros faltantes']);
+                exit;
+            }    
+        }        
     }
+
 ?>

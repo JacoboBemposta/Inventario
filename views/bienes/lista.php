@@ -7,7 +7,7 @@ include_once "../../csrf.php";
 
 
 $bienes = isset($_SESSION['bienestotal']) ? $_SESSION['bienestotal'] : [];
-
+unset($_SESSION["bienestotal"]);
 ?>
 
 <!-- Vista de la página -->

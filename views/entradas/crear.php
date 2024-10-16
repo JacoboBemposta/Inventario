@@ -8,7 +8,7 @@ include_once "../../csrf.php";
 <h1 class="text-center">Crear nueva entrada</h1>
 <?php include_once('../error.php');?>
 
-<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=crear" method="POST">
+<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=crear" method="POST" style="width: 45%;">
 <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
     <div class="mb-3">
         <label for="descripcion"class="form-label">Descripción:</label>

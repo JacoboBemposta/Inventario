@@ -154,4 +154,13 @@ class BienesController {
             $bienModel->eliminarBien($id,$motivo);
             }
         }
+    
+    public function actualizaEstado(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            error_log("Datos POST recibidos: " . print_r($_POST, true));  // Esto imprime en los logs de PHP
+        }
+        $bienModel=new Bienes();
+        $resultado=$bienModel->actualizaEstado();         
+        return $resultado;
+    }
     }
