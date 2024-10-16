@@ -44,7 +44,7 @@ rgb(195,68,83)
   .oficina {
     position: relative;
     overflow: hidden;
-    color: #c34453; /* Asegura que el texto sea visible sobre la imagen */
+    color: #861636; /* Asegura que el texto sea visible sobre la imagen */
 }
 
 .oficina::before {
@@ -213,10 +213,10 @@ rgb(195,68,83)
   -moz-transition: all 0.4s; 
   transition: all 0.4s; 
   background: #6a7dfe; 
-  background: -webkit-linear-gradient(left, #ffffff, #C34453); 
-  background: -o-linear-gradient(left, #ffffff, #C34453); 
-  background: -moz-linear-gradient(left, #ffffff, #C34453); 
-  background: linear-gradient(left, #ffffff, #C34453); 
+  background: -webkit-linear-gradient(left, #ffffff, #861636); 
+  background: -o-linear-gradient(left, #ffffff, #861636); 
+  background: -moz-linear-gradient(left, #ffffff, #861636); 
+  background: linear-gradient(left, #ffffff, #861636); 
   } 
   
    
@@ -355,7 +355,7 @@ rgb(195,68,83)
   
   height: 100%; 
   
-  background: #9b0e34; 
+  background: #861636; 
 /*   
   background: -webkit-linear-gradient(right, #ffffff, #C34453, #ffffff, #C34453); 
   
@@ -550,8 +550,8 @@ rgb(195,68,83)
     justify-content: center; 
     align-items: center; 
     padding: 15px; 
-    background: -webkit-linear-gradient(210, #ffffff, #b1082b); /* Gradiente de 135 grados */
-    background: linear-gradient(210deg, #ffffff, #b1082b); /* Gradiente de 135 grados */
+    background: -webkit-linear-gradient(210, #ffffff, #861636); /* Gradiente de 135 grados */
+    background: linear-gradient(210deg, #ffffff, #861636); /* Gradiente de 135 grados */
 }
 
   
@@ -573,9 +573,9 @@ rgb(195,68,83)
     
     padding: 15px; 
     
-    background: -webkit-linear-gradient(to right, #ffffff, #b1082b); 
+    background: -webkit-linear-gradient(to right, #ffffff, #861636); 
     
-    background: linear-gradient(to right, #ffffff, #b1082b); 
+    background: linear-gradient(to right, #ffffff, #861636); 
     
     } 
     
@@ -592,5 +592,6 @@ rgb(195,68,83)
   
   .login-form-btn {
       width: 100%;            /* Asegura que el botón ocupe el ancho completo de su contenedor */
+      
   }
   

@@ -8,15 +8,14 @@ if (isset($_SESSION['bienes'])) {
 } else {
     $entradas = []; // Manejar si no hay proveedores en la sesión
 }
-echo "pagina en construccion";die;
+echo "pagina no disponible";die;
 ?>
 
 
 <!-- Vista de la página-->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
-    <!-- Título centrado -->
     <h1 class="text-center">Lista de Bienes</h1>
-    <!-- Tabla proveedores-->
+    <!-- Tabla bienes-->
 
     <table class="display" id="entradas-table" style="width:60vw" cellpadding="5" cellspacing="0">
         <thead>

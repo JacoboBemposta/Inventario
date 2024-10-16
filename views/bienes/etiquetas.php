@@ -7,10 +7,10 @@ require_once "../../config/auth.php";
 if (isset($_POST['botones_seleccionados'])) {
     $_SESSION['botones_seleccionados'] = $_POST['botones_seleccionados'];
 }
-
+echo ("Pagina no disponible");die;
 ?>
 
-<div class="container d-flex flex-column justify-content-center align-items-center mt-5" style=" display: grid; grid-gap: 2px;">
+<div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1>Selecciona las etiquetas que vas a usar</h1>
     <!-- Formulario para recoger los slots en la impresora -->
     <form action="<?php echo ROOT_PATH; ?>controllers/indexController.php?ctrl=bienes&opcion=generarEtiquetas" method="POST">

@@ -2,7 +2,7 @@
 class DB {
     private static $host = "localhost";
     private static $db = "inventario";
-    private static $user = "root";  // Cambia según tus credenciales
+    private static $user = "root"; 
     private static $pass = "";
     private static $conn;
 

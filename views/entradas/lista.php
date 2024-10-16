@@ -132,12 +132,12 @@ if (isset($_SESSION['entradas'])) {
                       Subir CSV
                     </button> 
                 </form>
-                <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=exportar" method="post">
+                <!-- <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=exportar" method="post">
                     <button type="imput" class="login-form">
                       <img src="<?php echo ROOT_PATH; ?>public/images/exportar.jpg" alt="Editar" class="iconoItem">
                       Exportar PDF
                     </button> 
-                </form>
+                </form> -->
               </div>
     </div>    
 </div>

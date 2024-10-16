@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+include_once "../../csrf.php";
 @session_start();
 if (isset($_SESSION['bien'])) {
     $bien = $_SESSION['bien'];
@@ -13,6 +14,7 @@ if (isset($_SESSION['bien'])) {
     <?php include_once('../error.php');?>
 
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50">
+<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
     <div class="mb-3">
         <label for="descripcion">Descripción:</label>
         <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>

@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+include_once "../../csrf.php";
 @session_start();
 if (isset($_SESSION['proveedor'])) {
     $proveedor = $_SESSION['proveedor'];
@@ -12,6 +13,7 @@ if (isset($_SESSION['proveedor'])) {
     <h1 class="text-center mb-4">Editar proveedor</h1>
     <?php include_once('../error.php');?>
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=proveedores&opcion=actualizar&proveedor=<?php echo $proveedor['id'] ?>" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Proveedor:</label>
             <input type="text" name="nombre" class="form-control" value="<?php echo $proveedor['nombre']; ?>" required>

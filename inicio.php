@@ -1,7 +1,7 @@
 <?php 
 include "menu.php";
 @session_start();
-
+include_once 'csrf.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,7 +27,8 @@ include "menu.php";
 		<div class="container-c"> 
 			<div class="wrap-login"> 
 				<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=login" method="post"> 
-					<!-- LOGO --> 
+				<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
+				<!-- LOGO --> 
 					<span class="login-form-title">Iniciar Sesión</span> 
 					<img class="avatar"src="https://www.gestores.net/assets/images/logo-siga.png" alt="logo" style="width:10vw" align="center">
 					<!-- USUARIO --> 

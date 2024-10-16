@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+INCLUDE_ONCE "../../csrf.php";
 @session_start();
 
 if (isset($_SESSION['entrada'])) {
@@ -8,12 +9,14 @@ if (isset($_SESSION['entrada'])) {
 } else {
     $entrada = []; // Manejar si no hay proveedores en la sesión
 }
+
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center mb-4">Editar Entrada</h1>
     <?php include_once('../error.php');?>
 
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=actualizar&entrada=<?php echo $entrada['id'] ?>" method="POST" >
+<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
         <div class="mb-3">
             <label for="descripcion"class="form-label">Descripción:</label>
             <input type="text" name="descripcion" class="form-control"value="<?php echo $entrada['descripcion']; ?>" required>

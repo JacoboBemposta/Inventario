@@ -216,18 +216,18 @@ class PDF extends FPDF {
                 break;
         }
         $contenido="";
-        //$contenido .= "Descripcion: " . $bien["descripcion"]."\n" ;
-        $contenido .= "Cuenta de Facturacion: " . $bien["cuenta_contable"]."\n" ;
+        $contenido .= $bien["descripcion"]."\n" ;
+        $contenido .= $bien["cuenta_contable"]."\n" ;
         $contenido .= "Código: " . $codigo."\n" ;
-        $contenido .= "Fecha de compra: " . $bien["fecha_compra"]."\n" ;
+        $contenido .= $bien["fecha_compra"]."\n" ;
         // $contenido .= "Fecha de inicio amortizacion: " . $bien["fecha_inicio_amortizacion"]."\n" ;
-        $contenido .= "Precio: " . $bien["precio"]."\n" ;
+        //$contenido .= "Precio: " . $bien["precio"]."\n" ;
         // $contenido .= "Porcentaje de amortizacion: " . $bien["porcentaje_amortizacion"]."\n" ;
         // $contenido .= "Centro: " . $centro."\n" ;
         // $contenido .= "Tipo de bien: " . $tipo_bien."\n" ;
         // $contenido .= "Departamento : " . $departamento."\n" ;
         // $contenido .= "Factua: " . $bien["numero_factura"]."\n" ;
-        // $contenido .= "Proveedor: " . $bien["nombre"]."\n" ;
+        $contenido .= $bien["nombre"]."\n" ;
         // $contenido .= "Fecha de baja: " . $bien["fecha_baja"]."\n" ;
         // $contenido .= "Causa de baja: " . $bien["causa_baja"]."\n" ;
 

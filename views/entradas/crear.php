@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+include_once "../../csrf.php";
 @session_start();
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
@@ -8,6 +9,7 @@ require_once "../../config/auth.php";
 <?php include_once('../error.php');?>
 
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=crear" method="POST">
+<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
     <div class="mb-3">
         <label for="descripcion"class="form-label">Descripción:</label>
         <input type="text" name="descripcion" class="form-control" required>

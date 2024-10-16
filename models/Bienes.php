@@ -8,7 +8,7 @@ class Bienes {
 
     public function __construct() {
         $this->db = \DB::connect();
-    }
+        }
 
     // Obtener todos los bienes de una entrada específica
     public function obtenerPorEntradaId($entrada_bien_id) {
@@ -16,7 +16,7 @@ class Bienes {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$entrada_bien_id]); 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+        }
 
     // Obtener un bien por su ID
     public function obtenerPorId($id) {
@@ -37,14 +37,14 @@ class Bienes {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
+        }
     // Obtener todos los bienes
     public function obtenerBienes() {
         $sql = "SELECT * FROM bienes";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+        }
     
 
     // Agregar un nuevo bien a una entrada
@@ -54,7 +54,7 @@ class Bienes {
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id]);
-    }
+        }
     
     
 
@@ -67,7 +67,7 @@ class Bienes {
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja, $id]);
-    }
+        }
 
     // Eliminación lógica de un bien (marcar como inactivo)
     public function eliminarBien($motivo,$id) {
@@ -75,6 +75,6 @@ class Bienes {
         $sql = "UPDATE bienes SET activo = 0, causa_baja = ? , fecha_baja = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id,$motivo]);
+        }
     }
-}
 ?>

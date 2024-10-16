@@ -1,12 +1,14 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+include_once "../../csrf.php";
 @session_start();
 if (isset($_SESSION['entradas'])) {
     $entrada = $_SESSION['entradas'];
 } else {
     $entrada = []; // Manejar si no hay entradas en la sesión
 }
+
 ?>
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
 <h1 class="text-center">Nuevo bien</h1>
@@ -14,6 +16,7 @@ if (isset($_SESSION['entradas'])) {
 
 <div class="container">
 <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
+<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
         <div class="mb-3 w-50">
             <label for="descripcion" class="form-label">Descripción:</label>
             <input type="text" name="descripcion" class="form-control"  required>
@@ -87,7 +90,7 @@ if (isset($_SESSION['entradas'])) {
         <div class="mb-3 w-50">
         <label for="codigo" class="form-label">Entrada:</label>
             <select name="entrada_bien_id" required>
-                <?php foreach ($_SESSION['entradas'] as $entrada): ?>
+                <?php foreach ($entradas as $entrada): ?>
                     <option value="<?php  echo $entrada['id']; ?>">
                         <?php echo $entrada['descripcion'] ?>
                     </option>
@@ -95,20 +98,19 @@ if (isset($_SESSION['entradas'])) {
             </select>    
         </div>
     <div class="d-flex justify-content-center mt-5">
+    <div class="button-container mt-5">
             <div class="wrap-login-form-btn"> 
                 <div class="login-form-bgbtn"></div>
-                    <button type="imput" name="btnEntrar" class="login-form-btn">Crear</button> 
-                </div> 
+                <button type="submit" class="login-form-btn">Crear</button> 
+            </div>
+
+            <div class="wrap-login-form-btn"> 
+                <div class="login-form-bgbtn"></div>
+                <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo ENT_PATH; ?>lista.php';">
+                    Volver
+                </button>
             </div>
         </div>
-    </form>
-</div>
-</div>
-<div class="container justify-content-center align-items-center mt-5" style="min-height: 70vh; max-width: 20vw;">
-        <div class="wrap-login-form-btn">
-            <div class="login-form-bgbtn"></div>
-            <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo ENT_PATH; ?>lista.php';">
-                Volver
-            </button>
         </div>
-    </div>
+    </form>
+

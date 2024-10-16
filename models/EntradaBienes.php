@@ -12,7 +12,7 @@ class EntradaBienes {
 
     public function __construct() {
         $this->db = \DB::connect();
-    }
+        }
 
     // Obtener todas las entradas de bienes
     public function obtenerTodas() {
@@ -22,7 +22,7 @@ class EntradaBienes {
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+        }
 
     // Obtener una entrada de bienes por su ID
     public function obtenerUno($id) {
@@ -30,7 +30,7 @@ class EntradaBienes {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
+        }
 
     // Crear una nueva entrada de bienes
     public function agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) {
@@ -38,7 +38,7 @@ class EntradaBienes {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable]);
-    }
+        }
 
     // Editar una entrada de bienes
     public function editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable) {
@@ -47,7 +47,7 @@ class EntradaBienes {
                 WHERE id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable, $id]);
-    }
+        }
 
     // Eliminación lógica de una entrada de bienes y sus bienes asociados (marcar como inactivo)
     public function eliminarEntrada($id){
@@ -73,8 +73,8 @@ class EntradaBienes {
                 $this->db->rollBack();
                 return false;
             
-        }
+            }
             
-    }    
-}
+        }    
+    }
 ?>

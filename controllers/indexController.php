@@ -2,6 +2,7 @@
 @session_start();
 require_once __DIR__ .'/../autoload.php';
 require __DIR__ .'/../menu.php';
+include_once '../csrf.php';
 
 use BienesController as GlobalBienesController;
 use controllers\UsuarioController;
@@ -24,7 +25,7 @@ if($ctrl=="usuarios"){
         case 'ver':
             $objeto->listarUsuarios();
             header("Location: " . USR_PATH . 'lista.php');
-            exit();  // Asegúrate de detener la ejecución después de la redirección
+            exit(); 
             break;
         case 'editar':
             $objeto->editarusuario($_GET['usuario']);
@@ -47,6 +48,12 @@ if($ctrl=="usuarios"){
             break;
         //comprueba que el usuario y la contraseña son correctos
         case 'login':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
+                    $_SESSION["error"]="Token no válido";
+                    header("Location: ".ROOT_PATH."error.php");
+                }
+                destruirTokenCSRF();
             $validar="";
             $objeto = new UsuarioController();
             $usuario=htmlspecialchars($_POST["usuario"]);
@@ -59,17 +66,19 @@ if($ctrl=="usuarios"){
                         $_SESSION["login"]=$user[0]["usuario"];
                         $_SESSION["tipo_usuario"]=$user[0]["tipo_usuario"];
                         header("Location: ".USR_PATH."Bienvenida.php");
-                    } else {
-                        // Si la contraseña no coincide
-                        $_SESSION["login"]="Invitado";
-                        $_SESSION["error"]="Contraseña incorrecta";
-                        header("Location: ".ROOT_PATH."error.php");
-                    }
+                        } else {
+                            // Si la contraseña no coincide
+                            $_SESSION["login"]="Invitado";
+                            $_SESSION["error"]="Contraseña incorrecta";
+                            header("Location: ".ROOT_PATH."error.php");
+                        }
                 }
-            }else {
+            } else {
                 // Si el usuario no existe
                 $_SESSION["error"]="El usuario $usuario no existe";
                 header("Location: ".ROOT_PATH."error.php");
+            }      
+
             }
             break;
         case 'logout':
@@ -120,6 +129,8 @@ if($ctrl=="usuarios"){
     switch ($opcion) {
         case 'ver':          
             $objeto->listarEntradas();
+            $proveedor=new ProveedorController();
+            $proveedor->listarProveedores();
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'editar':
@@ -159,13 +170,7 @@ if($ctrl=="usuarios"){
             $objeto->importarCSV($archivo);
             $objeto->listarEntradas();
             header("Location: " . ENT_PATH . 'lista.php');
-            break;  
-        case 'exportar':
-            // Exportar las entradas en formato pdf
-            // $entradas = new EntradaBienesController();
-            // $entradas->listarEntradas();
-            // header("Location: " . ROOT_PATH . 'pdf.php');
-            break;                
+            break;                  
         default:
             # code...
             break;
@@ -176,7 +181,14 @@ if($ctrl=="usuarios"){
     switch ($opcion) {
         case 'ver':          
             $objeto->listarBienes();
-            
+            foreach ( $_SESSION['bienes'] as $bienSeleccionado) {
+                    
+                $bien = $objeto->listarBienesporID($bienSeleccionado["id"]);
+                if ($bien) {
+                    
+                    $_SESSION["bienestotal"][] = $bien; 
+                }
+            }          
             header("Location: " . BIEN_PATH . 'lista.php');
             break;
         case 'editar':
@@ -199,19 +211,38 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'generarEtiquetas':
+           
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
+                    $_SESSION["error"]="Token no válido";
+                    header("Location: ".ROOT_PATH."error.php");
+		            die;
+                    }
+                destruirTokenCSRF();            
+            
+            // Manejo de error si no se selecciona ningún bien
+            if (empty($_POST["bienes"])) {
+
+                $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";
+                header("Location: " . BIEN_PATH . 'lista.php');
+                die;
+                }     
+
             // Manejo de error si no se envia la posicion 
             if (empty(htmlspecialchars($_POST['posicion']))) {
                 
-                $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
+                $_SESSION["erroretiqueta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;
             }
+   
             // Manejo de error si no se envia un valor de posición correcto
             if(htmlspecialchars($_POST["posicion"])<=0 || htmlspecialchars($_POST["posicion"]>33)) {
-                $_SESSION["erroretiquta"]="Debes indicar una posición correcta";
+                $_SESSION["erroretiqueta"]="Debes indicar una posición correcta";
                 header("Location: " . BIEN_PATH . 'lista.php');
                 die;                
             }
+    
             //Asignamos el valor de la posición a una variable de sesión
             $_SESSION["posicion"]=htmlspecialchars($_POST["posicion"]);
             
@@ -224,21 +255,43 @@ if($ctrl=="usuarios"){
                     $bien = $objeto->listarBienesporID($bienSeleccionado);
                     if ($bien) {
                         
-                        $_SESSION["bienes"][] = $bien; // Agrega el bien al array
+                        $_SESSION["bienes"][] = $bien; 
                     }
                 }
 
                 header("Location: " . ROOT_PATH . 'imp_etiquetas.php');
-            } else {
+                } 
+  
+        }
+            break;        
+            case 'generarPDF':
+                
                 // Manejo de error si no se selecciona ningún bien
-                $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";
-                header("Location: " . BIEN_PATH . 'lista.php');
-            }
+                if (empty($_POST["bienes"])) {
+                    $_SESSION["erroretiquta"]="Debes seleccionar al menos una etiqueta";
+                    header("Location: " . BIEN_PATH . 'lista.php');
+                    die;
+                    } 
+                else {
+                    $_SESSION['bienes']=[];
+                    
+                    foreach ( $_POST['bienes'] as $bienSeleccionado) {
+                        
+                        $bien = $objeto->listarBienesporID($bienSeleccionado);
+                        if ($bien) {
+                            
+                            $_SESSION["bienes"][] = $bien; 
+                        }
+                    }
+                    header("Location: " . ROOT_PATH . 'pdf.php');
+                    } 
+      
             
-            break;            
+                break;                       
         default:
             # code...
             break;
     }
+    
 }
 ?>
