@@ -23,7 +23,7 @@ if (isset($_SESSION['bien'])) {
     </div>
     <div class="mb-3">
         <label for="descripcion">Código:</label>
-        <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
+        <input type="text" name="codigo" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
     </div>    
     <div class="mb-3">
     <label for="precio">Precio:</label>
@@ -89,8 +89,8 @@ if (isset($_SESSION['bien'])) {
     </select>
     </div>
     <div class="mb-3">
-        <label for="descripcion">Fecha de alta:</label>
-        <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
+        <label for="fecha_alta">Fecha de alta:</label>
+        <input type="text" name="fecha_alta" class="form-control"value="<?php echo $bien['fecha_alta']; ?>" readonly>
     </div>       
     <div class="mb-3">
     <label for="tipo_bien">Causa de baja: </label>

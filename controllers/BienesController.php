@@ -23,6 +23,64 @@ class BienesController {
         $bienModel = new Bienes();
         return $bienModel->obtenerPorId($id);
         }
+    
+    public function buscarfiltro(){
+        $bienModel = new Bienes();
+        $centro = $_POST["search-centro"];
+        if ($centro != strip_tags($centro)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }          
+        $departamento = $_POST["search-departamento"];
+        if ($departamento != strip_tags($departamento)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }     
+        $tipo_bien = $_POST["search-tipo-bien"];
+        if ($tipo_bien != strip_tags($tipo_bien)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }    
+        $estado = $_POST["search-estado"];
+        if ($estado != strip_tags($estado)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }    
+        $fecha_inicio = $_POST["search-fecha-inicio"];
+        if ($fecha_inicio != strip_tags($fecha_inicio)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }    
+        $fecha_fin = $_POST["search-fecha-fin"];
+        if ($fecha_fin != strip_tags($fecha_fin)) {
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }   
+        $descripcion = $_POST["search-descripcion"];
+        if ($descripcion != strip_tags($descripcion)) {
+            
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }      
+        $cuenta = $_POST["search-cuenta"];
+        if ($cuenta != strip_tags($cuenta)) {
+            
+            $_SESSION["error"] = "Formato incorrecto";
+            header("Location: ".BIEN_PATH."crear.php");
+            die;
+        }           
+        //echo $centro.$departamento.$tipo_bien.$estado;die;   
+        //echo $fecha_inicio.$fecha_fin.$descripcion.$cuenta;die;                                                    
+        return $bienModel->buscarfiltro($centro,$departamento,$tipo_bien,$estado,$fecha_inicio,$fecha_fin,$descripcion,$cuenta);
+    }
+
 
     // Maneja la creación de un nuevo bien
     public function crear() {
@@ -145,22 +203,16 @@ class BienesController {
         }
 
     // Elimina (lógicamente) un bien de la base de datos
-    public function eliminar($id,$motivo) {
-        $bienModel = new Bienes();
-        $bienModel->obtenerPorId($id);
-
-        if ($bienModel) {
-            // Eliminación lógica del bien
-            $bienModel->eliminarBien($id,$motivo);
-            }
+    public function eliminar($motivo,$id) {
+            $bienModel =new Bienes();
+            $bienModel->eliminarBien($motivo,$id);
+            
         }
     
-    public function actualizaEstado(){
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            error_log("Datos POST recibidos: " . print_r($_POST, true));  // Esto imprime en los logs de PHP
-        }
+    public function actualizaEstado($nuevoEstado,$bienId){
+ 
         $bienModel=new Bienes();
-        $resultado=$bienModel->actualizaEstado();         
-        return $resultado;
+        $resultado=$bienModel->actualizaEstado($nuevoEstado,$bienId);         
+
     }
     }

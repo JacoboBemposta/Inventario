@@ -192,6 +192,22 @@ if($ctrl=="usuarios"){
             }          
             header("Location: " . BIEN_PATH . 'lista.php');
             break;
+        case 'buscar':
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
+                    $_SESSION["error"]="Token no válido";
+                    header("Location: ".ROOT_PATH."error.php");
+		            die;
+                        }
+                destruirTokenCSRF();   
+                $_SESSION["bienestotal"]=$objeto->buscarfiltro();
+ 
+                header("Location: " . BIEN_PATH . 'lista.php');
+                break;
+                }
+            break;            
         case 'editar':
             $objeto->editar($_GET['bien']);
             header("Location: " . BIEN_PATH . 'editar.php');
@@ -207,7 +223,8 @@ if($ctrl=="usuarios"){
             header("Location: " . ENT_PATH . 'lista.php');
             break;
         case 'eliminar':
-            $objeto->eliminar($_GET['bien'],$_GET['motivo']);
+            $objeto->eliminar($_GET['motivo'],$_GET['bien']);
+            
             $entrada->listarEntradas();
             header("Location: " . ENT_PATH . 'lista.php');
             break;
@@ -289,39 +306,15 @@ if($ctrl=="usuarios"){
                 break;
 
         case 'estadoBien':
-            echo "hiola";
-            echo("Actualizando estado del bien ID");
-            //$resultado=$objeto->actualizaEstado();
+            
             if (isset($_POST['estado'], $_POST['bien_id'])) {
-                       
                 $nuevoEstado = $_POST['estado'];
                 $bienId = $_POST['bien_id'];
-        
-                // Log para depurar
-                error_log("Actualizando estado del bien ID: " . $bienId . " a estado: " . $nuevoEstado);
-                $bien =new Bienes();
-                // Conexión a la base de datos y actualización del estado
-                $query = "UPDATE bienes SET estado = ? WHERE id = ?";
-                $stmt = $this->db->prepare($query);
-        
-                // Asociar los parámetros
-                $stmt->bind_param('ii', $nuevoEstado, $bienId);
-        
-                if ($stmt->execute()) {
-                    // Asegúrate de que no haya salida antes de esta línea
-                    echo json_encode(['success' => true]);
-                } else {
-                    error_log("Error en la consulta SQL: " . $this->db->error);
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la base de datos']);
-                }
-        
-                exit;
-            } else {
-                error_log("Parámetros faltantes: estado o bien_id no definidos");
-                echo json_encode(['success' => false, 'message' => 'Parámetros faltantes']);
-                exit;
-            }               
+                $resultado = $objeto->actualizaEstado($nuevoEstado, $bienId);
 
+                exit;  
+            } 
+            
             break;
 
         default:

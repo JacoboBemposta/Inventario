@@ -7,9 +7,8 @@ require_once "../../config/auth.php";
 if (isset($_SESSION['entradas'])) {
     $entradas = $_SESSION['entradas'];
 } else {
-    $entradas = []; // Manejar si no hay proveedores en la sesión
+    $entradas = []; // Manejar si no hay entradas en la sesión
 }
-
 ?>
 
 <!-- Modal para seleccionar el motivo de eliminación del bien-->
@@ -291,35 +290,41 @@ function cambiarEstado(bienId, estado) {
 
     // Llamar al servidor para actualizar el estado en la base de datos
     $.ajax({
-        url: '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=estadoBien',
-        type: 'POST',
-        data: {
-            ctrl: 'bienes',
-            opcion: 'estadoBien',
-            bien_id: bienId,
-            estado: nuevoEstado,
-        },
-        
-        success: function(response) {
-          
-            //console.log(response);  // Debug para ver la respuesta del servidor
-            if (response.success) {
-                // Cambiar el texto de "Activo" o "Inactivo" basado en el nuevo estado
-                var label = document.querySelector('label[for="switch' + bienId + '"]');
-                label.textContent = (nuevoEstado == 1) ? 'Activo' : 'Inactivo';
-            } else {
-                alert(response.message || 'Error al actualizar el estado'); 
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // Mostrar la respuesta completa del servidor para depuración
-            console.log("Error: ", textStatus, errorThrown);
-            console.log("Respuesta del servidor:", jqXHR.responseText);
-            alert('Error en la solicitud AJAX: ' + textStatus);
+    url: '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=estadoBien',
+    type: 'POST',
+    data: {
+        ctrl: 'bienes',
+        opcion: 'estadoBien',
+        bien_id: bienId,
+        estado: nuevoEstado,
+    },
+    dataType: 'json',
+    success: function(response) {
+        console.log(response);  // Verifica qué está devolviendo el servidor
+        if (typeof response !== 'object') {
+           response = JSON.parse(response);
         }
-    });
+        if (response.success) {
+            var label = document.querySelector('label[for="switch' + bienId + '"]');
+            label.textContent = (nuevoEstado == 1) ? 'Activo' : 'Inactivo';
+        } else {
+            alert(response.message || 'Error al actualizar el estado');
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log("Error: ", textStatus, errorThrown);
+        console.log("Respuesta del servidor:", jqXHR.responseText);  // Captura la respuesta completa del servidor
+        alert('Error en la solicitud AJAX: ' + textStatus);
+    }
+});
 }
 
+
+  // Escucha cuando el modal se cierre
+  $('#modalBienes').on('hidden.bs.modal', function () {
+    // Recarga la vista completa
+    window.location.href = "/proyects/inventario/controllers/IndexController.php?ctrl=entradas&opcion=ver";
+  });
 
 
 </script>

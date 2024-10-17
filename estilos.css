@@ -592,6 +592,13 @@ rgb(195,68,83)
   
   .login-form-btn {
       width: 100%;            /* Asegura que el botón ocupe el ancho completo de su contenedor */
-      
+    
   }
-  
+  #posicion::placeholder {
+    color: white; 
+    background-color: #861636; 
+    padding-left: 5px; 
+    opacity: 1; 
+    font-size: 15px;
+    font-family: 'Verdana', cursive;
+}
