@@ -1,8 +1,8 @@
-<?php 
+<?php
 include "../../menu.php";
 require "../../config/auth.php";
 
-if($_SESSION["tipo_usuario"]!="ADMIN") header("Location: ".ROOT_PATH)."inicio.php";
+if ($_SESSION["tipo_usuario"] != "ADMIN") header("Location: " . ROOT_PATH) . "inicio.php";
 @session_start();
 
 if (isset($_SESSION['usuarios'])) {
@@ -12,6 +12,7 @@ if (isset($_SESSION['usuarios'])) {
 }
 
 ?>
+<!-- Vista de la lista de usuarios -->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center">Lista de Usuarios</h1>
     <table id="tablausuarios" class="display" style="min-width:60vw" cellpadding="5" cellspacing="0">
@@ -29,33 +30,35 @@ if (isset($_SESSION['usuarios'])) {
                     <td style="text-align: center;"><?php echo $usuario['nombre']; ?></td>
                     <td style="text-align: center;"><?php echo $usuario['usuario']; ?></td>
                     <td style="text-align: center;"><?php echo $usuario['tipo_usuario']; ?></td>
-                    <td style="min-width: 15vw;text-align: center;";>
-                            <button 
+                    <td style="min-width: 15vw;text-align: center;" ;>
+                        <!-- Botón editar-->
+                        <button
                             onclick="window.location.href='<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=editar&usuario=<?php echo $usuario['id']; ?>'"
                             class="editarItem">
                             <img src="<?php echo ROOT_PATH; ?>public/images/editar.webp" alt="Editar" class="iconoItem">
                         </button>
-                        <button 
+                        <!-- Botón eliminar -->
+                        <button
                             onclick="confirmarEliminacion('<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=eliminar&usuario=<?php echo $usuario['id']; ?>')"
                             class="editarItem">
-                            <img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem" >
+                            <img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem">
                         </button>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
-        <div class="d-flex justify-content-center">
-            <div class="wrap-login-form-btn"> 
-                <div class="login-form-bgbtn"></div>
-                    <form action="<?php echo USR_PATH ?>crear.php" method="post">
-                        <button type="submit"  class="login-form-btn">Agregar usuarios</button> 
-                    </form>
-            </div> 
+    <!-- Botón agregar -->
+    <div class="d-flex justify-content-center">
+        <div class="wrap-login-form-btn">
+            <div class="login-form-bgbtn"></div>
+            <form action="<?php echo USR_PATH ?>crear.php" method="post">
+                <button type="submit" class="login-form-btn">Agregar usuarios</button>
+            </form>
         </div>
+    </div>
 </div>
-            
+
 
 
 
@@ -71,12 +74,12 @@ if (isset($_SESSION['usuarios'])) {
     }
 
     new DataTable('#tablausuarios', {
-    language: {
-        info: 'Mostrando página _PAGE_ de _PAGES_',
-        infoEmpty: 'No hay registros disponibles',
-        infoFiltered: '(filtrado de _MAX_ registros totales)',
-        lengthMenu: 'Mostrar _MENU_ registros por página',
-        zeroRecords: 'No se encontraron registros',
-    }
-});
+        language: {
+            info: 'Mostrando página _PAGE_ de _PAGES_',
+            infoEmpty: 'No hay registros disponibles',
+            infoFiltered: '(filtrado de _MAX_ registros totales)',
+            lengthMenu: 'Mostrar _MENU_ registros por página',
+            zeroRecords: 'No se encontraron registros',
+        }
+    });
 </script>

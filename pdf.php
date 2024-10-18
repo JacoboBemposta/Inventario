@@ -15,12 +15,12 @@ use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
 
-$path1="public/images/sigafooter.png";
+$path1 = "public/images/sigafooter.png";
 $data1 = file_get_contents($path1);
 $type1 = pathinfo($path1, PATHINFO_EXTENSION);
 $base64 = 'data:image/' . $type1 . ';base64,' . base64_encode($data1);
 
-$path2="public/images/sigalogo.png";
+$path2 = "public/images/sigalogo.png";
 $data2 = file_get_contents($path2);
 $type2 = pathinfo($path2, PATHINFO_EXTENSION);
 $base65 = 'data:image/' . $type2 . ';base64,' . base64_encode($data2);
@@ -123,7 +123,7 @@ if (empty($bienes)) {
     </head>
     <body>
         <div class="header">
-            <img src="'.$base65.'" alt="Logo Siga Header">
+            <img src="' . $base65 . '" alt="Logo Siga Header">
             <h1>Lista de Bienes</h1>
         </div>
         <table>
@@ -136,113 +136,113 @@ if (empty($bienes)) {
                 </tr>
             </thead>
             <tbody>';
-    
+
     foreach ($bienes as $bien) {
-        $tipo_bien = ''; 
+        $tipo_bien = '';
         switch ($bien["tipo_bien"]) {
             case 'ME':
-                $tipo_bien="Mesa";
+                $tipo_bien = "Mesa";
                 break;
-             case 'SI':
-                $tipo_bien="Silla";
+            case 'SI':
+                $tipo_bien = "Silla";
                 break;
-             case 'AR':
-                $tipo_bien="Armario";
+            case 'AR':
+                $tipo_bien = "Armario";
                 break;
-             case 'ES':
-                $tipo_bien="Estantería";
+            case 'ES':
+                $tipo_bien = "Estantería";
                 break;
-             case 'BU':
-                $tipo_bien="Buck";
+            case 'BU':
+                $tipo_bien = "Buck";
                 break;
             case 'PI':
-                $tipo_bien="Pizarra";
+                $tipo_bien = "Pizarra";
                 break;
-             case 'IM':
-                $tipo_bien="Impresora";
+            case 'IM':
+                $tipo_bien = "Impresora";
                 break;
-             case 'SP':
-                $tipo_bien="Soporte PC";
+            case 'SP':
+                $tipo_bien = "Soporte PC";
                 break;
-             case 'BA':
-                $tipo_bien="Bandeja";
+            case 'BA':
+                $tipo_bien = "Bandeja";
                 break;
-             case 'PE':
-                $tipo_bien="Perchero";
-                break; 
+            case 'PE':
+                $tipo_bien = "Perchero";
+                break;
             case 'PA':
-                $tipo_bien="Papelera";
+                $tipo_bien = "Papelera";
                 break;
-             case 'RE':
-                $tipo_bien="Reposapiés";
+            case 'RE':
+                $tipo_bien = "Reposapiés";
                 break;
-             case 'EX':
-                $tipo_bien="Extintor";
+            case 'EX':
+                $tipo_bien = "Extintor";
                 break;
-             case 'DE':
-                $tipo_bien="Destructora";
+            case 'DE':
+                $tipo_bien = "Destructora";
                 break;
-             case 'CI':
-                $tipo_bien="Cizalla";
-                break;            
+            case 'CI':
+                $tipo_bien = "Cizalla";
+                break;
             case 'AI':
-                $tipo_bien="Equipo Aire";
+                $tipo_bien = "Equipo Aire";
                 break;
-             case 'RU':
-                $tipo_bien="Roll up";
+            case 'RU':
+                $tipo_bien = "Roll up";
                 break;
-             case 'LA':
-                $tipo_bien="Lámpara";
+            case 'LA':
+                $tipo_bien = "Lámpara";
                 break;
-             case 'EC':
-                $tipo_bien="Escalera";
+            case 'EC':
+                $tipo_bien = "Escalera";
                 break;
-             case 'AL':
-                $tipo_bien="Alfombra";
-                break;                
+            case 'AL':
+                $tipo_bien = "Alfombra";
+                break;
             case 'TV':
-                $tipo_bien="Televisión";
+                $tipo_bien = "Televisión";
                 break;
-             case 'WC':
-                $tipo_bien="Webcam";
+            case 'WC':
+                $tipo_bien = "Webcam";
                 break;
-             case 'OR':
-                $tipo_bien="Ordenador";
+            case 'OR':
+                $tipo_bien = "Ordenador";
                 break;
-             case 'MO':
-                $tipo_bien="Monitor";
+            case 'MO':
+                $tipo_bien = "Monitor";
                 break;
-             case 'VC':
-                $tipo_bien="Policom";
-                break;                
+            case 'VC':
+                $tipo_bien = "Policom";
+                break;
             case 'SC':
-                $tipo_bien="Scanner";
+                $tipo_bien = "Scanner";
                 break;
-             case 'IP':
-                $tipo_bien="Ipad";
+            case 'IP':
+                $tipo_bien = "Ipad";
                 break;
-             case 'PU':
-                $tipo_bien="Puntero";
+            case 'PU':
+                $tipo_bien = "Puntero";
                 break;
-             case 'FU':
-                $tipo_bien_="Funda";
-                break;             
+            case 'FU':
+                $tipo_bien_ = "Funda";
+                break;
             default:
-                $tipo_bien="Bien sin identificar";
+                $tipo_bien = "Bien sin identificar";
                 break;
         }
         $html .= '<tr>
-            <td>'.$bien['cuenta_contable'].'</td>
-            <td>'.$tipo_bien.'</td>
-            <td>'.$bien['codigo'].'</td>
-            <td>'.$bien["fecha_alta"].'</td>
+            <td>' . $bien['cuenta_contable'] . '</td>
+            <td>' . $tipo_bien . '</td>
+            <td>' . $bien['codigo'] . '</td>
+            <td>' . $bien["fecha_alta"] . '</td>
         </tr>';
     }
-    
+
     $html .= '</tbody></table>
     <footer>
         <div class="footer-content">
-            <div><img src="'.$base64.'" alt="Logo Siga Footer"></div>
+            <div><img src="' . $base64 . '" alt="Logo Siga Footer"></div>
             <div class="footer-text">
                 <p>atencioncliente@gestores.net</p>
                 <p>986 866 171</p>
@@ -252,7 +252,6 @@ if (empty($bienes)) {
     </footer>
     </body>
     </html>';
-
 }
 
 $dompdf->loadHtml($html);
@@ -265,4 +264,3 @@ $dompdf->render();
 
 // Salida del PDF al navegador
 $dompdf->stream("lista de bienes", array("Attachment" => true));
-?>

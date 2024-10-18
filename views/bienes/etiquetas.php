@@ -9,6 +9,9 @@ if (isset($_POST['botones_seleccionados'])) {
 }
 echo ("Pagina no disponible");die;
 ?>
+<!--  Página no visible, posible actualización del proyecto para seleccionar huecos específicos de las etiquetas -->
+
+
 
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1>Selecciona las etiquetas que vas a usar</h1>

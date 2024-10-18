@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "../../menu.php";
 require_once "../../config/auth.php";
 include_once "../../csrf.php";
@@ -10,12 +10,14 @@ if (isset($_SESSION['usuario'])) {
     $usuario = []; // Manejar si no hay usuarios en la sesión
 }
 ?>
-<div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
-<h1 class="text-center">Editar Usuario</h1>
-    <?php include_once('../error.php');?>
+<!-- Vista para editar un usuario existente -->
+<div class="container d-flex flex-column align-items-center mt-5" style="min-height: 50vh;">
+    <?php include_once('../error.php'); ?>
+    <h1 class="text-center">Editar Usuario</h1>
+
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=actualizar&usuario=<?php echo $usuario[0]['id'] ?>" method="POST">
-    <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->    
-    <div class="mb-3">
+        <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
+        <div class="mb-3">
             <label for="nombre" class="form-label">Nombre:</label>
             <input type="text" name="nombre" class="form-control" value="<?php echo $usuario[0]['nombre']; ?>" required>
         </div>
@@ -34,12 +36,13 @@ if (isset($_SESSION['usuario'])) {
         </div>
 
         <div class="button-container mt-5">
-            <div class="wrap-login-form-btn"> 
+            <!-- Botón actualizar -->
+            <div class="wrap-login-form-btn">
                 <div class="login-form-bgbtn"></div>
-                <button type="submit" class="login-form-btn">Actualizar</button> 
+                <button type="submit" class="login-form-btn">Actualizar</button>
             </div>
-
-            <div class="wrap-login-form-btn"> 
+            <!-- Botón crear -->
+            <div class="wrap-login-form-btn">
                 <div class="login-form-bgbtn"></div>
                 <button type="button" class="login-form-btn" onclick="window.location.href='<?php echo USR_PATH; ?>lista.php';">
                     Volver
@@ -49,4 +52,3 @@ if (isset($_SESSION['usuario'])) {
     </form>
 
 </div>
-
