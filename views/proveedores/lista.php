@@ -11,9 +11,7 @@ if (isset($_SESSION['proveedores'])) {
 ?>
 <!-- Vista de la lista de proveedores -->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
-    <!-- Título centrado -->
     <h1 class="text-center">Lista de Proveedores</h1>
-    <!-- Tabla proveedores-->
     <table id="tablaproveedores" class="display" style="min-width:60vw" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
