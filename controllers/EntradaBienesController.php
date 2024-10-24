@@ -20,13 +20,23 @@ class EntradaBienesController
         $entrada = new EntradaBienes();
         $entradas = $entrada->obtenerTodas();
         $_SESSION['entradas'] = $entradas;
-        $bienesPorEntrada = [];
-        foreach ($entradas as $entrada) {
+        
+        foreach ($entradas as $key => $entrada) {  // $key es el índice de la entrada en el array
+            
             $bienes = new Bienes();
             $bienes = $bienes->obtenerPorEntradaId($entrada['id']);
-            $bienesPorEntrada[$entrada['id']] = $bienes;
-            $_SESSION['bienesPorEntrada'] = $bienesPorEntrada;
+            if (is_array($bienes)) {
+                $_SESSION['entradas'][$key]['numbienes'] = count($bienes);
+                
+            } else {
+                $_SESSION['entradas'][$key]['numbienes'] = 0; // Si no es array, lo consideramos vacío
+            }
         }
+    }
+    public function BienPorEntradaId( $entradaid ){
+            $bienes = new Bienes();
+            return  $bienes->obtenerPorEntradaId($entradaid);
+            
     }
     // Muestra el formulario de edición de una entrada existente
     public function editarEntrada($id)
@@ -196,11 +206,14 @@ class EntradaBienesController
                 $date = $data[10];
                 $date = str_replace('/', '-', $date);
                 $fecha = date('Y-m-d', strtotime($date));
+                $date2 = $data[11];
+                $date2 = str_replace('/', '-', $date2);
+                $fecha2 = date('Y-m-d', strtotime($date2));                
                 //Elminiar el string "Descripción: " del primer elemento del array
-                $descripcion = substr($data[0], 16);
+                $descripcion =  str_replace("Descripción: ", "", $data[0]);
                 $cuenta = $data[9];
                 $fecha_compra = $fecha;
-                $fecha_inicio_amortizacion = $fecha;
+                $fecha_inicio_amortizacion = $fecha2;
                 $precio = $data[12];
                 $amortizacion = $data[13];
                 $objeto = new EntradaBienes();

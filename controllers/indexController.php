@@ -11,6 +11,7 @@ use controllers\ProveedorController;
 use controllers\EntradaBienesController;
 use controllers\BienesController;
 use models\Bienes;
+use models\EntradaBienes;
 use models\Proveedor;
 
 // Controlador de rutas, recibe los parámetros por formulario y los envía al correspondiente controlador
@@ -190,6 +191,18 @@ if ($ctrl == "usuarios") {
             header("Location: " . BIEN_PATH . 'lista.php');
             break;
 
+        case 'bienporID':
+            $bien = new EntradaBienesController();
+            $resultado=$bien->BienPorEntradaId($_POST['idEntrada']);
+            $entrada_bien_id = $_POST['idEntrada'];
+            foreach ($resultado as $bien) {
+  
+                $bien["entrada_bien_id"] = $entrada_bien_id;
+
+            }
+            echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+            break;
+
         case 'buscar':
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -224,6 +237,7 @@ if ($ctrl == "usuarios") {
             break;
 
         case 'eliminar':
+            
             $objeto->eliminar($_GET['motivo'], $_GET['bien']);
             $entrada->listarEntradas();
             header("Location: " . ENT_PATH . 'lista.php');

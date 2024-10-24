@@ -19,12 +19,22 @@ if (isset($_SESSION['entradas'])) {
         <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
             <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
             <div class="mb-3 w-50">
-                <label for="descripcion" class="form-label">Descripción:</label>
-                <input type="text" name="descripcion" class="form-control"  required>
+            <label for="entrada" class="form-label">Entrada:</label>
+            <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
+            <?php foreach ($entradas as $entrada): ?>
+                <?php if ($entrada['id'] == $_GET['entrada']): ?>
+                    <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
+                    <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <div class="mb-3 w-50">
+                <label for="codigo" class="form-label">Codigo:</label>
+                <input type="text" name="codigo" class="form-control"  required>
+            </div>                       
             </div>
             <div class="mb-3 w-50">
-                <label for="precio" class="form-label">Precio:</label>
-                <input type="number" name="precio" step="0.01" class="form-control"  required>
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <input type="text" name="descripcion" class="form-control"  required>
             </div>
             <div class="mb-3 w-50">
                 <label for="centro" class="form-label">Centro:</label>
@@ -84,19 +94,11 @@ if (isset($_SESSION['entradas'])) {
                     <option value="WC">webcam</option>
                 </select>
             </div>
+
+
             <div class="mb-3 w-50">
-                <label for="codigo" class="form-label">Codigo:</label>
-                <input type="text" name="codigo" class="form-control"  required>
-            </div>
-            <div class="mb-3 w-50">
-            <label for="entrada" class="form-label">Entrada:</label>
-            <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
-            <?php foreach ($entradas as $entrada): ?>
-                <?php if ($entrada['id'] == $_GET['entrada']): ?>
-                    <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
-                    <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <label for="precio" class="form-label">Precio:</label>
+                <input type="number" name="precio" step="0.01" class="form-control"  required>
             </div>
             <div class="d-flex justify-content-center mt-5">
             <div class="button-container mt-5">

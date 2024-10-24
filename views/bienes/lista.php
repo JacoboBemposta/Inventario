@@ -14,8 +14,13 @@ if (isset($_SESSION['bienestotal'])) {
 }
 
 ?>
+<!-- Incluir Moment.js para formatear la fecha en datatables -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<!-- Incluir el plugin datetime-moment.js para DataTables -->
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-moment.js"></script>
 <!-- Vista de la lista de bienes -->
-<div class=" container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh; min-width:60vw">
+<div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <h1 class="text-center">Lista de Bienes</h1>
     <div class="container">
         <!-- Formulario de búsqueda -->
@@ -26,7 +31,7 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-centro">Centro:</label>
                     <select id="search-centro" name="search-centro" class="form-control">
-                        <option value="">Selecciona un centro</option>
+                        <option value="">Centro</option>
                         <option value="Pontevedra">Pontevedra</option>
                         <option value="Madrid">Madrid</option>
                     </select>
@@ -36,20 +41,21 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-departamento">Departamento:</label>
                     <select id="search-departamento" name="search-departamento" class="form-control">
-                        <option value="">Selecciona un departamento</option>
-                        <option value="SIGA">SIGA</option>
-                        <option value="Técnico">Técnico</option>
-                        <option value="CAU">CAU</option>
-                        <option value="Jurídico">Jurídico</option>
+                        <option value="">Departamento</option>
                         <option value="Administración">Administración</option>
+                        <option value="Almacén">Almacén</option>
+                        <option value="CAU">CAU</option>
                         <option value="Comercial">Comercial</option>
+                        <option value="Consejeros">Consejeros</option>
+                        <option value="">Departamento</option>
+                        <option value="Dirección">Dirección</option>
+                        <option value="Jurídico">Jurídico</option>
                         <option value="Marketing y comunicación">Marketing y comunicación</option>
                         <option value="Patentes y Marcas">Patentes y Marcas</option>
-                        <option value="Dirección">Dirección</option>
-                        <option value="Consejeros">Consejeros</option>
-                        <option value="Almacén">Almacén</option>
                         <option value="Sala Juntas">Sala Juntas</option>
                         <option value="Sala Reuniones">Sala Reuniones</option>
+                        <option value="SIGA">SIGA</option>
+                        <option value="Técnico">Técnico</option>                        
                     </select>
                 </div>
 
@@ -57,7 +63,7 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-tipo-bien">Tipo de bien:</label>
                     <select id="search-tipo-bien" name="search-tipo-bien" class="form-control">
-                        <option value="">Selecciona un tipo de bien</option>
+                        <option value="">Tipo de bien</option>
                         <option value="Alfombra">Alfombra</option>
                         <option value="Armario">Armario</option>
                         <option value="Bandeja">Bandeja</option>
@@ -65,7 +71,7 @@ if (isset($_SESSION['bienestotal'])) {
                         <option value="Cizalla">Cizalla</option>
                         <option value="Destructora">Destructora</option>
                         <option value="Equipo aire">Equipo aire</option>
-                        <option value="Escalera">escalera</option>
+                        <option value="Escalera">Escalera</option>
                         <option value="Estantería">Estantería</option>
                         <option value="Funda">Funda</option>
                         <option value="Impresora">Impresora</option>
@@ -92,7 +98,7 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-estado">Estado:</label>
                     <select id="search-estado" name="search-estado" class="form-control">
-                        <option value="">Selecciona un estado</option>
+                        <option value="">Estado</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
@@ -102,21 +108,21 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-12 col-lg-6">
                     <label for="search-fechas">Rango de fechas:</label>
                     <div class="d-flex flex-column flex-md-row">
-                        <input type="date" id="search-fecha-inicio" name="search-fecha-inicio" class="form-control mr-md-2 mb-2 mb-md-0" placeholder="Fecha inicio">
-                        <input type="date" id="search-fecha-fin" name="search-fecha-fin" class="form-control" placeholder="Fecha fin">
+                        <input type="date" id="search-fecha-inicio" name="search-fecha-inicio" class="form-control mr-md-4 mb-2 mb-md-0" placeholder="Fecha inicio">
+                        <input type="date" id="search-fecha-fin" name="search-fecha-fin" class="form-control mr-ml-5 mb-2 mb-md-0" placeholder="Fecha fin">
                     </div>
                 </div>
 
                 <!-- Campo de búsqueda por Descripción -->
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-descripcion">Descripción:</label>
-                    <input type="text" id="search-descripcion" name="search-descripcion" class="form-control" placeholder="Introduce la descripción">
+                    <input type="text" id="search-descripcion" name="search-descripcion" class="form-control" placeholder="Descripción">
                 </div>
 
                 <!-- Campo de búsqueda por Cuenta -->
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-cuenta">Cuenta de facturación:</label>
-                    <input type="text" id="search-cuenta" name="search-cuenta" class="form-control" placeholder="Introduce la cuenta">
+                    <input type="text" id="search-cuenta" name="search-cuenta" class="form-control" placeholder="Cuenta facturación">
                 </div>
             </div>
         </form>
@@ -124,38 +130,30 @@ if (isset($_SESSION['bienestotal'])) {
 
 
     <!-- Formulario para la generación de etiquetas -->
+    <div class="container d-flex flex-column justify-content-center align-items-center mt-5 " style="min-height: 50vh;">
     <form action="" method="post" id="form-generar-etiquetas" style="width: 100%;">
         <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
-        <table class="display" id="bienes-table" style="width: 100%;" cellpadding="5" cellspacing="0">
+        <table class="display" id="bienes-table" style="width: 100%; box-sizing: border-box;" cellpadding="5" cellspacing="0">
             <thead>
-                <tr>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:12vw;">
-                        <input type="checkbox" id="seleccionarTodos"> Seleccionar todos<!-- Checkbox para seleccionar todos -->
-                    </th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Descripción</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:6vw">Precio</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw">Centro</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:9vw">Departamento</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Tipo bien</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Fecha alta</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw">QR</th>
-                    <th style="display: none" ;>codigo</th>
-                    <th style="display: none" ;>factura</th>
-                    <th style="display: none" ;>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($bienes as $bien) { ?>
                     <tr>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;">
-                            <input type="checkbox" name="bienes[]" value="<?php echo $bien['id']; ?>"> <!-- Checkbox para seleccionar el bien -->
-                        </td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;">
-                            <div style="max-width: 20vw; overflow-x: auto; white-space: nowrap; text-align: center">
-                                <?php echo $bien['descripcion']; ?>
-                            </div>
-                        </td>
-                        <?php
+                        <th style="text-align: center;min-width:3vw;">
+                            <input type="checkbox" id="seleccionarTodos"> <!-- Checkbox para seleccionar todos -->
+                        </th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:23vw">Descripción</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Fecha alta</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Codigo</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Estado</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:6vw" hidden>Precio</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw" hidden>Centro</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:9vw " hidden>Departamento</th>
+                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw" hidden>Tipo bien</th>
+                        <th style="text-align: center; min-height:7vh;min-width:6vw">QR</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <?php foreach ($bienes as $bien) { 
+
                         $tipo_bien = '';
                         switch ($bien["tipo_bien"]) {
                             case 'ME':
@@ -317,11 +315,20 @@ if (isset($_SESSION['bienestotal'])) {
                                 break;
                         }
                         ?>
-                        <td style="text-align: center; padding: 10px;"><?php echo $bien['precio']; ?></td>
-                        <td style="text-align: center; padding: 10px;"><?php echo $centro; ?></td>
-                        <td style="text-align: center; padding: 10px;"><?php echo $departamento; ?></td>
-                        <td style="text-align: center; padding: 10px;"><?php echo $tipo_bien; ?></td>
+                    <tr>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;">
+                            <input type="checkbox" name="bienes[]" value="<?php echo $bien['id']; ?>"> <!-- Checkbox para seleccionar el bien -->
+                        </td>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['cuenta_contable']; ?></td>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['descripcion']; ?></td>
                         <td style="text-align: center; padding: 10px;"><?php echo $bien["fecha_alta"]; ?></td>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['codigo']; ?></td>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $estado; ?></td>
+                        <td style="text-align: center; padding: 10px;"hidden><?php echo $bien['precio']; ?></td>
+                        <td style="text-align: center; padding: 10px;" hidden><?php echo $centro; ?></td>
+                        <td style="text-align: center; padding: 10px;" hidden><?php echo $departamento; ?></td>
+                        <td style="text-align: center; padding: 10px;" hidden><?php echo $tipo_bien; ?></td>
+                        
                         <td style="text-align: center; padding: 10px;" class="d-flex justify-content-center align-items-center">
                             <?php
                             // Generar códigos QR //
@@ -336,12 +343,10 @@ if (isset($_SESSION['bienestotal'])) {
                             $framesize = 3; // marco del qr en blanco
                             QRcode::png($contenido, $filename, $level, $tamanho, $framesize);
 
-                            echo '<img src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien["codigo"]) . '.png">';
+                            echo '<img style="width: 100%; height: 100%" src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien["codigo"]) . '.png">';
                             ?>
                         </td>
-                        <td style="display: none" ;><?php echo $bien['numero_factura']; ?></td>
-                        <td style="display: none" ;><?php echo $bien['cuenta_contable']; ?></td>
-                        <td style="display: none" ;><?php echo $estado; ?></td>
+
                     </tr>
                 <?php } ?>
             </tbody>
@@ -368,9 +373,11 @@ if (isset($_SESSION['bienestotal'])) {
         </div>
     </form>
 </div>
-
+</div>
 
 <script>
+
+
     //Script para inicializar DataTables 
     $(document).ready(function() {
         var table = $('#bienes-table').DataTable({
@@ -382,72 +389,106 @@ if (isset($_SESSION['bienestotal'])) {
                 lengthMenu: 'Mostrar _MENU_ registros por página',
                 zeroRecords: 'No se encontraron registros',
             },
+            layout: {
+                topEnd: null
+            },
+            // Definimos la columna que contiene fechas para que aplique el formato de orden y visualización
+            columnDefs:[{targets:3, render:function(data){
+            return moment(data).format('DD-MM-YYYY');
+            }}]            
         });
         // Evento keyup para el codigo
         $('#search-descripcion').on('keyup', function() {
             var descripcion = this.value.trim(); // Evitar espacios extraños
             if (descripcion !== "") {
-                table.column(1).search(descripcion, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
+                table.column(2).search(descripcion, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
             } else {
-                table.column(1).search("").draw(); // Si no hay valor, reseteamos el filtro
+                table.column(2).search("").draw(); // Si no hay valor, reseteamos el filtro
             }
         });
         // Evento change para el centro
         $('#search-centro').on('change', function() {
             var centro = this.value.trim(); // Evitar espacios extraños
             if (centro !== "") {
-                table.column(3).search(centro, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
+                table.column(7).search(centro, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
             } else {
-                table.column(3).search("").draw(); // Si no hay valor, reseteamos el filtro
+                table.column(7).search("").draw(); // Si no hay valor, reseteamos el filtro
             }
         });
         // Evento change para el departamento
         $('#search-departamento').on('change', function() {
             var departamento = this.value.trim(); // Evitar espacios extraños
             if (departamento !== "") {
-                table.column(4).search(departamento, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
+                table.column(8).search(departamento, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
             } else {
-                table.column(4).search("").draw(); // Si no hay valor, reseteamos el filtro
+                table.column(8).search("").draw(); // Si no hay valor, reseteamos el filtro
             }
         });
         // Filtro por tipo-bien
         $('#search-tipo-bien').on('change', function() {
             var tipo_bien = this.value.trim(); // Evitar espacios extraños
             if (tipo_bien !== "") {
-                table.column(5).search(tipo_bien, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
+                table.column(9).search(tipo_bien, true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
             } else {
-                table.column(5).search("").draw(); // Si no hay valor, reseteamos el filtro
+                table.column(9).search("").draw(); // Si no hay valor, reseteamos el filtro
             }
         });
 
         var fechaInicio = null;
         var fechaFin = null;
 
+        //funcion para visualizar texto en el placeholder de input tipo date
+        window.addEventListener('load', function() {
+            document.getElementById('search-fecha-inicio').type = 'text';
+            document.getElementById('search-fecha-inicio').addEventListener('blur', function() {
+                this.type = 'text';
+            });
+            document.getElementById('search-fecha-inicio').addEventListener('focus', function() {
+                this.type = 'date';
+            });
+
+            document.getElementById('search-fecha-fin').type = 'text';
+            document.getElementById('search-fecha-fin').addEventListener('blur', function() {
+                this.type = 'text';
+            });
+            document.getElementById('search-fecha-fin').addEventListener('focus', function() {
+                this.type = 'date';
+            });
+        });
+
+
+
+
+
+
+
+
         // Configuración del filtro personalizado en DataTables
-        $.fn.dataTable.ext.search.push(
-            function(settings, data, dataIndex) {
-                var fechaAlta = data[6]; // Obtenemos la fecha de alta de la columna 6
-                var fechaAltaDate = new Date(fechaAlta); // Convertimos la fecha de alta a objeto Date
-
-                if (fechaAltaDate == "Invalid Date") {
-                    return true; // Si no hay una fecha válida, no aplicar el filtro (mostrar la fila)
-                }
-
-                // Convertimos las fechas de inicio y fin a objetos Date si están seleccionadas
-                var fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
-                var fechaFinDate = fechaFin ? new Date(fechaFin) : null;
-
-                // Comparar según los valores de fechaInicio y fechaFin
-                if (
-                    (!fechaInicioDate || fechaAltaDate >= fechaInicioDate) && // Si no hay fechaInicio o es mayor o igual
-                    (!fechaFinDate || fechaAltaDate <= fechaFinDate) // Si no hay fechaFin o es menor o igual
-                ) {
-                    return true; // La fecha de alta está dentro del rango
-                }
-
-                return false; // La fecha de alta está fuera del rango
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var fechaAlta = moment(data[3], 'DD-MM-YYYY'); 
+            if (!fechaAlta.isValid()) {
+                return true; // Si no hay una fecha válida, mostrar la fila
             }
-        );
+
+            // Comparar con fechas de inicio y fin
+            var fechaInicioDate = fechaInicio ? moment(fechaInicio, 'YYYY-MM-DD') : null;
+            var fechaFinDate = fechaFin ? moment(fechaFin, 'YYYY-MM-DD') : null;
+
+            if (
+                (!fechaInicioDate || fechaAlta.isSameOrAfter(fechaInicioDate)) && // Comparar fechas de inicio
+                (!fechaFinDate || fechaAlta.isSameOrBefore(fechaFinDate)) // Comparar fechas de fin
+            ) {
+                return true; // La fecha de alta está dentro del rango
+            }
+
+            return false; // Fuera del rango
+        });
+
+
+
+
+
+
 
         // Evento 'change' para la fecha de inicio
         $('#search-fecha-inicio').on('change', function() {
@@ -466,18 +507,18 @@ if (isset($_SESSION['bienestotal'])) {
         $('#search-estado').on('change', function() {
             var estado = this.value.trim(); // Evitar espacios extraños
             if (estado !== "") {
-                table.column(10).search('^' + estado + '$', true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
+                table.column(5).search('^' + estado + '$', true, false).draw(); // Añadimos expresión regular para que la búsqueda sea exacta
             } else {
-                table.column(10).search("").draw(); // Si no hay valor, reseteamos el filtro
+                table.column(5).search("").draw(); // Si no hay valor, reseteamos el filtro
             }
         });
         // Evento keyup para la cuenta               
         $('#search-cuenta').on('keyup', function() {
             var cuenta = this.value.trim();
             if (cuenta !== "") {
-                table.column(9).search(cuenta, true, false).draw();
+                table.column(1).search(cuenta, true, false).draw();
             } else {
-                table.column(9).search("").draw();
+                table.column(1).search("").draw();
             }
         });
         // Seleccionar/Deseleccionar todos los checkboxes

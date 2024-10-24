@@ -19,16 +19,30 @@ if (isset($_SESSION['bien'])) {
     <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=actualizar&bien=<?php echo $bien['id'] ?>" method="POST" class="w-50" >
         <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
         <div class="mb-3">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
+          <label for="entrada_id">Entrada : </label>
+          <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
+            <?php foreach ($_SESSION["entradas"] as $entrada): ?>
+                <?php if ($entrada['id'] == $bien["entrada_bien_id"]): ?>
+                    <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
+                    <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
+        <div class="mb-3">
+            <label for="fecha_alta">Fecha de alta:</label>
+            <input type="text" name="fecha_alta" class="form-control"value="<?php 
+            $fecha = $bien['fecha_alta'];
+            $nueva_fecha = date("d-m-Y",strtotime($fecha));
+            echo $nueva_fecha; 
+            ?>" readonly>
+        </div>       
         <div class="mb-3">
             <label for="descripcion">Código:</label>
             <input type="text" name="codigo" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
         </div>    
         <div class="mb-3">
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $bien['precio']; ?>" required>
+            <label for="descripcion">Descripción:</label>
+            <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
         </div>
         <div class="mb-3">
             <label for="centro">Centro:</label>
@@ -54,7 +68,7 @@ if (isset($_SESSION['bien'])) {
                     <option value="11" <?php if ($bien['departamento'] == '11') echo 'selected'; ?>>Sala Juntas</option>
                     <option value="12" <?php if ($bien['departamento'] == '12') echo 'selected'; ?>>Sala Reuniones</option>
                 </select>
-        </div>
+        </div>        
         <div class="mb-3">
             <label for="tipo_bien">Tipo de Bien:</label>
             <select name="tipo_bien" required>
@@ -89,9 +103,12 @@ if (isset($_SESSION['bien'])) {
             </select>
         </div>
         <div class="mb-3">
-            <label for="fecha_alta">Fecha de alta:</label>
-            <input type="text" name="fecha_alta" class="form-control"value="<?php echo $bien['fecha_alta']; ?>" readonly>
-        </div>       
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $bien['precio']; ?>" required>
+        </div>
+
+
+
         <div class="mb-3">
             <label for="tipo_bien">Causa de baja: </label>
             <select name="causa_baja" >
@@ -104,16 +121,7 @@ if (isset($_SESSION['bien'])) {
                 <option value="Otras causas"<?php if ($bien['causa_baja'] == "Otras causas") echo 'selected'; ?>>Otras causas</option>
             </select>
         </div>
-        <div class="mb-3">
-          <label for="entrada_id">Entrada : </label>
-          <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
-            <?php foreach ($_SESSION["entradas"] as $entrada): ?>
-                <?php if ($entrada['id'] == $bien["entrada_bien_id"]): ?>
-                    <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
-                    <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
+
         
         <div class="button-container mt-5">
                 <!-- Boton actualizar -->

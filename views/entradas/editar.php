@@ -27,6 +27,7 @@ if (isset($_SESSION['entrada'])) {
         <div class="mb-3">
             <label for="proveedor_id" class="form-label">Proveedor:</label>
             <select name="proveedor_id" required>
+                <option value="" default>Selecciona un proveedor</option>
                 <?php foreach ($_SESSION['proveedores'] as $proveedor): ?>
                     <option value="<?php echo $proveedor['id']; ?>" <?php if ($proveedor['id'] == $entrada['proveedor_id']) echo 'selected'; ?>>
                         <?php echo $proveedor['nombre'] ?>

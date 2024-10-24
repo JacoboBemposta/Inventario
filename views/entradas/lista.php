@@ -9,6 +9,7 @@ if (isset($_SESSION['entradas'])) {
 } else {
   $entradas = []; // Manejar si no hay entradas en la sesión
 }
+
 ?>
 
 <!-- Modal para seleccionar el motivo de eliminación del bien-->
@@ -45,33 +46,18 @@ if (isset($_SESSION['entradas'])) {
   </div>
 </div>
 
-<!-- Modal para mostrar los bienes -->
-<div class="modal fade" id="modalBienes" tabindex="-1" aria-labelledby="modalBienesLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalBienesLabel">Bienes de la Entrada</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="bienesContent">
-          <!-- Aquí se insertará dinámicamente la tabla de bienes -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Vista de la lista de entradas-->
+
+
+<!-- Vista de la página-->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
+  <!-- Título centrado -->
   <h1 class="text-center">Lista de Entradas</h1>
+  <!-- Tabla entradas-->
 
   <table class="display" id="entradas-table" style="width:60vw" cellpadding="5" cellspacing="0">
     <thead>
-      <tr>
+      <tr id="encabezado-tabla">
         <th style="text-align: center;">Cuenta facturación</th>
         <th style="text-align: center;">Descripción</th>
         <th style="text-align: center;">Fecha de Compra</th>
@@ -81,13 +67,13 @@ if (isset($_SESSION['entradas'])) {
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($entradas as $entrada) { ?>
-        <tr>
+      <?php foreach ($entradas as $key => $entrada) { ?>
+        <tr id="entrada-<?php echo $entrada['id']; ?>">
           <td style="text-align: center;"><?php echo $entrada['cuenta_contable']; ?></td>
           <td style="font-weight: bold; color: #2c3e50;text-align: center;"><?php echo $entrada['descripcion']; ?></td>
           <td style="text-align: center;"><?php echo $entrada['fecha_compra']; ?></td>
           <td style="text-align: center;"><?php echo $entrada['precio']; ?></td>
-          <td style="text-align: center;"><?php echo sizeof($_SESSION['bienesPorEntrada'][$entrada["id"]]); ?></td>
+          <td style="text-align: center;"><?php echo $_SESSION['entradas'][$key]['numbienes']; ?></td>
           <td style="text-align: center;" class="d-flex align-items-center">
             <!-- Botón editar entrada-->
             <button
@@ -99,8 +85,8 @@ if (isset($_SESSION['entradas'])) {
               <img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem">
             </button>
             <!-- Botón  desplegar/ocultar la lista de bienes -->
-            <button onclick="showBienesModal(<?php echo $entrada['id']; ?>)">
-              <img src="<?php echo ROOT_PATH; ?>public/images/play.jpg" alt="Ver Bienes" class="iconoItem">
+            <button onclick="showBienes(<?php echo $entrada['id']; ?>, this)">
+              <img src="<?php echo ROOT_PATH; ?>public/images/play.png" alt="Ver Bienes" class="iconoItem">
             </button>
           </td>
         </tr>
@@ -120,7 +106,8 @@ if (isset($_SESSION['entradas'])) {
   </div>
 
   <!-- Botón subir CSV -->
-  <div class="d-flex justify-content-center mt-2 ">
+  <div class="d-flex justify-content-center mt-5 ">
+
     <div class="login-form d-flex justify-content-center mt-5">
       <form action="<?php echo ENT_PATH ?>importar.php" method="post">
         <button type="imput" class="login-form">
@@ -151,7 +138,10 @@ if (isset($_SESSION['entradas'])) {
       lengthMenu: 'Mostrar _MENU_ registros por página',
       zeroRecords: 'No se encontraron registros',
     },
-
+    order: [
+      [1, 'asc'],
+      [0, 'asc']
+    ]
   });
 
 
@@ -172,7 +162,7 @@ if (isset($_SESSION['entradas'])) {
 
     // Si el usuario confirma, redirigir a la URL de eliminación con el motivo
     if (confirmacion) {
-      console.log("confirmado");
+
       window.location.href = '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=eliminar&bien=' + bienAEliminar + '&motivo=' + encodeURIComponent(motivo);
     }
 
@@ -183,87 +173,128 @@ if (isset($_SESSION['entradas'])) {
 
 
   //desplegar/ocultar la lista de bienes
-  function showBienesModal(idEntrada) {
-    var bienesContent = '';
-    // Botón "Añadir"
-
-    var bienesPorEntrada = <?php echo json_encode($_SESSION['bienesPorEntrada']);
+  function showBienes(idEntrada, boton) {
+    // Obtener la fila de bienes correspondiente
+    const bienesRow = $('#bienesRow-' + idEntrada);
 
 
-                            ?>;
-    if (bienesPorEntrada[idEntrada] && bienesPorEntrada[idEntrada].length > 0) {
-      bienesContent += '<table class="bienes-table" id="bienes-table" style="width: 100%; border: 1px solid black;" cellpadding="5" cellspacing="0">';
-      bienesContent += '<thead><tr>';
-      bienesContent += '<th style="text-align: center;">Descripción</th>';
-      bienesContent += '<th style="text-align: center;">Precio</th>';
-      bienesContent += '<th style="text-align: center;">Código</th>';
-      bienesContent += '<th style="text-align: center;">Estado</th>';
-      bienesContent += '<th style="text-align: center;">Acciones</th>';
-      bienesContent += '</tr></thead><tbody>';
-
-      // Generar el contenido de la tabla dinámicamente
-      bienesPorEntrada[idEntrada].forEach(function(bien) {
-        bienesContent += '<tr>';
-        bienesContent += '<td style="text-align: center;">' + bien['descripcion'] + '</td>';
-        bienesContent += '<td style="text-align: center;">' + bien['precio'] + '</td>';
-        bienesContent += '<td style="text-align: center;">' + bien['codigo'] + '</td>';
-        //switch para activar/desactivar el estado del bien
-        bienesContent += '<td style="text-align: center;">';
-        bienesContent += '<div class="form-check form-switch ml-2">';
-
-        // marcado del check segun el estado
-        let switchChecked = bien['estado'] == 1 ? 'checked' : '';
-        bienesContent += '<input class="form-check-input" type="checkbox" role="switch" id="switch' + bien['id'] + '" ' + switchChecked + ' onchange="cambiarEstado(' + bien['id'] + ', this.checked)">';
-        bienesContent += '<label class="form-check-label" for="switch' + bien['id'] + '">' + (bien['estado'] == 1 ? 'Activo' : 'Inactivo') + '</label>';
-        bienesContent += '</div></td>';
-        bienesContent += '<td style="text-align: center;" >';
-        // Botón "Editar"
-        bienesContent += '<button onclick="window.location.href=\'<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=editar&bien=' + bien['id'] + '\'">';
-        bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/editar.webp" alt="Editar" class="iconoItem"> ';
-        bienesContent += '</button> ';
-        // Botón "Eliminar"
-        bienesContent += '<button onclick="eliminarBien(' + bien['id'] + ')">';
-        bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/eliminar.jpg" alt="Eliminar" class="iconoItem"> ';
-        bienesContent += '</button>';
-        bienesContent += '</td>';
-        bienesContent += '</tr>';
-
-      });
-      bienesContent += '</tbody></table>';
-      bienesContent += '<div class="container mt-5" style="display: flex;justify-content: center; align-items: center; ">';
-      bienesContent += '<button onclick="window.location.href=\'<?php echo BIEN_PATH ?>crear.php?entrada=' + idEntrada + '\'">';
-      bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/add.png" alt="Añadir" class="iconoItem"> Añadir bien';
-      bienesContent += '</button>';
-      bienesContent += '</div>';
-    } else {
-      bienesContent = '<p>No hay bienes que mostrar</p>';
-      bienesContent += '<button onclick="window.location.href=\'<?php echo BIEN_PATH ?>crear.php?entrada=' + idEntrada + '\'">';
-      bienesContent += '<img src="<?php echo ROOT_PATH; ?>public/images/add.png" alt="Añadir" class="iconoItem"> Añadir bien';
-      bienesContent += '</button>';
+    // Si la fila ya existe y está visible, la ocultamos
+    if (bienesRow.length > 0 && bienesRow.is(':visible')) {
+      bienesRow.hide(); // Usamos slideUp para un efecto de ocultación más suave
+      return; // Terminamos la función si ocultamos la fila
     }
 
-    // Insertar el contenido en el modal
-    document.getElementById('bienesContent').innerHTML = bienesContent;
+    // Ocultar todas las filas de bienes visibles antes de mostrar la nueva
+    $('tr[id^="bienesRow"]').hide(); // Ocultamos las demás filas de bienes con slideUp
 
-    // Mostrar el modal de Bienes
-    $('#modalBienes').modal('show');
-    new DataTable('#bienes-table', {
-      language: {
-        info: 'Mostrando página _PAGE_ de _PAGES_',
-        infoEmpty: 'No hay registros disponibles',
-        infoFiltered: '(filtrado de _MAX_ registros totales)',
-        lengthMenu: 'Mostrar _MENU_ registros por página',
-        zeroRecords: 'No se encontraron registros',
+    // Si la fila de bienes no existe, la creamos
+    if (bienesRow.length === 0) {
+      // Crea la nueva fila
+      const newRow = `
+            <tr id="bienesRow-${idEntrada}" style="width:90%;">
+                <td style="display:none"></td>
+                <td colspan="6">
+                    <div id="bienesContent-${idEntrada}" class="container" style="background-color: #f0f0f0; padding: 10px; width: 90%; margin: 0 auto;">
+                        <!-- Aquí se insertará la tabla de bienes -->
+                    </div>
+                </td>
+                <td style="display:none"></td>
+                <td style="display:none"></td>
+                <td style="display:none"></td>
+                <td style="display:none"></td>
+            </tr>
+        `;
+
+      // Inserta la nueva fila después de la fila de entrada correspondiente
+      $('#entrada-' + idEntrada).after(newRow);
+    }
+
+    // Si la fila está oculta o acabamos de crearla, muestra la fila
+    $(boton).prop('disabled', true); // Desactiva el botón mientras se carga el contenido
+
+    // Realiza la solicitud AJAX para obtener los bienes de la entrada actual
+    $.ajax({
+      url: '<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=bienporID',
+      type: 'POST',
+      data: {
+        idEntrada: idEntrada
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (typeof response !== 'object') {
+          response = JSON.parse(response);
+        }
+
+        var bienesContent = '';
+
+        // Si hay bienes, construimos el contenido de la tabla
+        if (response.length > 0) {
+          bienesContent += '<table class="display" style="width: 100%; background-color: #f8f9fa; border: 1px solid #ccc;" cellpadding="5" cellspacing="0">';
+          bienesContent += '<thead><tr>';
+          bienesContent += '<th style="text-align: center;width:35%">Descripción</th>';
+          bienesContent += '<th style="text-align: center;">Precio</th>';
+          bienesContent += '<th style="text-align: center;">Código</th>';
+          bienesContent += '<th style="text-align: center;">Estado</th>';
+          bienesContent += '<th style="text-align: center;">Acciones</th>';
+          bienesContent += '</tr></thead><tbody>';
+
+          response.forEach(function(bien) {
+            bienesContent += '<tr>';
+            bienesContent += '<td style="text-align: center; width: 35%">' + bien.descripcion + '</td>';
+            bienesContent += '<td style="text-align: center;">' + bien.precio + '</td>';
+            bienesContent += '<td style="text-align: center;">' + bien.codigo + '</td>';
+            bienesContent += '<td style="text-align: center;">';
+            let switchChecked = bien.estado == 1 ? 'checked' : '';
+            bienesContent += '<div class="form-check form-switch ml-2">';
+            bienesContent += '<input class="form-check-input" type="checkbox" role="switch" id="switch' + bien.id + '" ' + switchChecked + ' onchange="cambiarEstado(' + bien.id + ', this.checked)">';
+            bienesContent += '<label class="form-check-label" for="switch' + bien.id + '">' + (bien.estado == 1 ? 'Activo' : 'Inactivo') + '</label>';
+            bienesContent += '</div></td>';
+            bienesContent += '<td style="text-align: center;">';
+            bienesContent += '<button onclick="window.location.href=\'../../controllers/IndexController.php?ctrl=bienes&opcion=editar&bien=' + bien.id + '\'">';
+            bienesContent += '<img src="../../public/images/editar.webp" alt="Editar" class="iconoItem">';
+            bienesContent += '</button>';
+            bienesContent += '<button type="button" onclick="eliminarBien(' + bien.id + ')">';
+            bienesContent += '<img src="../../public/images/eliminar.jpg" alt="Eliminar" class="iconoItem">';
+            bienesContent += '</button>';
+            bienesContent += '</td>';
+            bienesContent += '</tr>';
+          });
+
+          bienesContent += '</tbody></table>';
+          bienesContent += '<div class="container mt-5" style="display: flex; justify-content: center; align-items: center;">';
+          bienesContent += '<button onclick="window.location.href=\'../../views/bienes/crear.php?entrada=' + idEntrada + '\'">';
+          bienesContent += '<img src="../../public/images/add.png" alt="Añadir" class="iconoItem"> Añadir bien';
+          bienesContent += '</button></div>';
+        } else {
+          // Si no hay bienes, mostrar un mensaje
+          bienesContent = '<div class="container d-flex flex-column justify-content-center align-items-center"><p>No hay bienes que mostrar</p>';
+          bienesContent += '<button onclick="window.location.href=\'../../views/bienes/crear.php?entrada=' + idEntrada + '\'">';
+          bienesContent += '<img src="../../public/images/add.png" alt="Añadir" class="iconoItem"> Añadir bien';
+          bienesContent += '</button></div>';
+        }
+
+        // Actualiza el contenido de bienes
+        $('#bienesContent-' + idEntrada).html(bienesContent);
+
+        // Muestra la fila de bienes
+        $('#bienesRow-' + idEntrada).show(800);
+
+        // Inicializa DataTable para la tabla de bienes
+        $('#bienesRow-' + idEntrada + ' table.display').DataTable();
+
+        // Reactivar el botón
+        $(boton).prop('disabled', false);
+      },
+      error: function() {
+        alert('Ocurrió un error al obtener los bienes.');
+        $(boton).prop('disabled', false);
       }
     });
-
-
   }
 
 
+
   function eliminarBien(idBien) {
-    // Ocultar la tabla de bienes
-    $('#modalBienes').modal('hide');
     // Guardar el ID del bien que se quiere eliminar
     bienAEliminar = idBien;
 
@@ -290,8 +321,9 @@ if (isset($_SESSION['entradas'])) {
         estado: nuevoEstado,
       },
       dataType: 'json',
+
       success: function(response) {
-        console.log(response); // Verifica qué está devolviendo el servidor
+
         if (typeof response !== 'object') {
           response = JSON.parse(response);
         }
@@ -309,11 +341,4 @@ if (isset($_SESSION['entradas'])) {
       }
     });
   }
-
-
-  // Escucha cuando el modal se cierre
-  $('#modalBienes').on('hidden.bs.modal', function() {
-    // Recarga la vista completa
-    window.location.href = "/proyects/inventario/controllers/IndexController.php?ctrl=entradas&opcion=ver";
-  });
 </script>

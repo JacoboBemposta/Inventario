@@ -9,7 +9,7 @@ require_once "../../config/auth.php";
         <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=entradas&opcion=importar" method="POST" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
             <!-- input CSV -->
             <div class="mb-3 w-50">
-                <input type="file" name="archivocsv" class="form-control" required>
+            <input type="file" name="archivocsv" class="form-control" accept=".csv" required>
             </div>
             <!-- Botón CSV -->
             <button type="submit" class="login-form">

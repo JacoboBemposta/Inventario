@@ -70,6 +70,7 @@
     background: -webkit-linear-gradient(to right, #ffffff, #861636); 
     
     background: linear-gradient(to right, #ffffff, #861636); 
+    color:rgba(26, 22, 22, 0.33);
     
     } 
    
@@ -203,7 +204,7 @@
   padding: 0 5px; 
   } 
   
-   
+
   
   /*---------------------------------------------*/  
   
@@ -434,13 +435,13 @@
     
     border-radius: 50%; 
     } 
-  nav.navbar  { 
+   nav.navbar  { 
   
-  background: -webkit-linear-gradient(to right, #ffffff, #a2a8a4); 
-  background: linear-gradient(to right, #ffffff, #a2a8a4);  
+  background: -webkit-linear-gradient(to right, #ffffff, #b0b2b1); 
+  background: linear-gradient(to right, #ffffff, #b0b2b1);  
   border-radius: 0 0 10px 10px; 
   } 
-  
+   
    
   
   nav.navbar li.nav-item a.nav-link{ 
@@ -450,7 +451,7 @@
   display: inline-block; 
   font-family: 'Verdana', cursive; 
   padding: 0 20px; 
-  } 
+  }  
   
   nav.navbar li.nav-item a.nav-link::after{ 
   
@@ -458,7 +459,7 @@
   display: block; 
   width: 0; 
   height: 2px; 
-  background: #fff; 
+  background: #861636; 
   transition: width .3s; 
   } 
   

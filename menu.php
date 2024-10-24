@@ -18,6 +18,7 @@ if ($_SESSION["login"] != "Invitado") { ?>
         <!-- Bootstrap CSS y datatables -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
 
         <!-- Scripts de Bootstrap y datatables-->
         <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js"></script>
