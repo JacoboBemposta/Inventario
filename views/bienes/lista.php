@@ -153,6 +153,11 @@ if (isset($_SESSION['bienestotal'])) {
                 </thead>
             <tbody>
                 <?php foreach ($bienes as $bien) { 
+                        //Dar formato al codigo 
+                        $contador = intval($bien["id"]);
+                        if ($contador > 9999) $contador = $contador - 9999;
+
+                        $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT);
 
                         $tipo_bien = '';
                         switch ($bien["tipo_bien"]) {
@@ -315,6 +320,7 @@ if (isset($_SESSION['bienestotal'])) {
                                 break;
                         }
                         ?>
+                        
                     <tr>
                         <td style="text-align: center; padding: 10px;min-height:7vh;">
                             <input type="checkbox" name="bienes[]" value="<?php echo $bien['id']; ?>"> <!-- Checkbox para seleccionar el bien -->
@@ -322,7 +328,7 @@ if (isset($_SESSION['bienestotal'])) {
                         <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['cuenta_contable']; ?></td>
                         <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['descripcion']; ?></td>
                         <td style="text-align: center; padding: 10px;"><?php echo $bien["fecha_alta"]; ?></td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['codigo']; ?></td>
+                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?></td>
                         <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $estado; ?></td>
                         <td style="text-align: center; padding: 10px;"hidden><?php echo $bien['precio']; ?></td>
                         <td style="text-align: center; padding: 10px;" hidden><?php echo $centro; ?></td>
@@ -331,19 +337,33 @@ if (isset($_SESSION['bienestotal'])) {
                         
                         <td style="text-align: center; padding: 10px;" class="d-flex justify-content-center align-items-center">
                             <?php
-                            // Generar códigos QR //
-                            $contenido = $bien["descripcion"] . "\n"; // Contenido del QR
+                                $fechaCompra = $bien["fecha_compra"];
 
+                                // Formateo de fechas
+                                $date = DateTime::createFromFormat('Y-m-d', $fechaCompra);
+                                if ($date) {
+                                    $fechaFormateada = $date->format('d/m/Y');
+                                } else {
+                                    $fechaFormateada = 'Fecha no válida'; 
+                                }
+                            
+                            $contenido = "";
+                            $contenido .= $bien["nombre"] . "\n";
+                            $contenido .= $bien["descripcion"] . "\n";
+                            $contenido .= $bien["cuenta_contable"] . "\n";
+                            $contenido .= $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo . "\n";
+                            $contenido .= $fechaFormateada. "\n";
+                            
                             // Si no existe la ruta, la crea
                             if (!file_exists(TEMP_PATH)) mkdir(TEMP_PATH);
 
-                            $filename = TEMP_PATH . html_entity_decode($bien["codigo"]) . '.png'; // Crea el archivo .png en la ruta indicada
+                            $filename = TEMP_PATH . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png'; // Crea el archivo .png en la ruta indicada
                             $tamanho = 1; // tamaño de la imagen
                             $level = 'H'; // tipo de precision
                             $framesize = 3; // marco del qr en blanco
                             QRcode::png($contenido, $filename, $level, $tamanho, $framesize);
 
-                            echo '<img style="width: 100%; height: 100%" src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien["codigo"]) . '.png">';
+                            echo '<img style="width: 100%; height: 100%" src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png">';
                             ?>
                         </td>
 
@@ -394,7 +414,7 @@ if (isset($_SESSION['bienestotal'])) {
             },
             // Definimos la columna que contiene fechas para que aplique el formato de orden y visualización
             columnDefs:[{targets:3, render:function(data){
-            return moment(data).format('DD-MM-YYYY');
+            return moment(data).format('DD/MM/YYYY');
             }}]            
         });
         // Evento keyup para el codigo

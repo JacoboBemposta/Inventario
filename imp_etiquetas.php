@@ -76,7 +76,7 @@ foreach ($_SESSION["bienes"] as $bien) {
 
     $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT); // Añadir ceros a la izquierda para completar 4 dígitos
 
-    if (isset($_SESSION["bienes"])) $nombre = $bien["codigo"];
+    if (isset($_SESSION["bienes"])) $nombre = $bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo;
     else $nombre = "test";
 
 
@@ -220,11 +220,22 @@ foreach ($_SESSION["bienes"] as $bien) {
             $tipo_bien = "Bien sin identificar";
             break;
     }
+    $fechaCompra = $bien["fecha_compra"];
+
+    // Formateo de fechas
+    $date = DateTime::createFromFormat('Y-m-d', $fechaCompra);
+    if ($date) {
+        $fechaFormateada = $date->format('d/m/Y');
+    } else {
+        $fechaFormateada = 'Fecha no válida'; 
+    }
+
     $contenido = "";
+    $contenido .= $bien["nombre"] . "\n";
     $contenido .= $bien["descripcion"] . "\n";
     $contenido .= $bien["cuenta_contable"] . "\n";
-    $contenido .= "Código: " . $codigo . "\n";
-    $contenido .= $bien["fecha_compra"] . "\n";
+    $contenido .= $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo . "\n";
+    $contenido .= $fechaFormateada. "\n";
     // $contenido .= "Fecha de inicio amortizacion: " . $bien["fecha_inicio_amortizacion"]."\n" ;
     //$contenido .= "Precio: " . $bien["precio"]."\n" ;
     // $contenido .= "Porcentaje de amortizacion: " . $bien["porcentaje_amortizacion"]."\n" ;
@@ -232,7 +243,6 @@ foreach ($_SESSION["bienes"] as $bien) {
     // $contenido .= "Tipo de bien: " . $tipo_bien."\n" ;
     // $contenido .= "Departamento : " . $departamento."\n" ;
     // $contenido .= "Factua: " . $bien["numero_factura"]."\n" ;
-    $contenido .= $bien["nombre"] . "\n";
     // $contenido .= "Fecha de baja: " . $bien["fecha_baja"]."\n" ;
     // $contenido .= "Causa de baja: " . $bien["causa_baja"]."\n" ;
 

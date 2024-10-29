@@ -236,10 +236,18 @@ if ($ctrl == "usuarios") {
             header("Location: " . ENT_PATH . 'lista.php');
             break;
 
-        case 'eliminar':
-            
-            $objeto->eliminar($_GET['motivo'], $_GET['bien']);
+        case 'eliminarbien':
+            header('Content-Type: application/json');
+
+            $resultado=$objeto->eliminar($_POST['bien_id']);
+            if ($resultado) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al actualizar la base de datos']);
+            }
+            exit;
             $entrada->listarEntradas();
+
             header("Location: " . ENT_PATH . 'lista.php');
             break;
 
@@ -313,17 +321,38 @@ if ($ctrl == "usuarios") {
                         $_SESSION["bienes"][] = $bien;
                     }
                 }
+   
                 header("Location: " . ROOT_PATH . 'pdf.php');
             }
             break;
 
-        case 'estadoBien':
-            if (isset($_POST['estado'], $_POST['bien_id'])) {
-                $nuevoEstado = $_POST['estado'];
-                $bienId = $_POST['bien_id'];
-                $resultado = $objeto->actualizaEstado($nuevoEstado, $bienId);
+            case 'estadoBien':
+                header('Content-Type: application/json'); // Nos aseguramos el tipo de respuesta JSON
+            
+                if (isset($_POST["motivo"],$_POST['nuevoEstado'], $_POST['bien_id'])) {
+                    $nuevoEstado = $_POST['nuevoEstado'];
+                    $bienId = $_POST['bien_id'];
+                    $motivo = $_POST["motivo"] ?? "No especificado";
+            
+                    // Llamada al modelo y a la función del controlador
+                    $resultado = $objeto->actualizaEstado($motivo, $nuevoEstado, $bienId);
+            
+                    if ($resultado) {
+                        echo json_encode(['success' => true]);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Error al actualizar la base de datos']);
+                    }
+                     } else {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Parámetros faltantes',
+                        'debug' => [
+                            'POST_data' => $_POST, // Muestra todos los datos recibidos
+                        ]
+                    ]);
+                }
                 exit;
-            }
+            
             break;
 
         default:

@@ -27,10 +27,7 @@ if (isset($_SESSION['entradas'])) {
                     <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <div class="mb-3 w-50">
-                <label for="codigo" class="form-label">Codigo:</label>
-                <input type="text" name="codigo" class="form-control"  required>
-            </div>                       
+                       
             </div>
             <div class="mb-3 w-50">
                 <label for="descripcion" class="form-label">Descripción:</label>

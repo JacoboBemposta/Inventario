@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php" colors="true">
+    <testsuite name="Test directory">
+        <directory>tests</directory>
+    </testsuite>
+    <php>
+        <env name="DB_HOST" value="localhost"/>
+        <env name="DB_NAME" value="inventario_test"/> <!-- Base de datos de pruebas -->
+        <env name="DB_USER" value="root"/> <!-- Usuario de pruebas -->
+        <env name="DB_PASS" value=""/> <!-- Contraseña de pruebas -->
+    </php>
+</phpunit>

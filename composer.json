@@ -3,5 +3,13 @@
         "spipu/html2pdf": "^4.6",
         "phpoffice/phpword": "^1.3",
         "dompdf/dompdf": "^1.0"
-    }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "models\\": "models/"
+        }    
+}
 }

@@ -94,6 +94,8 @@ class BienesController
     public function crear()
     {
         $bienModel = new Bienes();
+
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                 $_SESSION["error"] = "Error en el envio del formulario";
@@ -134,16 +136,11 @@ class BienesController
                 header("Location: " . BIEN_PATH . "crear.php");
                 die;
             }
-            $codigo = $_POST["codigo"];
-            if ($codigo != strip_tags($codigo)) {
-                $_SESSION["error"] = "Formato incorrecto";
-                header("Location: " . BIEN_PATH . "crear.php");
-                die;
-            }
+
 
             $entrada_bien_id = htmlspecialchars($_POST["entrada_bien_id"]);
             // Guardar el bien en la base de datos
-            $bienModel->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $codigo, $entrada_bien_id);
+            $bienModel->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id);
         }
     }
 
@@ -206,21 +203,22 @@ class BienesController
             $bienModel->editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja);
             //eliminar si se ha seleccionado una causa de baja
             if ($causa_baja != "NULL") {
-                $bienModel->eliminarBien($causa_baja, $id);
+                $bienModel->desactivarbien($causa_baja, $id);
             }
         }
     }
 
     // Elimina (lógicamente) un bien de la base de datos
-    public function eliminar($motivo, $id)
+    public function eliminar($id)
     {
         $bienModel = new Bienes();
-        $bienModel->eliminarBien($motivo, $id);
+        return $bienModel->eliminarBien($id);
     }
 
-    public function actualizaEstado($nuevoEstado, $bienId)
+    public function actualizaEstado($motivo, $nuevoEstado,$bienId)
     {
         $bienModel = new Bienes();
-        $resultado = $bienModel->actualizaEstado($nuevoEstado, $bienId);
+        $resultado = $bienModel->actualizaEstado($motivo, $nuevoEstado,$bienId);
+        return $resultado;
     }
 }

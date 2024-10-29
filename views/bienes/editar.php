@@ -8,7 +8,11 @@ if (isset($_SESSION['bien'])) {
 } else {
     $bien = []; // Manejar si no hay proveedores en la sesión
 }
+    //Dar formato al codigo 
+    $contador = intval($bien["id"]);
+    if ($contador > 9999) $contador = $contador - 9999;
 
+    $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT);
 ?>
 <!-- Formulario para editar un bien existente -->
 <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
@@ -38,7 +42,8 @@ if (isset($_SESSION['bien'])) {
         </div>       
         <div class="mb-3">
             <label for="descripcion">Código:</label>
-            <input type="text" name="codigo" class="form-control"value="<?php echo $bien['codigo']; ?>" readonly>
+            <input type="text" name="codigo" class="form-control" value="<?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?>" readonly>
+
         </div>    
         <div class="mb-3">
             <label for="descripcion">Descripción:</label>

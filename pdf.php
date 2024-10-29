@@ -138,6 +138,16 @@ if (empty($bienes)) {
             <tbody>';
 
     foreach ($bienes as $bien) {
+
+        $contador = intval($bien["id"]);
+        if ($contador > 9999) $contador = $contador - 9999;
+    
+        $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT); // Añadir ceros a la izquierda para completar 4 dígitos
+    
+        if (isset($_SESSION["bienes"])) $nombre = $bien['centro'] .' '. $bien['departamento'] .' '.$bien['tipo_bien'].' '. $codigo;
+        else $nombre = "test";
+        
+        
         $tipo_bien = '';
         switch ($bien["tipo_bien"]) {
             case 'ME':
@@ -225,17 +235,29 @@ if (empty($bienes)) {
                 $tipo_bien = "Puntero";
                 break;
             case 'FU':
-                $tipo_bien_ = "Funda";
+                $tipo_bien = "Funda";
                 break;
             default:
                 $tipo_bien = "Bien sin identificar";
                 break;
         }
+
+        $fechaAlta = $bien["fecha_alta"];
+
+        // Formateo de fechas
+        $date = DateTime::createFromFormat('Y-m-d', $fechaAlta);
+        if ($date) {
+            $fechaFormateada = $date->format('d/m/Y');
+        } else {
+            $fechaFormateada = 'Fecha no válida'; 
+        }
+        
+
         $html .= '<tr>
             <td>' . $bien['cuenta_contable'] . '</td>
             <td>' . $tipo_bien . '</td>
-            <td>' . $bien['codigo'] . '</td>
-            <td>' . $bien["fecha_alta"] . '</td>
+            <td>' . $nombre . '</td>
+            <td>' . $fechaFormateada . '</td>
         </tr>';
     }
 
