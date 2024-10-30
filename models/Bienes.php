@@ -13,13 +13,12 @@ class Bienes
     {
         $this->db = \DB::connect();
     }
-    public function getDbConnection()
-    {
+    public function getDbConnection(){
         return $this->db;
     }
+    
     // Obtener todos los bienes de una entrada específica
-    public function obtenerPorEntradaId($entrada_bien_id)
-    {
+    public function obtenerPorEntradaId($entrada_bien_id){
         $sql = "SELECT * FROM bienes WHERE entrada_bien_id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$entrada_bien_id]);
@@ -27,16 +26,15 @@ class Bienes
     }
 
     // Obtener un bien específico
-    public function obtenerBien($id)
-    {
+    public function obtenerBien($id){
         $sql = "SELECT * FROM bienes WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
     // Obtener un bien por su ID
-    public function obtenerPorId($id)
-    {
+    public function obtenerPorId($id){
         $query = "SELECT 
         b.*,
         eb.descripcion as nombre,
@@ -55,71 +53,67 @@ class Bienes
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
     //busqueda de bienes con filtro
-public function buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha_inicio, $fecha_fin, $descripcion, $cuenta)
-{
-    $query = "SELECT b.*, eb.cuenta_contable 
-              FROM bienes AS b 
-              JOIN entradas_bienes AS eb ON b.entrada_bien_id = eb.id 
-              WHERE 1=1";
+    public function buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha_inicio, $fecha_fin, $descripcion, $cuenta){
+        $query = "SELECT b.*, eb.cuenta_contable 
+                FROM bienes AS b 
+                JOIN entradas_bienes AS eb ON b.entrada_bien_id = eb.id 
+                WHERE 1=1";
+        $params = [];
 
-    $params = [];
+        if ($centro !== null) {
+            $query .= " AND b.centro = ?";
+            $params[] = $centro;
+        }
 
-    if ($centro !== null) {
-        $query .= " AND b.centro = ?";
-        $params[] = $centro;
-    }
+        if ($departamento !== null) {
+            $query .= " AND b.departamento = ?";
+            $params[] = $departamento;
+        }
 
-    if ($departamento !== null) {
-        $query .= " AND b.departamento = ?";
-        $params[] = $departamento;
-    }
+        if ($tipo_bien !== null) {
+            $query .= " AND b.tipo_bien = ?";
+            $params[] = $tipo_bien;
+        }
 
-    if ($tipo_bien !== null) {
-        $query .= " AND b.tipo_bien = ?";
-        $params[] = $tipo_bien;
-    }
+        if ($estado !== null) {
+            $query .= " AND b.estado = ?";
+            $params[] = $estado;
+        }
 
-    if ($estado !== null) {
-        $query .= " AND b.estado = ?";
-        $params[] = $estado;
-    }
+        if ($fecha_inicio !== null && $fecha_fin !== null) {
+            $query .= " AND b.fecha_alta BETWEEN ? AND ?";
+            $params[] = $fecha_inicio;
+            $params[] = $fecha_fin;
+        }
 
-    if ($fecha_inicio !== null && $fecha_fin !== null) {
-        $query .= " AND b.fecha_alta BETWEEN ? AND ?";
-        $params[] = $fecha_inicio;
-        $params[] = $fecha_fin;
-    }
+        if ($descripcion !== null) {
+            $query .= " AND b.descripcion LIKE ?";
+            $params[] = '%' . $descripcion . '%';
+        }
 
-    if ($descripcion !== null) {
-        $query .= " AND b.descripcion LIKE ?";
-        $params[] = '%' . $descripcion . '%';
-    }
+        if ($cuenta !== null) {
+            $query .= " AND eb.cuenta_contable = ?";
+            $params[] = $cuenta;
+        }
 
-    if ($cuenta !== null) {
-        $query .= " AND eb.cuenta_contable = ?";
-        $params[] = $cuenta;
-    }
-
-    $stmt = $this->db->prepare($query);
-    $stmt->execute($params);
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($params);
     
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
     // Obtener todos los bienes
-    public function obtenerBienes()
-    {
+    public function obtenerBienes(){
         $sql = "SELECT * FROM bienes WHERE activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-
     // Agregar un nuevo bien a una entrada
-    public function agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id)
-    {
+    public function agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id){
         if ($entrada_bien_id === null) {
             throw new \InvalidArgumentException("EL bien debe estar asociado a un ID de entrada correcto");
         }
@@ -130,11 +124,8 @@ public function buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha
         return $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id]);
     }
 
-
-
     // Editar un bien
-    public function editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja)
-    {
+    public function editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja){
 
         $sql = "UPDATE bienes 
                 SET descripcion = ?, precio = ?, centro = ?, departamento = ?, tipo_bien = ?, causa_baja = ?
@@ -145,11 +136,8 @@ public function buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha
         return $stmt->rowCount() > 0;
     }
 
-
-
     // Eliminación lógica de un bien (marcar como inactivo)
-    public function eliminarBien($id)
-    {
+    public function eliminarBien($id){
 
         $sql = "UPDATE bienes SET activo = 0, fecha_baja = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
@@ -157,9 +145,7 @@ public function buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha
         return $stmt->rowCount() > 0;
     }
 
-
-    public function actualizaEstado($motivo, $nuevoEstado,$bienId)
-    {
+    public function actualizaEstado($motivo, $nuevoEstado,$bienId){
         if ($nuevoEstado === null || !in_array($nuevoEstado, [0, 1])) {
             return false; // No se permite cambiar a null o a un estado no permitido
         }  

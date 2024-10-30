@@ -1,6 +1,7 @@
 <?php
 include "../../menu.php";
 require_once "../../config/auth.php";
+require_once "../../config/config.php";
 require_once '../../libs/phpqrcode/qrlib.php';
 include_once "../../csrf.php";
 @session_start();
@@ -12,7 +13,7 @@ if (isset($_SESSION['bienestotal'])) {
 } else {
     $bienes = []; // Manejar si no hay entradas en la sesión
 }
-
+ 
 ?>
 <!-- Incluir Moment.js para formatear la fecha en datatables -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -41,21 +42,10 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-departamento">Departamento:</label>
                     <select id="search-departamento" name="search-departamento" class="form-control">
-                        <option value="">Departamento</option>
-                        <option value="Administración">Administración</option>
-                        <option value="Almacén">Almacén</option>
-                        <option value="CAU">CAU</option>
-                        <option value="Comercial">Comercial</option>
-                        <option value="Consejeros">Consejeros</option>
-                        <option value="">Departamento</option>
-                        <option value="Dirección">Dirección</option>
-                        <option value="Jurídico">Jurídico</option>
-                        <option value="Marketing y comunicación">Marketing y comunicación</option>
-                        <option value="Patentes y Marcas">Patentes y Marcas</option>
-                        <option value="Sala Juntas">Sala Juntas</option>
-                        <option value="Sala Reuniones">Sala Reuniones</option>
-                        <option value="SIGA">SIGA</option>
-                        <option value="Técnico">Técnico</option>                        
+                    <option value="">Departamento</option>
+                    <?php foreach ($departamentos as $key => $value) {?>
+                        <option value="<?php echo $value?>"><?php echo $value?></option>
+                    <?php } ?>                          
                     </select>
                 </div>
 
@@ -63,34 +53,10 @@ if (isset($_SESSION['bienestotal'])) {
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="search-tipo-bien">Tipo de bien:</label>
                     <select id="search-tipo-bien" name="search-tipo-bien" class="form-control">
-                        <option value="">Tipo de bien</option>
-                        <option value="Alfombra">Alfombra</option>
-                        <option value="Armario">Armario</option>
-                        <option value="Bandeja">Bandeja</option>
-                        <option value="Buck">Buck</option>
-                        <option value="Cizalla">Cizalla</option>
-                        <option value="Destructora">Destructora</option>
-                        <option value="Equipo aire">Equipo aire</option>
-                        <option value="Escalera">Escalera</option>
-                        <option value="Estantería">Estantería</option>
-                        <option value="Funda">Funda</option>
-                        <option value="Impresora">Impresora</option>
-                        <option value="Ipad">Ipad</option>
-                        <option value="Lámpara">Lámpara</option>
-                        <option value="Mesa">Mesa</option>
-                        <option value="Monitor">Monitor</option>
-                        <option value="Perchero">Perchero</option>
-                        <option value="Policom">Policom</option>
-                        <option value="Reposapiés">Reposapiés</option>
-                        <option value="Ordenador">Ordenador</option>
-                        <option value="Roll-up">Roll-up</option>
-                        <option value="Scanner">Scanner</option>
-                        <option value="Silla">Silla</option>
-                        <option value="Soporte pc">Soporte pc</option>
-                        <option value="Pizarra">Pizarra</option>
-                        <option value="Puntero">Puntero</option>
-                        <option value="Televisión">Televisión</option>
-                        <option value="Webcam">Webcam</option>
+                    <option value="">Tipo de bien</option>
+                    <?php foreach ($tipo_bienes as $key => $value) {?>
+                        <option value="<?php echo $value?>"><?php echo $value?></option>
+                    <?php } ?>      
                     </select>
                 </div>
 
@@ -160,143 +126,18 @@ if (isset($_SESSION['bienestotal'])) {
                         $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT);
 
                         $tipo_bien = '';
-                        switch ($bien["tipo_bien"]) {
-                            case 'ME':
-                                $tipo_bien = "Mesa";
-                                break;
-                            case 'SI':
-                                $tipo_bien = "Silla";
-                                break;
-                            case 'AR':
-                                $tipo_bien = "Armario";
-                                break;
-                            case 'ES':
-                                $tipo_bien = "Estantería";
-                                break;
-                            case 'FU':
-                                $tipo_bien = "Funda";
-                                break;
-                            case 'BU':
-                                $tipo_bien = "Buck";
-                                break;
-                            case 'PI':
-                                $tipo_bien = "Pizarra";
-                                break;
-                            case 'IM':
-                                $tipo_bien = "Impresora";
-                                break;
-                            case 'SP':
-                                $tipo_bien = "Soporte PC";
-                                break;
-                            case 'BA':
-                                $tipo_bien = "Bandeja";
-                                break;
-                            case 'PE':
-                                $tipo_bien = "Perchero";
-                                break;
-                            case 'PA':
-                                $tipo_bien = "Papelera";
-                                break;
-                            case 'RE':
-                                $tipo_bien = "Reposapiés";
-                                break;
-                            case 'EX':
-                                $tipo_bien = "Extintor";
-                                break;
-                            case 'DE':
-                                $tipo_bien = "Destructora";
-                                break;
-                            case 'CI':
-                                $tipo_bien = "Cizalla";
-                                break;
-                            case 'AI':
-                                $tipo_bien = "Equipo Aire";
-                                break;
-                            case 'RU':
-                                $tipo_bien = "Roll up";
-                                break;
-                            case 'LA':
-                                $tipo_bien = "Lámpara";
-                                break;
-                            case 'EC':
-                                $tipo_bien = "Escalera";
-                                break;
-                            case 'AL':
-                                $tipo_bien = "Alfombra";
-                                break;
-                            case 'TV':
-                                $tipo_bien = "Televisión";
-                                break;
-                            case 'WC':
-                                $tipo_bien = "Webcam";
-                                break;
-                            case 'OR':
-                                $tipo_bien = "Ordenador";
-                                break;
-                            case 'MO':
-                                $tipo_bien = "Monitor";
-                                break;
-                            case 'VC':
-                                $tipo_bien = "Policom";
-                                break;
-                            case 'SC':
-                                $tipo_bien = "Scanner";
-                                break;
-                            case 'IP':
-                                $tipo_bien = "Ipad";
-                                break;
-                            case 'PU':
-                                $tipo_bien = "Puntero";
-                                break;
-                            case 'FU':
-                                $tipo_bien_ = "Funda";
-                                break;
-                            default:
-                                $tipo_bien = "Bien sin identificar";
-                                break;
+   
+                        foreach ($tipo_bienes as $key => $value) {
+                            if($bien["tipo_bien"] == $key) $tipo_bien=$value;
                         }
+
                         $departamento = "";
-                        switch ($bien["departamento"]) {
-                            case '00':
-                                $departamento = "SIGA";
-                                break;
-                            case '01':
-                                $departamento = "Técnico";
-                                break;
-                            case '02':
-                                $departamento = "Jurídico";
-                                break;
-                            case '04':
-                                $departamento = "Administración";
-                                break;
-                            case '05':
-                                $departamento = "Comercial";
-                                break;
-                            case '06':
-                                $departamento = "Márketing y Comunicación";
-                                break;
-                            case '07':
-                                $departamento = "Patentes y Marcas";
-                                break;
-                            case '08':
-                                $departamento = "Dirección";
-                                break;
-                            case '00':
-                                $departamento = "Consejeros";
-                                break;
-                            case '10':
-                                $departamento = "almacén";
-                                break;
-                            case '11':
-                                $departamento = "Sala Juntas";
-                                break;
-                            case '12':
-                                $departamento = "Sala reuniones";
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
+
+                        foreach ($departamentos as $key => $value) {
+                            if($bien["departamento"] == $key) $departamento=$value;
+                        }                 
+
+
                         $centro = "";
                         switch ($bien["centro"]) {
                             case '1':

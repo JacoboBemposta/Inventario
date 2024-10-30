@@ -13,10 +13,13 @@ class Proveedor
     {
         $this->db = \DB::connect();
     }
-
-    // Obtener todos los proveedores
-    public function obtenerTodos()
+    public function getDbConnection()
     {
+        return $this->db;
+    }
+    
+    // Obtener todos los proveedores
+    public function obtenerTodos(){
         $sql = "SELECT * FROM proveedores WHERE activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -25,8 +28,7 @@ class Proveedor
     }
 
     // Obtener un proveedor por ID
-    public function obtenerUno($id)
-    {
+    public function obtenerUno($id){
         $sql = "SELECT * FROM proveedores WHERE id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
@@ -34,26 +36,32 @@ class Proveedor
     }
 
     // Crear un nuevo proveedor
-    public function agregarProveedor($nombre)
-    {
+    public function agregarProveedor($nombre){
+        // Validaciones de entrada
+        if (empty($nombre)) {
+            return false; // No se permite la inserción
+        }        
         $sql = "INSERT INTO proveedores (nombre) VALUES (?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$nombre]);
     }
 
     // Editar un proveedor
-    public function editarProveedor($id, $nombre)
-    {
+    public function editarProveedor($id, $nombre){
+        if (empty($nombre)) {
+            return false; // No se permite la inserción
+        }             
         $sql = "UPDATE proveedores SET nombre = ? WHERE id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$nombre, $id]);
+        $stmt->execute([$nombre, $id]);
+        return $stmt->rowCount() > 0;
     }
 
     // Eliminación lógica de un proveedor (marcar como inactivo)
-    public function eliminarProveedor($id)
-    {
+    public function eliminarProveedor($id){
         $sql = "UPDATE proveedores SET activo = 0 WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$id]);
+        $stmt->execute([$id]);
+        return $stmt->rowCount() > 0;
     }
 }

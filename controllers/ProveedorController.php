@@ -10,8 +10,7 @@ class ProveedorController
 {
     private $proveedor;
     //Muestra el listado de proveedores
-    public function listarProveedores()
-    {
+    public function listarProveedores(){
         $proveedor = new Proveedor();
         $proveedores = $proveedor->obtenerTodos();
         $_SESSION['proveedores'] = $proveedores;
@@ -19,16 +18,14 @@ class ProveedorController
 
 
     // Muestra el formulario de edición de un proveedor existente
-    public function editarProveedor($id)
-    {
+    public function editarProveedor($id){
         $Proveedor = new Proveedor();
         $Proveedor = $Proveedor->obtenerUno($id);
         $_SESSION['proveedor'] = $Proveedor;
     }
 
     //Maneja la actualizacion de un proveedor existente    
-    public function actualizarProveedor()
-    {
+    public function actualizarProveedor(){
         $id = $_GET['proveedor'];
         $Proveedor = new Proveedor();
         if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
@@ -47,8 +44,7 @@ class ProveedorController
     }
 
     // Maneja la creación de un nuevo proveedor
-    public function crearProveedor()
-    {
+    public function crearProveedor(){
         if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
             $_SESSION["error"] = "Error en el envio del formulario";
             header("Location: " . ROOT_PATH . "error.php");
@@ -67,8 +63,7 @@ class ProveedorController
     }
 
     // Elimina (lógicamente un proveedor de la base de datos)
-    public function eliminarProveedor($id)
-    {
+    public function eliminarProveedor($id){
         $Proveedor = new Proveedor();
         $Proveedor->eliminarProveedor($id);
     }

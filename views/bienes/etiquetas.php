@@ -7,7 +7,8 @@ require_once "../../config/auth.php";
 if (isset($_POST['botones_seleccionados'])) {
     $_SESSION['botones_seleccionados'] = $_POST['botones_seleccionados'];
 }
-echo ("Pagina no disponible");die;
+$_SESSION["error"]="Vista no disponible";
+header("Location: " . ROOT_PATH . 'error.php');
 ?>
 <!--  Página no visible, posible actualización del proyecto para seleccionar huecos específicos de las etiquetas -->
 

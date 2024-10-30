@@ -15,8 +15,7 @@ class EntradaBienesController
     private $bienes;
 
     // Listar todas las entradas de bienes
-    public function listarEntradas()
-    {
+    public function listarEntradas(){
         $entrada = new EntradaBienes();
         $entradas = $entrada->obtenerTodas();
         $_SESSION['entradas'] = $entradas;
@@ -33,22 +32,23 @@ class EntradaBienesController
             }
         }
     }
+
     public function BienPorEntradaId( $entradaid ){
             $bienes = new Bienes();
             return  $bienes->obtenerPorEntradaId($entradaid);
             
     }
+
     // Muestra el formulario de edición de una entrada existente
-    public function editarEntrada($id)
-    {
+    public function editarEntrada($id) {
         $entrada = new EntradaBienes();
         $entradas = $entrada->obtenerUno($id);
         $_SESSION['entrada'] = $entradas;
     }
+
     // Maneja la actualización de una entrada existente
     // Si contiene etiquetas HTML, lanzar un error    
-    public function actualizarentrada()
-    {
+    public function actualizarentrada(){
         $id = $_GET['entrada'];
         $entrada = new EntradaBienes();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -112,9 +112,9 @@ class EntradaBienesController
             $entrada->editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable);
         }
     }
+
     //Maneja la creacion de una nueva entrada de bienes
-    public function crearEntrada()
-    {
+    public function crearEntrada(){
         $entrada = new EntradaBienes();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
@@ -183,16 +183,15 @@ class EntradaBienesController
             $entrada->agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable);
         }
     }
+    
     //Elimina lógicamente una entrada de la base de datos
-    public function eliminarEntrada($id)
-    {
+    public function eliminarEntrada($id){
         $entrada = new EntradaBienes();
         return $entrada->eliminarEntrada($id);
     }
 
     // Controlador para importar CSV
-    public function importarCSV($archivo)
-    {
+    public function importarCSV($archivo){
 
         //Recorrer el fichero
         $lectura = fopen($archivo["tmp_name"], "r");

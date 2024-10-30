@@ -13,26 +13,24 @@ class BienesController
 
 
     // Muestra el listado de bienes de una entrada específica
-    public function lista($entrada_bien_id)
-    {
+    public function lista($entrada_bien_id){
         $bienModel = new Bienes();
         $bienModel->obtenerPorEntradaId($entrada_bien_id);
     }
+
     //Muestra todos los bienes
-    public function listarBienes()
-    {
+    public function listarBienes(){
         $bienModel = new Bienes();
         $_SESSION["bienes"] = $bienModel->obtenerBienes();
     }
+
     // Devuelve un bien buscando por su id
-    public function listarBienesporID($id)
-    {
+    public function listarBienesporID($id){
         $bienModel = new Bienes();
         return $bienModel->obtenerPorId($id);
     }
 
-    public function buscarfiltro()
-    {
+    public function buscarfiltro(){
         $bienModel = new Bienes();
         $centro = $_POST["search-centro"];
         if ($centro != strip_tags($centro)) {
@@ -89,10 +87,8 @@ class BienesController
         return $bienModel->buscarfiltro($centro, $departamento, $tipo_bien, $estado, $fecha_inicio, $fecha_fin, $descripcion, $cuenta);
     }
 
-
     // Maneja la creación de un nuevo bien
-    public function crear()
-    {
+    public function crear(){
         $bienModel = new Bienes();
 
     
@@ -145,8 +141,7 @@ class BienesController
     }
 
     // Muestra el formulario de edición de un bien existente
-    public function editar($id)
-    {
+    public function editar($id){
         $bienModel = new Bienes();
         $bienModel = $bienModel->obtenerPorId($id); // Obtener los datos del bien
         $_SESSION['bien'] = $bienModel;
@@ -154,8 +149,7 @@ class BienesController
 
     // Maneja la actualización de un bien existente
     // Si contiene etiquetas HTML, lanzar un error
-    public function actualizar($id)
-    {
+    public function actualizar($id){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                 $_SESSION["error"] = "Error en el envio del formulario";
@@ -203,20 +197,18 @@ class BienesController
             $bienModel->editarBien($id, $descripcion, $precio, $centro, $departamento, $tipo_bien, $causa_baja);
             //eliminar si se ha seleccionado una causa de baja
             if ($causa_baja != "NULL") {
-                $bienModel->desactivarbien($causa_baja, $id);
-            }
+                $bienModel->actualizaEstado($causa_baja, '0',$id);
+            }//else $bienModel->actualizaEstado($causa_baja, '1',$id);
         }
     }
 
     // Elimina (lógicamente) un bien de la base de datos
-    public function eliminar($id)
-    {
+    public function eliminar($id){
         $bienModel = new Bienes();
         return $bienModel->eliminarBien($id);
     }
 
-    public function actualizaEstado($motivo, $nuevoEstado,$bienId)
-    {
+    public function actualizaEstado($motivo, $nuevoEstado,$bienId){
         $bienModel = new Bienes();
         $resultado = $bienModel->actualizaEstado($motivo, $nuevoEstado,$bienId);
         return $resultado;

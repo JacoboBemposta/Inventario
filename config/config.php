@@ -1,7 +1,19 @@
 <?php
 @session_start();
 // config.php
+$departamentos=['00'=>'SIGA','01'=>'Técnico','02'=>'CAU','03'=>'Jurídico','04'=>'Administración',
+'05'=>'Comercial','06'=>'Marketing y comunicación','07'=>'Patentes y Marcas','08'=>'Dirección',
+'09'=>'Consejeros','10'=>'Almacén','11'=>'Sala Juntas','12'=>'Sala reuniones'];
 
+asort($departamentos);
+
+$tipo_bienes=["AL"=>'alfombra',"AR" =>'armario',"BA"=>'bandeja',"BU"=>'buck',"CI"=>'cizalla',"DE"=>'destructora',
+ "AI"=>'equipo aire',"EC"=>'escalera',"ES"=>'estantería',"EX"=>'extintor',"FU"=>'funda',"IM"=>'impresora',
+ "IP"=>'ipad',"LA"=>'lámpara',"ME"=>'mesa',"MO"=>'monitor',"PE"=>'perchero',"VC"=>'policom',"RE"=>'reposapiés',
+ "OR"=>'ordenador',"RU"=>'roll-up',"SC"=>'scanner',"SI"=>'silla',"SP"=>'soporte pc',"PI"=>'pizarra',"PU"=>'puntero',
+ "TV"=>'televisión',"WC"=>'webcam'];
+ 
+ asort($tipo_bienes);       
 
 define('ROOT_PATH',  "/proyects/inventario/"); // Ruta relativa
 define('RAIZ_PATH', $_SERVER['DOCUMENT_ROOT'].'/proyects/inventario/'); // Ruta absoluta

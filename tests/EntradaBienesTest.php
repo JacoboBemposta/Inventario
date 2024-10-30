@@ -18,8 +18,7 @@ class EntradaBienesTest extends TestCase
         $this->bienes = new Bienes(DB::connect());
     }   
 
-    public function testObtenerTodas()
-    {
+    public function testObtenerTodas(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         
@@ -49,8 +48,7 @@ class EntradaBienesTest extends TestCase
         $this->assertEquals('Entrada Activa 2', $resultados[1]['descripcion']);
     }
     
-    public function testObtenerTodasConProveedores()
-    {
+    public function testObtenerTodasConProveedores(){
         // Insertamos dos proveedores
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor 1')");
         $proveedorId1 = $this->entradas->getDbConnection()->lastInsertId();
@@ -75,8 +73,7 @@ class EntradaBienesTest extends TestCase
             $this->assertEquals('Proveedor 2', $resultados[1]['proveedor_nombre']);
     }
     
-    public function testObtenerTodasNoInactivas()
-    {
+    public function testObtenerTodasNoInactivas(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -106,8 +103,7 @@ class EntradaBienesTest extends TestCase
     }
     
 
-    public function testObtenerUnoConIdActivo()
-    {
+    public function testObtenerUnoConIdActivo(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -129,8 +125,7 @@ class EntradaBienesTest extends TestCase
         $this->assertEquals('Entrada Activa', $resultado['descripcion']);
     }
 
-    public function testObtenerUnoConIdInactivo()
-    {
+    public function testObtenerUnoConIdInactivo(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -151,16 +146,14 @@ class EntradaBienesTest extends TestCase
         $this->assertFalse($resultado, 'No se debe obtener una entrada inactiva.');
     }
 
-    public function testObtenerUnoConIdNoExistente()
-    {
+    public function testObtenerUnoConIdNoExistente(){
         // Intentamos obtener una entrada con un ID que no existe
         $resultado = $this->entradas->obtenerUno(999); 
         // Verificamos que no se retorne nada
         $this->assertFalse($resultado, 'No se debe obtener una entrada con un ID no existente.');
     }
     
-    public function testAgregarEntradaCorrectamente()
-    {
+    public function testAgregarEntradaCorrectamente(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -177,8 +170,7 @@ class EntradaBienesTest extends TestCase
         $this->assertEquals('Entrada Activa', $entradaAgregada['descripcion']);
     }
 
-    public function testAgregarEntradaConDatosInvalidos()
-    {
+    public function testAgregarEntradaConDatosInvalidos(){
         // Llamamos al método agregarEntrada con datos inválidos
         $resultado = $this->entradas->agregarEntrada('', '', null, '2024-10-01', '2024-10-01', -10, -1000, ''); // Campos vacíos y valores inválidos
 
@@ -187,8 +179,7 @@ class EntradaBienesTest extends TestCase
     }
     
     
-    public function testAgregarEntradaConDatosFaltantes()
-    {
+    public function testAgregarEntradaConDatosFaltantes(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -200,8 +191,7 @@ class EntradaBienesTest extends TestCase
         $this->assertFalse($resultado, 'La entrada no debe ser agregada con datos faltantes.');
     }
 
-    public function testAgregarEntradaConPrecioNegativo()
-    {
+    public function testAgregarEntradaConPrecioNegativo(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -213,8 +203,7 @@ class EntradaBienesTest extends TestCase
         $this->assertFalse($resultado, 'La entrada no debe ser agregada con un precio negativo.');
     }    
     
-    public function testEditarEntradaCorrectamente()
-    {
+    public function testEditarEntradaCorrectamente(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -235,17 +224,15 @@ class EntradaBienesTest extends TestCase
         $this->assertEquals('Entrada Editada', $entradaEditada['descripcion']);
     }
 
-    public function testEditarEntradaInexistente()
-    {
+    public function testEditarEntradaInexistente(){
         // Intentamos editar una entrada que no existe
-        $resultado = $this->entradas->editarEntrada(9999, 'Entrada Inexistente', '99999', null, '2024-10-01', '2024-10-01', 10, 1000, '12345');
+        $resultado = $this->entradas->editarEntrada(99999, 'Entrada Inexistente', '99999', null, '2024-10-01', '2024-10-01', 10, 1000, '12345');
 
         // Verificamos que el resultado sea false (no se puede editar una entrada inexistente)
         $this->assertFalse($resultado, 'No se debe poder editar una entrada que no existe.');
     }
 
-    public function testEditarEntradaConDatosInvalidos()
-    {
+    public function testEditarEntradaConDatosInvalidos(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -261,8 +248,7 @@ class EntradaBienesTest extends TestCase
         $this->assertFalse($resultado, 'La entrada no debe ser editada con datos inválidos.');
     }
 
-    public function testEditarEntradaInactiva()
-    {
+    public function testEditarEntradaInactiva(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -282,8 +268,7 @@ class EntradaBienesTest extends TestCase
     }
 
 
-    public function testEliminarEntradaCorrectamente()
-    {
+    public function testEliminarEntradaCorrectamente(){
         // Insertamos un proveedor
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -317,8 +302,7 @@ class EntradaBienesTest extends TestCase
     }
     
 
-    public function testEliminarEntradaInexistente()
-    {
+    public function testEliminarEntradaInexistente(){
         // Intentamos eliminar una entrada que no existe
         $resultado = $this->entradas->eliminarEntrada(9999);
 

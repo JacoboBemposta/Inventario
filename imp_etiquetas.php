@@ -82,144 +82,21 @@ foreach ($_SESSION["bienes"] as $bien) {
 
 
     //Información que será visible en el QR
+    
+     $tipo_bien = '';
+   
+    foreach ($tipo_bienes as $key => $value) {
+        if($bien["tipo_bien"] == $key) $tipo_bien=$value;
+    }
+
+    $departamento = "";
+
+    foreach ($departamentos as $key => $value) {
+        if($bien["departamento"] == $key) $departamento=$value;
+    }        
 
     $centro = ($bien["centro"] == 1) ? "Pontevedra" : "Madrid";
-    $departamento = "";
-    switch ($bien["departamento"]) {
-        case '00':
-            $departamento = "SIGA";
-            break;
-        case '01':
-            $departamento = "Técnico";
-            break;
-        case '02':
-            $departamento = "Jurídico";
-            break;
-        case '04':
-            $departamento = "Administración";
-            break;
-        case '05':
-            $departamento = "Comercial";
-            break;
-        case '06':
-            $departamento = "Márketing y Comunicación";
-            break;
-        case '07':
-            $departamento = "Patentes y Marcas";
-            break;
-        case '08':
-            $departamento = "Dirección";
-            break;
-        case '00':
-            $departamento = "Consejeros";
-            break;
-        case '10':
-            $departamento = "almacén";
-            break;
-        case '11':
-            $departamento = "Sala Juntas";
-            break;
-        case '12':
-            $departamento = "Sala reuniones";
-            break;
-        default:
-            # code...
-            break;
-    }
 
-    $tipobien = "";
-    switch ($bien["tipo_bien"]) {
-        case 'ME':
-            $tipo_bien = "Mesa";
-            break;
-        case 'SI':
-            $tipo_bien = "Silla";
-            break;
-        case 'AR':
-            $tipo_bien = "Armario";
-            break;
-        case 'ES':
-            $tipo_bien = "Estantería";
-            break;
-        case 'BU':
-            $tipo_bien = "Buck";
-            break;
-        case 'PI':
-            $tipo_bien = "Pizarra";
-            break;
-        case 'IM':
-            $tipo_bien = "Impresora";
-            break;
-        case 'SP':
-            $tipo_bien = "Soporte PC";
-            break;
-        case 'BA':
-            $tipo_bien = "Bandeja";
-            break;
-        case 'PE':
-            $tipo_bien = "Perchero";
-            break;
-        case 'PA':
-            $tipo_bien = "Papelera";
-            break;
-        case 'RE':
-            $tipo_bien = "Reposapiés";
-            break;
-        case 'EX':
-            $tipo_bien = "Extintor";
-            break;
-        case 'DE':
-            $tipo_bien = "Destructora";
-            break;
-        case 'CI':
-            $tipo_bien = "Cizalla";
-            break;
-        case 'AI':
-            $tipo_bien = "Equipo Aire";
-            break;
-        case 'RU':
-            $tipo_bien = "Roll up";
-            break;
-        case 'LA':
-            $tipo_bien = "Lámpara";
-            break;
-        case 'EC':
-            $tipo_bien = "Escalera";
-            break;
-        case 'AL':
-            $tipo_bien = "Alfombra";
-            break;
-        case 'TV':
-            $tipo_bien = "Televisión";
-            break;
-        case 'WC':
-            $tipo_bien = "Webcam";
-            break;
-        case 'OR':
-            $tipo_bien = "Ordenador";
-            break;
-        case 'MO':
-            $tipo_bien = "Monitor";
-            break;
-        case 'VC':
-            $tipo_bien = "Policom";
-            break;
-        case 'SC':
-            $tipo_bien = "Scanner";
-            break;
-        case 'IP':
-            $tipo_bien = "Ipad";
-            break;
-        case 'PU':
-            $tipo_bien = "Puntero";
-            break;
-        case 'FU':
-            $tipo_bien_ = "Funda";
-            break;
-        default:
-            $tipo_bien = "Bien sin identificar";
-            break;
-    }
     $fechaCompra = $bien["fecha_compra"];
 
     // Formateo de fechas

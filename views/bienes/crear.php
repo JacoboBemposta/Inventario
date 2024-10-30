@@ -1,6 +1,7 @@
 <?php 
 include "../../menu.php";
 require_once "../../config/auth.php";
+require_once "../../config/config.php";
 include_once "../../csrf.php";
 @session_start();
 if (isset($_SESSION['entradas'])) {
@@ -9,6 +10,7 @@ if (isset($_SESSION['entradas'])) {
     $entradas = []; // Manejar si no hay entradas en la sesión
 }
    $entrada=$_GET["entrada"];
+
 ?>
 <!-- Formulario para crear un nuevo bien-->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
@@ -36,6 +38,7 @@ if (isset($_SESSION['entradas'])) {
             <div class="mb-3 w-50">
                 <label for="centro" class="form-label">Centro:</label>
                 <select name="centro" required>
+                    <option value="">Selecciona un centro</option>
                     <option value="1" >Pontevedra</option>
                     <option value="2" >Madrid</option>
                 </select>
@@ -43,52 +46,19 @@ if (isset($_SESSION['entradas'])) {
             <div class="mb-3 w-50">
                 <label for="departamento" class="form-label">Departamento:</label>
                 <select name="departamento" required>
-                    <option value="00">SIGA</option>
-                    <option value="01">Técnico</option>
-                    <option value="02">CAU</option>
-                    <option value="03">Jurídico</option>
-                    <option value="04">Administración</option>
-                    <option value="05">Comercial</option>
-                    <option value="06">Marketing y comunicación</option>
-                    <option value="07">Patentes y Marcas</option>
-                    <option value="08">Dirección</option>
-                    <option value="09">Consejeros</option>
-                    <option value="10">Almacén</option>
-                    <option value="11">Sala Juntas</option>
-                    <option value="12">Sala Reuniones</option>
+                    <option value="">Selecciona un departamento</option>
+                    <?php foreach ($departamentos as $key => $value) {?>
+                        <option value="<?php echo $key?>"><?php echo $value?></option>
+                    <?php } ?>
                 </select>
             </div>
             <div class="mb-3 w-50">
                 <label for="tipo_bien" class="form-label">Tipo de Bien:</label>
                 <select name="tipo_bien" required>
-                    <option value="AL">alfombra</option>
-                    <option value="AR">armario</option>    
-                    <option value="BA">bandeja</option>
-                    <option value="BU">buck</option>
-                    <option value="CI">cizalla</option>
-                    <option value="DE">destructora</option>
-                    <option value="AI">equipo aire</option>
-                    <option value="EC">escalera</option>
-                    <option value="ES">estantería</option>
-                    <option value="EX">extintor</option>
-                    <option value="FU">funda</option>
-                    <option value="IM">impresora</option>
-                    <option value="IP">ipad</option>
-                    <option value="LA">lámpara</option>
-                    <option value="ME">mesa</option>
-                    <option value="MO">monitor</option>
-                    <option value="PE">perchero</option>
-                    <option value="VC">policom</option>
-                    <option value="RE">reposapiés</option>
-                    <option value="OR">ordenador</option>
-                    <option value="RU">roll-up</option>
-                    <option value="SC">scanner</option>
-                    <option value="SI">silla</option>
-                    <option value="SP">soporte pc</option>
-                    <option value="PI">pizarra</option>
-                    <option value="PU">puntero</option>
-                    <option value="TV">televisión</option>
-                    <option value="WC">webcam</option>
+                <option value="">Selecciona tipo</option>
+                    <?php foreach ($tipo_bienes as $key => $value) {?>
+                        <option value="<?php echo $key?>"><?php echo $value?></option>
+                    <?php } ?>
                 </select>
             </div>
 

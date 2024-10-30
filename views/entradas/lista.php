@@ -145,7 +145,7 @@ new DataTable('#entradas-table', {
   columnDefs: [{
     targets: 2, 
     render: function(data) {
-      console.log(data);
+
       return moment(data).format('DD/MM/YYYY'); 
     }
   }]
@@ -200,6 +200,8 @@ new DataTable('#entradas-table', {
       },
       dataType: 'json',
       success: function(response) {
+        console.log(response);
+
         if (typeof response !== 'object') {
           response = JSON.parse(response);
         }
@@ -218,10 +220,13 @@ new DataTable('#entradas-table', {
           bienesContent += '</tr></thead><tbody>';
 
           response.forEach(function(bien) {
+                //Damos formato de 4 dígitos al último número del codigo 0000 //
+                let codigo = String(bien.id).padStart(4, '0');
+
             bienesContent += '<tr>';
             bienesContent += '<td style="text-align: center; width: 35%">' + bien.descripcion + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien.precio + '</td>';
-            bienesContent += '<td style="text-align: center;">' + bien.codigo + '</td>';
+            bienesContent += '<td style="text-align: center;">' + bien.centro +' ' +bien.departamento +' '+ bien.tipo_bien +' '+ codigo + '</td>';
             bienesContent += '<td style="text-align: center;">';
             let switchChecked = bien.estado == 1 ? 'checked' : '';
             bienesContent += '<div class="form-check form-switch ml-2">';
@@ -265,6 +270,7 @@ new DataTable('#entradas-table', {
         $(boton).prop('disabled', false);
       },
       error: function() {
+        console.error('Error en la solicitud AJAX:', error);
         alert('Ocurrió un error al obtener los bienes.');
         $(boton).prop('disabled', false);
       }

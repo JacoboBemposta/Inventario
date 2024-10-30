@@ -14,10 +14,13 @@ class Usuario
     {
         $this->db = \DB::connect();
     }
-
-    // Obtener todos los usuarios
-    public function obtenerTodos()
+    public function getDbConnection()
     {
+        return $this->db;
+    }
+    
+    // Obtener todos los usuarios
+    public function obtenerTodos(){
 
         $sql = "SELECT * FROM usuarios WHERE activo = 1";
         $stmt = $this->db->prepare($sql);
@@ -27,19 +30,21 @@ class Usuario
     }
 
     // Obtener un usuario por su id
-    public function obtenerUno($id)
-    {
+    public function obtenerUno($id){
 
-        $sql = "SELECT * FROM usuarios WHERE id = ?";
+        $sql = "SELECT * FROM usuarios WHERE id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
-        $usuario = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $usuario;
     }
 
     // Añadir un usuario
-    public function agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario)
-    {
+    public function agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario){
+        // Validaciones de entrada
+        if (empty($nombre) || empty($usuario) || empty($contrasena) || empty($tipo_usuario)) {
+            return false; // No se permite la inserción
+        }        
 
         $sql = "INSERT INTO usuarios (nombre, usuario, contrasena, tipo_usuario) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
@@ -48,8 +53,16 @@ class Usuario
     }
 
     // Editar un usuario
-    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario)
-    {
+    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario){
+        // Verifica si el usuario existe
+        $sql = "SELECT * FROM usuarios WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        $usuarioExistente = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        if (!$usuarioExistente) {
+            return false; // El usuario no existe
+        }        
         $sql = "UPDATE usuarios SET nombre = ?, tipo_usuario = ?";
         $params = [$nombre, $tipo_usuario];
 
@@ -66,16 +79,15 @@ class Usuario
         return $stmt->execute($params);
     }
     //Eliminación lógica un usuario por su id (marca como inactivo)
-    public function eliminarUsuario($id)
-    {
+    public function eliminarUsuario($id){
         $sql = "UPDATE usuarios SET activo = 0 WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$id]);
+        $stmt->execute([$id]);
+        return $stmt->rowCount() > 0;
     }
 
     // Obtener un usuario por el nombre de usuario
-    public function obtenerUSuario($usuario)
-    {
+    public function obtenerUSuario($usuario){
         $sql = "SELECT * FROM usuarios WHERE usuario = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$usuario]);

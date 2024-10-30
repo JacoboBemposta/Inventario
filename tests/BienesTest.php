@@ -13,16 +13,9 @@ class BienesTest extends TestCase
         $this->bienes = new Bienes(DB::connect());
         $this->entradas = new EntradaBienes(DB::connect());
     }
-    protected function tearDown(): void
-    {
-        // Limpia la tabla de bienes después de cada prueba
-        $this->bienes->getDbConnection()->exec("DELETE FROM bienes");
-        $this->bienes->getDbConnection()->exec("DELETE FROM entradas_bienes");
-        $this->bienes->getDbConnection()->exec("DELETE FROM proveedores");
-    }
 
-    public function testObtenerPorEntradaIdExistente()
-    {
+
+    public function testObtenerPorEntradaIdExistente(){
         // Insertamos un proveedor y obtenemos su ID
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -67,8 +60,7 @@ class BienesTest extends TestCase
         $this->assertEquals($resultadoEsperados, $resultados, "Se esperaba un array vacío al no encontrar el ID de entrada.");
     }
 
-    public function testObtenerBienPorIdExistente()
-    {
+    public function testObtenerBienPorIdExistente(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -104,11 +96,8 @@ class BienesTest extends TestCase
         unset($resultado['fecha_alta']);
         $this->assertEquals($resultadoEsperado, $resultado);
     }
-    
 
-
-    public function testObtenerPorIdExistente()
-    {
+    public function testObtenerPorIdExistente(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -160,8 +149,7 @@ class BienesTest extends TestCase
     }
     
 
-    public function testObtenerPorIdInexistente()
-    {
+    public function testObtenerPorIdInexistente(){
         $idInexistente = 999999; 
         $resultado = $this->bienes->obtenerPorId($idInexistente);
 
@@ -291,8 +279,7 @@ class BienesTest extends TestCase
         $this->assertEquals($resultadoEsperados, $resultados);        
     }
 
-    public function testAgregarBienExitoso()
-    {    
+    public function testAgregarBienExitoso(){    
         // Insertamos un proveedor y obtenemos su ID
         $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
@@ -326,8 +313,7 @@ class BienesTest extends TestCase
         $this->assertEquals($entradaBienId, $bien['entrada_bien_id']);
     }
 
-    public function testAgregarBienFallaSinEntradaBienId()
-    {
+    public function testAgregarBienFallaSinEntradaBienId(){
         $descripcion = 'Bien de Prueba Sin Entrada';
         $precio = '150.00';
         $centro = '1';
@@ -342,8 +328,7 @@ class BienesTest extends TestCase
         // Intentar agregar el bien
         $this->bienes->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id_inexistente);
     }
-    public function testAgregarBienFallaConEntradaBienIdInexistente()
-    {
+    public function testAgregarBienFallaConEntradaBienIdInexistente(){
         $descripcion = 'Bien de Prueba Con Entrada Inexistente';
         $precio = '150.00';
         $centro = '1';
@@ -359,8 +344,7 @@ class BienesTest extends TestCase
     }
         
 
-    public function testEditarBienExitoso()
-    {
+    public function testEditarBienExitoso(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -405,8 +389,7 @@ class BienesTest extends TestCase
         $this->assertEquals($tipoBienNuevo, $bienEditado['tipo_bien']);
     }
     
-    public function testEditarBienNoExiste()
-    {
+    public function testEditarBienNoExiste(){
         $idInexistente = 999999; // ID que no existe
         $descripcionNueva = 'Bien Inexistente';
         $precioNuevo = '150.00';
@@ -424,8 +407,7 @@ class BienesTest extends TestCase
     
     
     
-    public function testEditarBienInactivo()
-    {
+    public function testEditarBienInactivo(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -490,8 +472,7 @@ class BienesTest extends TestCase
         $this->AssertTrue($resultado,'Se ha eliminado el bien');
     }
 
-    public function testeliminarbienInexistente()
-    {
+    public function testeliminarbienInexistente(){
         $bienId = 99999;
         // Ejecutar el método
         $resultado = $this->bienes->eliminarBien($bienId);
@@ -500,8 +481,7 @@ class BienesTest extends TestCase
         $this->assertFalse($resultado, "Se esperaba que el método devolviera false al intentar editar un bien que no existe.");
     }
     
-    public function testactualizarestado()
-    {
+    public function testactualizarestado(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -547,8 +527,7 @@ class BienesTest extends TestCase
         $this->assertEquals(1, $estadoBien2, 'El estado del bien 2 debería ser 1 (Activo) después de la actualización.');
     }
     
-    public function testCambiarEstadoANull()
-    {
+    public function testCambiarEstadoANull(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -582,8 +561,7 @@ class BienesTest extends TestCase
         $this->assertEquals(1, $estadoBien, 'El estado del bien debería seguir siendo 1 (Activo) después de intentar cambiar a null.');
     }
         
-    public function testCambiarEstadoAValorAleatorio()
-    {
+    public function testCambiarEstadoAValorAleatorio(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
@@ -617,8 +595,13 @@ class BienesTest extends TestCase
         $this->assertEquals(1, $estadoBien, 'El estado del bien debería seguir siendo 1 (Activo) después de intentar cambiar a un valor no permitido.');
     }
        
-
-
+    protected function tearDown(): void
+    {
+        // Limpia la tabla de bienes después de cada prueba
+        $this->bienes->getDbConnection()->exec("DELETE FROM bienes");
+        $this->bienes->getDbConnection()->exec("DELETE FROM entradas_bienes");
+        $this->bienes->getDbConnection()->exec("DELETE FROM proveedores");
+    }
 
 }
 

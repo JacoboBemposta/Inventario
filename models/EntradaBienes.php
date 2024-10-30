@@ -21,9 +21,9 @@ class EntradaBienes
     {
         return $this->db;
     }
+    
     // Obtener todas las entradas de bienes
-    public function obtenerTodas()
-    {
+    public function obtenerTodas(){
         $sql = "SELECT eb.*, p.nombre AS proveedor_nombre FROM entradas_bienes eb 
                 LEFT JOIN proveedores p ON eb.proveedor_id = p.id 
                 WHERE eb.activo = 1";
@@ -33,8 +33,7 @@ class EntradaBienes
     }
 
     // Obtener una entrada de bienes por su ID
-    public function obtenerUno($id)
-    {
+    public function obtenerUno($id){
         $sql = "SELECT * FROM entradas_bienes WHERE id = ? AND activo = 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
@@ -42,8 +41,7 @@ class EntradaBienes
     }
 
     // Crear una nueva entrada de bienes
-    public function agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable)
-    {
+    public function agregarEntrada($descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable){
         // Validaciones de entrada
         if (empty($descripcion) || empty($numero_factura) || empty($proveedor_id) || empty($fecha_compra) || empty($fecha_inicio_amortizacion) || 
             $porcentaje_amortizacion < 0 || $precio < 0 || empty($cuenta_contable)) {
@@ -57,11 +55,10 @@ class EntradaBienes
     }
 
     // Editar una entrada de bienes
-    public function editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable)
-    {
+    public function editarEntrada($id, $descripcion, $numero_factura, $proveedor_id, $fecha_compra, $fecha_inicio_amortizacion, $porcentaje_amortizacion, $precio, $cuenta_contable){
         // Validaciones de entrada
-        if (empty($descripcion) || empty($numero_factura) || empty($proveedor_id) || empty($fecha_compra) || empty($fecha_inicio_amortizacion) || 
-            $porcentaje_amortizacion < 0 || $precio < 0 || empty($cuenta_contable)) {
+        if (empty($descripcion) || empty($numero_factura) || empty($proveedor_id) || empty($fecha_compra) || 
+            empty($fecha_inicio_amortizacion) || $porcentaje_amortizacion < 0 || $precio < 0 || empty($cuenta_contable)) {
             return false; // No se permite la inserción
         }        
         $sql = "UPDATE entradas_bienes 
@@ -73,8 +70,7 @@ class EntradaBienes
     }
 
     // Eliminación lógica de una entrada de bienes y sus bienes asociados (marcar como inactivo)
-    public function eliminarEntrada($id)
-    {
+    public function eliminarEntrada($id){
         try {
             // Inicia la transacción
             $this->db->beginTransaction();

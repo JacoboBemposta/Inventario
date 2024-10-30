@@ -129,10 +129,10 @@ if (empty($bienes)) {
         <table>
             <thead>
                 <tr>
-                    <th>Cuenta</th>
-                    <th>Tipo de bien</th>
-                    <th>Código de la etiqueta</th>
-                    <th>Fecha de compra</th>
+                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
+                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Tipo de bien</th>
+                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Código de la etiqueta</th>
+                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Fecha de compra</th>
                 </tr>
             </thead>
             <tbody>';
@@ -254,10 +254,10 @@ if (empty($bienes)) {
         
 
         $html .= '<tr>
-            <td>' . $bien['cuenta_contable'] . '</td>
-            <td>' . $tipo_bien . '</td>
-            <td>' . $nombre . '</td>
-            <td>' . $fechaFormateada . '</td>
+            <td style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">' . $bien['cuenta_contable'] . '</td>
+            <td style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">' . $tipo_bien . '</td>
+            <td style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">' . $nombre . '</td>
+            <td style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">' . $fechaFormateada . '</td>
         </tr>';
     }
 

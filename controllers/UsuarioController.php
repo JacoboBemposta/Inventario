@@ -12,23 +12,22 @@ class UsuarioController
     private $usuarioModel;
 
     // lista todos los usuarios 
-    public function listarUsuarios()
-    {
+    public function listarUsuarios(){
 
         $usuario = new Usuario();
         $usuarios = $usuario->obtenerTodos();
         $_SESSION['usuarios'] = $usuarios; // Guarda los datos en la sesión
     }
+
     //Recoge en una variable de sesion el usuario que se va a editar
-    public function editarusuario($id)
-    {
+    public function editarusuario($id){
         $usuario = new Usuario();
         $usuario = $usuario->obtenerUno($id);
         $_SESSION['usuario'] = $usuario;
     }
+
     // Maneja la actualización de un usuario existente
-    public function actualizarusuario()
-    {
+    public function actualizarusuario(){
         $id = $_GET['usuario'];
         $usuario = new Usuario();
 
@@ -57,9 +56,9 @@ class UsuarioController
             $usuario->editarUsuario($id, $nombre, $contrasena, $tipo_usuario);
         }
     }
+
     //Maneja la creación de un nuevo usuario
-    public function crearUsuario()
-    {
+    public function crearUsuario(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                 $_SESSION["error"] = "Error en el envio del formulario";
@@ -93,15 +92,15 @@ class UsuarioController
             $user->agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario);
         }
     }
+
     // Elimina (lógicamente) un usuario de la base de datos
-    public function eliminarUsuario($id)
-    {
+    public function eliminarUsuario($id){
         $usuario = new Usuario();
         $usuario->eliminarUsuario($id);
     }
+    
     //Obtiene el usuario (si existe de la base de datos)
-    public function login($usuario)
-    {
+    public function login($usuario){
         $objeto = new Usuario();
         return $objeto->obtenerUSuario($usuario);
     }

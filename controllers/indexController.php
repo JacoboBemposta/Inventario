@@ -192,15 +192,18 @@ if ($ctrl == "usuarios") {
             break;
 
         case 'bienporID':
+            header('Content-Type: application/json');
             $bien = new EntradaBienesController();
             $resultado=$bien->BienPorEntradaId($_POST['idEntrada']);
             $entrada_bien_id = $_POST['idEntrada'];
+
             foreach ($resultado as $bien) {
   
                 $bien["entrada_bien_id"] = $entrada_bien_id;
 
             }
             echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+            exit;
             break;
 
         case 'buscar':
