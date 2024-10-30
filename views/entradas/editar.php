@@ -24,42 +24,44 @@ if (isset($_SESSION['entrada'])) {
             <label for="numero_factura" class="form-label">Número de Factura:</label>
             <input type="text" name="numero_factura" class="form-control" value="<?php echo $entrada['numero_factura']; ?>" required>
         </div>
-        <div class="mb-3">
-            <label for="proveedor_id" class="form-label">Proveedor:</label>
-            <select name="proveedor_id" required>
-                <option value="" default>Selecciona un proveedor</option>
-                <?php foreach ($_SESSION['proveedores'] as $proveedor): ?>
-                    <option value="<?php echo $proveedor['id']; ?>" <?php if ($proveedor['id'] == $entrada['proveedor_id']) echo 'selected'; ?>>
-                        <?php echo $proveedor['nombre'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label for="proveedor_id" class="form-label">Proveedor:</label>
+                <select name="proveedor_id" style='width:100%;height: 50%;' required>
+                    <option value="" default>Selecciona un proveedor</option>
+                    <?php foreach ($_SESSION['proveedores'] as $proveedor): ?>
+                        <option value="<?php echo $proveedor['id']; ?>" <?php if ($proveedor['id'] == $entrada['proveedor_id']) echo 'selected'; ?>>
+                            <?php echo $proveedor['nombre'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-3 col-6">
+                <label for="cuenta_contable" class="form-label">Número de Cuenta Contable:</label>
+                <input type="text" name="cuenta_contable" class="form-control" value="<?php echo $entrada['cuenta_contable']; ?>" required>
+            </div>
         </div>
         <div class="row">
             <div class="mb-3 col-6">
                 <label for="fecha_compra" class="form-label">Fecha de Compra:</label>
-                <input type="date" name="fecha_compra" class="form-control" value="<?php echo $entrada['fecha_compra']; ?>" required>
+                <input type="date" name="fecha_compra" class="form-control" value="<?php echo $entrada['fecha_compra']; ?>" style="width:100%" required>
             </div>
             <div class="mb-3 col-6">
                 <label for="fecha_inicio_amortizacion" class="form-label">Fecha de Inicio de Amortización:</label>
-                <input type="date" name="fecha_inicio_amortizacion" class="form-control" value="<?php echo $entrada['fecha_inicio_amortizacion']; ?>" required>
+                <input type="date" name="fecha_inicio_amortizacion" class="form-control" value="<?php echo $entrada['fecha_inicio_amortizacion']; ?>" style="width:100%" required>
             </div>
         </div>
+
         <div class="row">
             <div class="mb-3 col-6">
                 <label for="porcentaje_amortizacion" class="form-label">Porcentaje de Amortización:</label>
-                <input type="number" name="porcentaje_amortizacion" class="form-control" step="0.01" value="<?php echo $entrada['porcentaje_amortizacion']; ?>" required>
+                <input type="number" name="porcentaje_amortizacion" class="form-control" style="width:100%" step="0.01" value="<?php echo $entrada['porcentaje_amortizacion']; ?>" required>
             </div>
             <div class="mb-3 col-6">
                 <label for="precio" class="form-label">Precio:</label>
-                <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $entrada['precio']; ?>" required>
+                <input type="number" name="precio" class="form-control" style="width:100%" step="0.01" value="<?php echo $entrada['precio']; ?>" required>
             </div>
         </div>
-        <div class="mb-3">
-            <label for="cuenta_contable" class="form-label">Número de Cuenta Contable:</label>
-            <input type="text" name="cuenta_contable" class="form-control" value="<?php echo $entrada['cuenta_contable']; ?>" required>
-        </div>
-
         <div class="button-container mt-5">
             <!-- Botón actualizar -->
             <div class="wrap-login-form-btn">

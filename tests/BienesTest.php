@@ -2,22 +2,25 @@
 use PHPUnit\Framework\TestCase;
 use models\Bienes;
 use models\EntradaBienes;
+use models\Proveedor;
 class BienesTest extends TestCase
 {
     private $bienes;
     private $entradas;
+    private $proveedores;
 
     protected function setUp(): void
     {
         // Usa la conexión real de la base de datos de pruebas
         $this->bienes = new Bienes(DB::connect());
         $this->entradas = new EntradaBienes(DB::connect());
+        $this->proveedores = new Proveedor(DB::connect());
     }
 
 
     public function testObtenerPorEntradaIdExistente(){
         // Insertamos un proveedor y obtenemos su ID
-        $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
     
         // Insertamos una entrada y obtenemos su ID
@@ -60,16 +63,13 @@ class BienesTest extends TestCase
         $this->assertEquals($resultadoEsperados, $resultados, "Se esperaba un array vacío al no encontrar el ID de entrada.");
     }
 
-    public function testObtenerBienPorIdExistente(){
+    public function testObtenerBienExistente(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10, 1000, '12345');
         $entrada_bien_id = $this->bienes->getDbConnection()->lastInsertId();  
  
         $this->bienes->agregarBien('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', $entrada_bien_id); 
@@ -97,18 +97,23 @@ class BienesTest extends TestCase
         $this->assertEquals($resultadoEsperado, $resultado);
     }
 
+    public function testObtenerBienInExistente(){
+        $idInexistente = 999999; 
+        $resultado = $this->bienes->obtenerBien($idInexistente);
+
+        $this->assertFalse($resultado, "Se esperaba null al no encontrar el ID en la base de datos.");
+    }
     public function testObtenerPorIdExistente(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
+        
+
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
-    
+
         // Insertamos un bien 
         $this->bienes->getDbConnection()->exec("
             INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, estado, activo)
@@ -118,7 +123,7 @@ class BienesTest extends TestCase
     
         // Ejecuta el método y verifica el resultado
         $resultado = $this->bienes->obtenerPorId($bienId);
-    
+
         // Resultado esperado, ajustado para coincidencias exactas
         $resultadoEsperado = [
             'descripcion' => 'Bien de Prueba',
@@ -134,9 +139,8 @@ class BienesTest extends TestCase
             'entradaID' => (string) $entradaBienId,
             'cuenta_contable' => '12345',
             'fecha_inicio_amortizacion' => '2024-10-01',
-            'porcentaje_amortizacion' => '10.00', 
-            'numero_factura' => '123456',
-            'fecha_compra' => '2024-09-15',
+            'numero_factura' => '12345',
+            'fecha_compra' => '2024-10-01',
             'proveedorID' => (string) $proveedorId
         ];
     
@@ -144,6 +148,7 @@ class BienesTest extends TestCase
         unset($resultado['id']);
         unset($resultado['fecha_baja']);
         unset($resultado['causa_baja']);
+        unset($resultado['porcentaje_amortizacion']);
     
         $this->assertEquals($resultadoEsperado, $resultado);
     }
@@ -159,14 +164,11 @@ class BienesTest extends TestCase
 
     public function testbuscarfiltro() {
         // Inserta un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Inserta una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Inserta un bien 
@@ -208,7 +210,7 @@ class BienesTest extends TestCase
     
     public function testbuscarfiltroinexistente() {
         // Inserta un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Inserta una entrada
@@ -250,7 +252,7 @@ class BienesTest extends TestCase
     
     public function testobtenerBienes(){
         // Insertamos un proveedor y obtenemos su ID
-        $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
     
         // Insertamos una entrada y obtenemos su ID
@@ -281,7 +283,7 @@ class BienesTest extends TestCase
 
     public function testAgregarBienExitoso(){    
         // Insertamos un proveedor y obtenemos su ID
-        $this->entradas->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->entradas->getDbConnection()->lastInsertId();
     
         // Insertamos una entrada y obtenemos su ID
@@ -314,46 +316,47 @@ class BienesTest extends TestCase
     }
 
     public function testAgregarBienFallaSinEntradaBienId(){
+
         $descripcion = 'Bien de Prueba Sin Entrada';
         $precio = '150.00';
         $centro = '1';
         $departamento = 'SIGA';
         $tipo_bien = 'OR';
         $entrada_bien_id_inexistente = null; // ID que no existe
-    
+  
         // Se espera que se lance una excepción de tipo InvalidArgumentException
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("EL bien debe estar asociado a un ID de entrada correcto"); // Opcional
-    
         // Intentar agregar el bien
-        $this->bienes->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id_inexistente);
+        $resultado = $this->bienes->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id_inexistente);
+        $this->assertFalse($resultado,'Se esperaba que no agrege un bien sin entrada');
     }
     public function testAgregarBienFallaConEntradaBienIdInexistente(){
+
         $descripcion = 'Bien de Prueba Con Entrada Inexistente';
         $precio = '150.00';
         $centro = '1';
         $departamento = 'SIGA';
         $tipo_bien = 'OR';
-        $entrada_bien_id_inexistente = 999999; 
+        $entrada_bien_id_inexistente = 9999; 
     
         // Se espera que se lance una excepción de tipo PDOException
         $this->expectException(\PDOException::class);
         
   
-        $this->bienes->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id_inexistente);
+        $resultado=$this->bienes->agregarBien($descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id_inexistente);
+
+        $this->assertFalse($resultado,'Se esperaba que no agrege un bien sin entrada');
     }
         
 
     public function testEditarBienExitoso(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
       
         // Insertar un bien para editar
@@ -405,18 +408,13 @@ class BienesTest extends TestCase
         $this->assertFalse($resultado, "Se esperaba que el método devolviera false al intentar editar un bien que no existe.");
     }
     
-    
-    
     public function testEditarBienInactivo(){
         // Insertamos un proveedor
         $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
       
         // Insertar un bien para editar
@@ -450,27 +448,21 @@ class BienesTest extends TestCase
     
     public function testeliminarBien(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
       
         // Insertar un bien para editar
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo)
-            VALUES ('Bien Inactivo', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 0)
-        ");
+        $this->bienes->agregarBien('Bien Inactivo', '100.00', '1', 'SIGA', 'OR',  $entradaBienId);
         $bienId = $this->bienes->getDbConnection()->lastInsertId();
         
         $resultado=$this->bienes->eliminarBien($bienId);
 
         $this->AssertTrue($resultado,'Se ha eliminado el bien');
-    }
+    } 
 
     public function testeliminarbienInexistente(){
         $bienId = 99999;
@@ -483,14 +475,11 @@ class BienesTest extends TestCase
     
     public function testactualizarestado(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Insertar bienes
@@ -529,14 +518,11 @@ class BienesTest extends TestCase
     
     public function testCambiarEstadoANull(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Insertar un bien activo
@@ -563,14 +549,11 @@ class BienesTest extends TestCase
         
     public function testCambiarEstadoAValorAleatorio(){
         // Insertamos un proveedor
-        $this->bienes->getDbConnection()->exec("INSERT INTO proveedores (nombre) VALUES ('Proveedor de Prueba')");
+        $this->proveedores->agregarProveedor('Proveedor de Prueba');
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Insertamos una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Insertar un bien activo

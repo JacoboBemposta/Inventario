@@ -131,7 +131,7 @@ if (empty($bienes)) {
                 <tr>
                     <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
                     <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Tipo de bien</th>
-                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Código de la etiqueta</th>
+                    <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Código</th>
                     <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Fecha de compra</th>
                 </tr>
             </thead>
@@ -149,108 +149,28 @@ if (empty($bienes)) {
         
         
         $tipo_bien = '';
-        switch ($bien["tipo_bien"]) {
-            case 'ME':
-                $tipo_bien = "Mesa";
-                break;
-            case 'SI':
-                $tipo_bien = "Silla";
-                break;
-            case 'AR':
-                $tipo_bien = "Armario";
-                break;
-            case 'ES':
-                $tipo_bien = "Estantería";
-                break;
-            case 'BU':
-                $tipo_bien = "Buck";
-                break;
-            case 'PI':
-                $tipo_bien = "Pizarra";
-                break;
-            case 'IM':
-                $tipo_bien = "Impresora";
-                break;
-            case 'SP':
-                $tipo_bien = "Soporte PC";
-                break;
-            case 'BA':
-                $tipo_bien = "Bandeja";
-                break;
-            case 'PE':
-                $tipo_bien = "Perchero";
-                break;
-            case 'PA':
-                $tipo_bien = "Papelera";
-                break;
-            case 'RE':
-                $tipo_bien = "Reposapiés";
-                break;
-            case 'EX':
-                $tipo_bien = "Extintor";
-                break;
-            case 'DE':
-                $tipo_bien = "Destructora";
-                break;
-            case 'CI':
-                $tipo_bien = "Cizalla";
-                break;
-            case 'AI':
-                $tipo_bien = "Equipo Aire";
-                break;
-            case 'RU':
-                $tipo_bien = "Roll up";
-                break;
-            case 'LA':
-                $tipo_bien = "Lámpara";
-                break;
-            case 'EC':
-                $tipo_bien = "Escalera";
-                break;
-            case 'AL':
-                $tipo_bien = "Alfombra";
-                break;
-            case 'TV':
-                $tipo_bien = "Televisión";
-                break;
-            case 'WC':
-                $tipo_bien = "Webcam";
-                break;
-            case 'OR':
-                $tipo_bien = "Ordenador";
-                break;
-            case 'MO':
-                $tipo_bien = "Monitor";
-                break;
-            case 'VC':
-                $tipo_bien = "Policom";
-                break;
-            case 'SC':
-                $tipo_bien = "Scanner";
-                break;
-            case 'IP':
-                $tipo_bien = "Ipad";
-                break;
-            case 'PU':
-                $tipo_bien = "Puntero";
-                break;
-            case 'FU':
-                $tipo_bien = "Funda";
-                break;
-            default:
-                $tipo_bien = "Bien sin identificar";
-                break;
+   
+        foreach ($tipo_bienes as $key => $value) {
+            if($bien["tipo_bien"] == $key) $tipo_bien=$value;
         }
+
+        //posible campo adicional departamento
+        $departamento = "";
+    
+        foreach ($departamentos as $key => $value) {
+            if($bien["departamento"] == $key) $departamento=$value;
+        }        
+        //posible campo adicional centro
+        $centro = "";
+    
+        foreach ($centros as $key => $value) {
+            if($bien["centro"] == $key) $centro=$value;
+        }        
+        
+        $estado = $bien["estado"] === '1' ? "Activo" : "Inactivo";
 
         $fechaAlta = $bien["fecha_alta"];
-
-        // Formateo de fechas
-        $date = DateTime::createFromFormat('Y-m-d', $fechaAlta);
-        if ($date) {
-            $fechaFormateada = $date->format('d/m/Y');
-        } else {
-            $fechaFormateada = 'Fecha no válida'; 
-        }
+        $fechaFormateada = date("d/m/Y",strtotime($fechaAlta));
         
 
         $html .= '<tr>

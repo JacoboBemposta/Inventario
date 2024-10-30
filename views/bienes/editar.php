@@ -34,56 +34,64 @@ if (isset($_SESSION['bien'])) {
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
-        <div class="mb-3">
-            <label for="fecha_alta">Fecha de alta:</label>
-            <input type="text" name="fecha_alta" class="form-control"value="<?php 
-            $fecha = $bien['fecha_alta'];
-            $nueva_fecha = date("d-m-Y",strtotime($fecha));
-            echo $nueva_fecha; 
-            ?>" readonly>
-        </div>       
-        <div class="mb-3">
-            <label for="descripcion">Código:</label>
-            <input type="text" name="codigo" class="form-control" value="<?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?>" readonly>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label for="fecha_alta">Fecha de alta:</label>
+                <input type="text" name="fecha_alta" class="form-control"value="<?php 
+                $fecha = $bien['fecha_alta'];
+                $nueva_fecha = date("d/m/Y",strtotime($fecha));
+                echo $nueva_fecha; 
+                ?>" readonly>
+            </div>       
+            <div class="mb-3 col-6">
+                <label for="descripcion">Código:</label>
+                <input type="text" name="codigo" class="form-control" value="<?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?>" readonly>
 
-        </div>    
-        <div class="mb-3">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
+            </div>    
         </div>
         <div class="mb-3">
-            <label for="centro">Centro:</label>
-            <select name="centro" required>
-                <option value="1" <?php if ($bien['centro'] == 1) echo 'selected'; ?>>Pontevedra</option>
-                <option value="2" <?php if ($bien['centro'] == 2) echo 'selected'; ?>>Madrid</option>
-            </select>
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion" class="form-control"value="<?php echo $bien['descripcion']; ?>" required>
+            </div>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label for="centro">Centro:</label><br>
+                <select style="width:100%;height: 50%;" name="centro" required>
+                    <?php foreach ($centros as $key => $value) {?>
+                        <option value="<?php echo $key?>"<?php if ($bien['centro'] == $key) echo 'selected'; ?>><?php echo $value?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="mb-3 col-6">
+                <label for="departamento">Departamento:</label><br>
+                    <select style="width:100%;height: 50%;" name="departamento" required>
+                        <option value="">Departamento</option>
+                            <?php foreach ($departamentos as $key => $value) {?>
+                                <option value="<?php echo $key?>"<?php if ($bien['departamento'] == $key) echo 'selected'; ?>><?php echo $value?></option>
+                            <?php } ?>
+                    </select>
+            </div>      
         </div>
-        <div class="mb-3">
-            <label for="departamento">Departamento:</label>
-                <select name="departamento" required>
-                    <option value="">Selecciona un departamento</option>
-                        <?php foreach ($departamentos as $key => $value) {?>
-                            <option value="<?php echo $key?>"<?php if ($bien['departamento'] == $key) echo 'selected'; ?>><?php echo $value?></option>
+        <div class="row">
+        </div>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label for="tipo_bien">Tipo de Bien:</label><br>
+                <select style="width:100%;height: 50%;" name="tipo_bien" required>
+                    <option value="">Tipo bien</option>
+                        <?php foreach ($tipo_bienes as $key => $value) {?>
+                            <option value="<?php echo $key?>"<?php if ($bien['tipo_bien'] == $key) echo 'selected'; ?>><?php echo $value?></option>
                         <?php } ?>
                 </select>
-        </div>        
-        <div class="mb-3">
-            <label for="tipo_bien">Tipo de Bien:</label>
-            <select name="tipo_bien" required>
-                <option value="">Selecciona tipo</option>
-                    <?php foreach ($tipo_bienes as $key => $value) {?>
-                        <option value="<?php echo $key?>"<?php if ($bien['tipo_bien'] == $key) echo 'selected'; ?>><?php echo $value?></option>
-                    <?php } ?>
-            </select>
+            </div>
+            <div class="mb-3 col-6">
+                <label for="precio">Precio:</label>
+                <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $bien['precio']; ?>" required>
+            </div>   
         </div>
         <div class="mb-3">
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" step="0.01" class="form-control" value="<?php echo $bien['precio']; ?>" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="tipo_bien">Causa de baja: </label>
-            <select name="causa_baja" >
+            <label for="tipo_bien">Causa de baja: </label><br>
+            <select style="width:100%;height: 50%;" name="causa_baja" >
                 <option value="NULL" <?php if ($bien['causa_baja'] == NULL) echo 'selected'; ?>></option>
                 <option value="Obsolescencia" <?php if ($bien['causa_baja'] == "Obsolescencia") echo 'selected'; ?>>Obsolescencia</option>
                 <option value="Deterioro" <?php if ($bien['causa_baja'] == "Deterioro") echo 'selected'; ?>>Deterioro</option>
@@ -92,9 +100,9 @@ if (isset($_SESSION['bien'])) {
                 <option value="Extravío"<?php if ($bien['causa_baja'] == "Extravío") echo 'selected'; ?>>Extravío</option>
                 <option value="Otras causas"<?php if ($bien['causa_baja'] == "Otras causas") echo 'selected'; ?>>Otras causas</option>
             </select>
-        </div>
+        </div>                    
 
-        
+
         <div class="button-container mt-5">
                 <!-- Boton actualizar -->
                 <div class="wrap-login-form-btn"> 

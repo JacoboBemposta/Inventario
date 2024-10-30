@@ -17,15 +17,21 @@ include_once "../../csrf.php";
             <label for="numero_factura" class="form-label">Número de Factura:</label>
             <input type="text" name="numero_factura" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <label for="nombre_proveedor" class="form-label">Nombre proveedor:</label>
-            <select name="proveedor_id" name="nombre_proveedor" required>
-                <?php foreach ($_SESSION['proveedores'] as $proveedor): ?>
-                    <option value="<?php echo $proveedor['id']; ?>">
-                        <?php echo $proveedor['nombre'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label for="nombre_proveedor" class="form-label">Nombre proveedor:</label>
+                <select name="proveedor_id" name="nombre_proveedor" style="width:100%;height: 50%;" required>
+                    <?php foreach ($_SESSION['proveedores'] as $proveedor): ?>
+                        <option value="<?php echo $proveedor['id']; ?>">
+                            <?php echo $proveedor['nombre'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-3 col-6">
+            <label for="cuenta_contable" class="form-label">Número de Cuenta Contable:</label>
+            <input type="text" name="cuenta_contable" class="form-control" required>
+        </div>            
         </div>
         <div class="row">
             <div class="mb-3 col-6">
@@ -46,10 +52,6 @@ include_once "../../csrf.php";
                 <label for="precio" class="form-label">Precio:</label>
                 <input type="number" name="precio" step="0.01" class="form-control" required>
             </div>
-        </div>
-        <div class="mb-3">
-            <label for="cuenta_contable" class="form-label">Número de Cuenta Contable:</label>
-            <input type="text" name="cuenta_contable" class="form-control" required>
         </div>
         <div class="button-container mt-5">
             <!-- Botón crear -->

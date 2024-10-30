@@ -16,7 +16,7 @@ class Bienes
     public function getDbConnection(){
         return $this->db;
     }
-    
+
     // Obtener todos los bienes de una entrada específica
     public function obtenerPorEntradaId($entrada_bien_id){
         $sql = "SELECT * FROM bienes WHERE entrada_bien_id = ? AND activo = 1";
@@ -121,7 +121,8 @@ class Bienes
                 VALUES (?, ?, ?, ?, ?, NOW(), ?)";
         $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id]);
+        $stmt->execute([$descripcion, $precio, $centro, $departamento, $tipo_bien, $entrada_bien_id]);
+        return $stmt->rowCount() > 0;
     }
 
     // Editar un bien
@@ -138,7 +139,7 @@ class Bienes
 
     // Eliminación lógica de un bien (marcar como inactivo)
     public function eliminarBien($id){
-
+        
         $sql = "UPDATE bienes SET activo = 0, fecha_baja = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);

@@ -83,7 +83,7 @@ foreach ($_SESSION["bienes"] as $bien) {
 
     //Información que será visible en el QR
     
-     $tipo_bien = '';
+    $tipo_bien = '';
    
     foreach ($tipo_bienes as $key => $value) {
         if($bien["tipo_bien"] == $key) $tipo_bien=$value;
@@ -95,7 +95,11 @@ foreach ($_SESSION["bienes"] as $bien) {
         if($bien["departamento"] == $key) $departamento=$value;
     }        
 
-    $centro = ($bien["centro"] == 1) ? "Pontevedra" : "Madrid";
+    $centro = "";
+
+    foreach ($centros as $key => $value) {
+        if($bien["centro"] == $key) $centro=$value;
+    }        
 
     $fechaCompra = $bien["fecha_compra"];
 
@@ -114,7 +118,7 @@ foreach ($_SESSION["bienes"] as $bien) {
     $contenido .= $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo . "\n";
     $contenido .= $fechaFormateada. "\n";
     // $contenido .= "Fecha de inicio amortizacion: " . $bien["fecha_inicio_amortizacion"]."\n" ;
-    //$contenido .= "Precio: " . $bien["precio"]."\n" ;
+    // $contenido .= "Precio: " . $bien["precio"]."\n" ;
     // $contenido .= "Porcentaje de amortizacion: " . $bien["porcentaje_amortizacion"]."\n" ;
     // $contenido .= "Centro: " . $centro."\n" ;
     // $contenido .= "Tipo de bien: " . $tipo_bien."\n" ;

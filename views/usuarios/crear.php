@@ -28,8 +28,8 @@ include_once "../../csrf.php";
         </div>
 
         <div class="mb-3">
-            <label for="tipo_usuario" class="form-label">Tipo de Usuario:</label>
-            <select name="tipo_usuario" class="form-select" required>
+            <label for="tipo_usuario" class="form-label">Tipo de Usuario:</label><br>
+            <select style="width:100%;height:50%;" name="tipo_usuario" class="form-select" required>
                 <option value="ADMIN">ADMIN</option>
                 <option value="EMPLEADO">EMPLEADO</option>
             </select>

@@ -15,6 +15,10 @@ $tipo_bienes=["AL"=>'alfombra',"AR" =>'armario',"BA"=>'bandeja',"BU"=>'buck',"CI
  
  asort($tipo_bienes);       
 
+ $centros=['1'=>'Pontevedra','2'=>'Madrid'];
+
+ asort($centros);
+
 define('ROOT_PATH',  "/proyects/inventario/"); // Ruta relativa
 define('RAIZ_PATH', $_SERVER['DOCUMENT_ROOT'].'/proyects/inventario/'); // Ruta absoluta
 

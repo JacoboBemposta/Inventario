@@ -33,8 +33,9 @@ if (isset($_SESSION['bienestotal'])) {
                     <label for="search-centro">Centro:</label>
                     <select id="search-centro" name="search-centro" class="form-control">
                         <option value="">Centro</option>
-                        <option value="Pontevedra">Pontevedra</option>
-                        <option value="Madrid">Madrid</option>
+                        <?php foreach ($centros as $key => $value) {?>
+                            <option value="<?php echo $value?>"><?php echo $value?></option>
+                        <?php } ?>   
                     </select>
                 </div>
 
@@ -97,143 +98,125 @@ if (isset($_SESSION['bienestotal'])) {
 
     <!-- Formulario para la generación de etiquetas -->
     <div class="container d-flex flex-column justify-content-center align-items-center mt-5 " style="min-height: 50vh;">
-    <form action="" method="post" id="form-generar-etiquetas" style="width: 100%;">
-        <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
-        <table class="display" id="bienes-table" style="width: 100%; box-sizing: border-box;" cellpadding="5" cellspacing="0">
-            <thead>
-                    <tr>
-                        <th style="text-align: center;min-width:3vw;">
-                            <input type="checkbox" id="seleccionarTodos"> <!-- Checkbox para seleccionar todos -->
-                        </th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:23vw">Descripción</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Fecha alta</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Codigo</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Estado</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:6vw" hidden>Precio</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw" hidden>Centro</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:9vw " hidden>Departamento</th>
-                        <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw" hidden>Tipo bien</th>
-                        <th style="text-align: center; min-height:7vh;min-width:6vw">QR</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <?php foreach ($bienes as $bien) { 
-                        //Dar formato al codigo 
-                        $contador = intval($bien["id"]);
-                        if ($contador > 9999) $contador = $contador - 9999;
+        <form action="" method="post" id="form-generar-etiquetas" style="width: 100%;">
+            <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
+            <table class="display" id="bienes-table" style="width: 100%; box-sizing: border-box;" cellpadding="5" cellspacing="0">
+                <thead>
+                        <tr>
+                            <th style="text-align: center;min-width:3vw;">
+                                <input type="checkbox" id="seleccionarTodos"> <!-- Checkbox para seleccionar todos -->
+                            </th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:23vw">Descripción</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Fecha alta</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Codigo</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Estado</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:6vw" hidden>Precio</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw" hidden>Centro</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:9vw " hidden>Departamento</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw" hidden>Tipo bien</th>
+                            <th style="text-align: center; min-height:7vh;min-width:6vw">QR</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <?php foreach ($bienes as $bien) { 
+                            //Dar formato al codigo 
+                            $contador = intval($bien["id"]);
+                            if ($contador > 9999) $contador = $contador - 9999;
 
-                        $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT);
+                            $codigo = str_pad($contador, 4, '0', STR_PAD_LEFT);
 
-                        $tipo_bien = '';
-   
-                        foreach ($tipo_bienes as $key => $value) {
-                            if($bien["tipo_bien"] == $key) $tipo_bien=$value;
-                        }
+                            $tipo_bien = '';
+                            foreach ($tipo_bienes as $key => $value) {
+                                if($bien["tipo_bien"] == $key) $tipo_bien=$value;
+                            }
 
-                        $departamento = "";
-
-                        foreach ($departamentos as $key => $value) {
-                            if($bien["departamento"] == $key) $departamento=$value;
-                        }                 
+                            $departamento = "";
+                            foreach ($departamentos as $key => $value) {
+                                if($bien["departamento"] == $key) $departamento=$value;
+                            }                 
 
 
-                        $centro = "";
-                        switch ($bien["centro"]) {
-                            case '1':
-                                $centro = "Pontevedra";
-                                break;
-                            case '2':
-                                $centro = "Madrid";
-                                break;
-                            default:
-                                break;
-                        }
-                        $estado = "";
-                        switch ($bien["estado"]) {
-                            case '0':
-                                $estado = "Inactivo";
-                                break;
-                            case '1':
-                                $estado = "Activo";
-                                break;
-                            default:
-                                break;
-                        }
-                        ?>
-                        
-                    <tr>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;">
-                            <input type="checkbox" name="bienes[]" value="<?php echo $bien['id']; ?>"> <!-- Checkbox para seleccionar el bien -->
-                        </td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['cuenta_contable']; ?></td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['descripcion']; ?></td>
-                        <td style="text-align: center; padding: 10px;"><?php echo $bien["fecha_alta"]; ?></td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?></td>
-                        <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $estado; ?></td>
-                        <td style="text-align: center; padding: 10px;"hidden><?php echo $bien['precio']; ?></td>
-                        <td style="text-align: center; padding: 10px;" hidden><?php echo $centro; ?></td>
-                        <td style="text-align: center; padding: 10px;" hidden><?php echo $departamento; ?></td>
-                        <td style="text-align: center; padding: 10px;" hidden><?php echo $tipo_bien; ?></td>
-                        
-                        <td style="text-align: center; padding: 10px;" class="d-flex justify-content-center align-items-center">
-                            <?php
-                                $fechaCompra = $bien["fecha_compra"];
+                            $centro = "";
+                            foreach ($centros as $key => $value) {
+                                if($bien["centro"] == $key) $centro=$value;
+                            }                     
 
-                                // Formateo de fechas
-                                $date = DateTime::createFromFormat('Y-m-d', $fechaCompra);
-                                if ($date) {
-                                    $fechaFormateada = $date->format('d/m/Y');
-                                } else {
-                                    $fechaFormateada = 'Fecha no válida'; 
-                                }
-                            
-                            $contenido = "";
-                            $contenido .= $bien["nombre"] . "\n";
-                            $contenido .= $bien["descripcion"] . "\n";
-                            $contenido .= $bien["cuenta_contable"] . "\n";
-                            $contenido .= $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo . "\n";
-                            $contenido .= $fechaFormateada. "\n";
-                            
-                            // Si no existe la ruta, la crea
-                            if (!file_exists(TEMP_PATH)) mkdir(TEMP_PATH);
-
-                            $filename = TEMP_PATH . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png'; // Crea el archivo .png en la ruta indicada
-                            $tamanho = 1; // tamaño de la imagen
-                            $level = 'H'; // tipo de precision
-                            $framesize = 3; // marco del qr en blanco
-                            QRcode::png($contenido, $filename, $level, $tamanho, $framesize);
-
-                            echo '<img style="width: 100%; height: 100%" src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png">';
+                            $estado = $bien["estado"] === '1' ? "Activo" : "Inactivo";
                             ?>
-                        </td>
+                            
+                        <tr>
+                            <td style="text-align: center; padding: 10px;min-height:7vh;">
+                                <input type="checkbox" name="bienes[]" value="<?php echo $bien['id']; ?>"> <!-- Checkbox para seleccionar el bien -->
+                            </td>
+                            <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['cuenta_contable']; ?></td>
+                            <td style="text-align: left;font-weight: bold; padding: 10px;min-height:7vh;"><?php echo $bien['descripcion']; ?></td>
+                            <td style="text-align: center; padding: 10px;"><?php echo $bien["fecha_alta"]; ?></td>
+                            <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo; ?></td>
+                            <td style="text-align: center; padding: 10px;min-height:7vh;"><?php echo $estado; ?></td>
+                            <td style="text-align: center; padding: 10px;"hidden><?php echo $bien['precio']; ?></td>
+                            <td style="text-align: center; padding: 10px;" hidden><?php echo $centro; ?></td>
+                            <td style="text-align: center; padding: 10px;" hidden><?php echo $departamento; ?></td>
+                            <td style="text-align: center; padding: 10px;" hidden><?php echo $tipo_bien; ?></td>
+                            
+                            <td style="text-align: center; padding: 10px;" class="d-flex justify-content-center align-items-center">
+                                <?php
+                                    $fechaCompra = $bien["fecha_compra"];
 
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-        <!-- Input posición de la primera etiqueta -->
-        <div class="container d-flex flex-column align-items-center">
-            <div class="d-flex justify-content-center">
-                <input type="number" name="posicion" id="posicion" class="form-control" placeholder="Indique la posición"
-                    style="margin-left: 2vw;color: white; background-color: #861636; padding-left: 5px; opacity: 1; font-size: 15px; font-family: 'Verdana', cursive;" min="0">
-            </div>
-        </div>
-        <!-- Botones para generar PDF -->
-        <div class="container d-flex flex-column align-items-center mt-5">
-            <div class="d-flex justify-content-center">
-                <div class="wrap-login-form-btn">
-                    <div class="login-form-bgbtn"></div>
-                    <button type="submit" class="login-form-btn" id="generar-imprimir">Imprimir</button>
+                                    // Formateo de fechas
+                                    $date = DateTime::createFromFormat('Y-m-d', $fechaCompra);
+                                    if ($date) {
+                                        $fechaFormateada = $date->format('d/m/Y');
+                                    } else {
+                                        $fechaFormateada = 'Fecha no válida'; 
+                                    }
+                                
+                                $contenido = "";
+                                $contenido .= $bien["nombre"] . "\n";
+                                $contenido .= $bien["descripcion"] . "\n";
+                                $contenido .= $bien["cuenta_contable"] . "\n";
+                                $contenido .= $bien['centro'] . ' ' . $bien['departamento'] . ' ' .$bien['tipo_bien'].' '. $codigo . "\n";
+                                $contenido .= $fechaFormateada. "\n";
+                                
+                                // Si no existe la ruta, la crea
+                                if (!file_exists(TEMP_PATH)) mkdir(TEMP_PATH);
+
+                                $filename = TEMP_PATH . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png'; // Crea el archivo .png en la ruta indicada
+                                $tamanho = 1; // tamaño de la imagen
+                                $level = 'H'; // tipo de precision
+                                $framesize = 3; // marco del qr en blanco
+                                QRcode::png($contenido, $filename, $level, $tamanho, $framesize);
+
+                                echo '<img style="width: 100%; height: 100%" src="' . ROOT_PATH . 'public/temp/' . html_entity_decode($bien['centro'] . $bien['departamento'] .$bien['tipo_bien']. $codigo) . '.png">';
+                                ?>
+                            </td>
+
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <!-- Input posición de la primera etiqueta -->
+            <div class="container d-flex flex-column align-items-center">
+                <div class="d-flex justify-content-center">
+                    <input type="number" name="posicion" id="posicion" class="form-control" placeholder="Indique la posición"
+                        style="margin-left: 2vw;color: white; background-color: #861636; padding-left: 5px; opacity: 1; font-size: 15px; font-family: 'Verdana', cursive;" min="0">
                 </div>
-                <div class="wrap-login-form-btn">
-                    <div class="login-form-bgbtn"></div>
-                    <button type="submit" class="login-form-btn" id="exportar-pdf">Exportar PDF</button>
+            </div>
+            <!-- Botones para generar PDF -->
+            <div class="container d-flex flex-column align-items-center mt-5">
+                <div class="d-flex justify-content-center">
+                    <div class="wrap-login-form-btn">
+                        <div class="login-form-bgbtn"></div>
+                        <button type="submit" class="login-form-btn" id="generar-imprimir">Imprimir</button>
+                    </div>
+                    <div class="wrap-login-form-btn">
+                        <div class="login-form-bgbtn"></div>
+                        <button type="submit" class="login-form-btn" id="exportar-pdf">Exportar PDF</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -319,11 +302,6 @@ if (isset($_SESSION['bienestotal'])) {
 
 
 
-
-
-
-
-
         // Configuración del filtro personalizado en DataTables
         $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
             var fechaAlta = moment(data[3], 'DD-MM-YYYY'); 
@@ -344,10 +322,6 @@ if (isset($_SESSION['bienestotal'])) {
 
             return false; // Fuera del rango
         });
-
-
-
-
 
 
 

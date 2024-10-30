@@ -6,7 +6,7 @@
     <php>
         <env name="DB_HOST" value="localhost"/>
         <env name="DB_NAME" value="inventario_test"/> <!-- Base de datos de pruebas -->
-        <env name="DB_USER" value="root"/> <!-- Usuario de pruebas -->
-        <env name="DB_PASS" value=""/> <!-- Contraseña de pruebas -->
+        <env name="DB_USER" value="root"/> 
+        <env name="DB_PASS" value=""/> 
     </php>
 </phpunit>

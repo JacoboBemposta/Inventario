@@ -58,11 +58,11 @@ if (isset($_SESSION['entradas'])) {
   <table class="display" id="entradas-table" style="width:60vw" cellpadding="5" cellspacing="0">
     <thead>
       <tr id="encabezado-tabla">
-        <th style="text-align: center;">Cuenta facturación</th>
+        <th style="text-align: center;">Cuenta</th>
         <th style="text-align: center;">Descripción</th>
-        <th style="text-align: center;">Fecha de Compra</th>
+        <th style="text-align: center;">Fecha</th>
         <th style="text-align: center;">Precio</th>
-        <th style="text-align: center;">Número de bienes</th>
+        <th style="text-align: center;">Número</th>
         <th style="text-align: center;">Acciones</th>
       </tr>
     </thead>
@@ -70,9 +70,9 @@ if (isset($_SESSION['entradas'])) {
       <?php foreach ($entradas as $key => $entrada) { ?>
         <tr id="entrada-<?php echo $entrada['id']; ?>">
           <td style="text-align: center;"><?php echo $entrada['cuenta_contable']; ?></td>
-          <td style="font-weight: bold; color: #2c3e50;text-align: center;"><?php echo $entrada['descripcion']; ?></td>
+          <td style="font-weight: bold; color: #2c3e50;text-align: left;"><?php echo $entrada['descripcion']; ?></td>
           <td style="text-align: center;"><?php echo $entrada['fecha_compra']; ?></td>
-          <td style="text-align: center;"><?php echo $entrada['precio']; ?></td>
+          <td style="text-align: right;"><?php echo $entrada['precio']; ?></td>
           <td style="text-align: center;"><?php echo $_SESSION['entradas'][$key]['numbienes']; ?></td>
           <td style="text-align: center;" class="d-flex align-items-center">
             <!-- Botón editar entrada-->
@@ -224,8 +224,8 @@ new DataTable('#entradas-table', {
                 let codigo = String(bien.id).padStart(4, '0');
 
             bienesContent += '<tr>';
-            bienesContent += '<td style="text-align: center; width: 35%">' + bien.descripcion + '</td>';
-            bienesContent += '<td style="text-align: center;">' + bien.precio + '</td>';
+            bienesContent += '<td style="text-align: left; width: 35%">' + bien.descripcion + '</td>';
+            bienesContent += '<td style="text-align: right;">' + bien.precio + '</td>';
             bienesContent += '<td style="text-align: center;">' + bien.centro +' ' +bien.departamento +' '+ bien.tipo_bien +' '+ codigo + '</td>';
             bienesContent += '<td style="text-align: center;">';
             let switchChecked = bien.estado == 1 ? 'checked' : '';
@@ -341,13 +341,9 @@ document.getElementById('confirmarEstado').addEventListener('click', function() 
         alert('El motivo de la cambio de estado es obligatorio.');
         return;
     }
-    // Confirmar si desea continuar con el cambio de estado
-    var confirmacion = confirm('Motivo del cambio: "' + motivo + '". ¿Estás seguro de que deseas cambiar el estado de este bien?');
-
-    // Si el usuario confirma, llamar la función para actualizar el estado
-    if (confirmacion) {
-        actualizarEstadoConMotivo(motivo,0, bienAEliminar);
-    }
+    //Actualizamos estado
+    actualizarEstadoConMotivo(motivo,0, bienAEliminar);
+    
     // Cerrar el modal
     $('#modalEstado').modal('hide');
 });    

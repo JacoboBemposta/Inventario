@@ -16,56 +16,60 @@ if (isset($_SESSION['entradas'])) {
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
     <?php include_once('../error.php');?>
     <h1 class="text-center">Nuevo bien</h1>
-    <div class="container">
+
         <!-- Formulario crear bienes -->
-        <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST" class="d-flex flex-column align-items-center">
+        <form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=bienes&opcion=crear" method="POST"  style="width: 45%;">
             <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
-            <div class="mb-3 w-50">
-            <label for="entrada" class="form-label">Entrada:</label>
-            <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
-            <?php foreach ($entradas as $entrada): ?>
-                <?php if ($entrada['id'] == $_GET['entrada']): ?>
-                    <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
-                    <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
-                <?php endif; ?>
-            <?php endforeach; ?>
-                       
+            <div class="mb-3">
+                <label for="entrada" class="form-label">Entrada:</label>
+                <!-- Recorre todas las entradas y cubre el valor de los campos descripción e id de la entrada del bien seleccionado -->
+                <?php foreach ($entradas as $entrada): ?>
+                    <?php if ($entrada['id'] == $_GET['entrada']): ?>
+                        <input type="text" name="entrada" id="entrada" class="form-control" value="<?php echo $entrada['descripcion']; ?>" readonly>
+                        <input type="text" name="entrada_bien_id" id="entrada_bien_id" class="form-control" value="<?php echo $entrada['id']; ?>" hidden>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
-            <div class="mb-3 w-50">
+            <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripción:</label>
                 <input type="text" name="descripcion" class="form-control"  required>
             </div>
-            <div class="mb-3 w-50">
-                <label for="centro" class="form-label">Centro:</label>
-                <select name="centro" required>
-                    <option value="">Selecciona un centro</option>
-                    <option value="1" >Pontevedra</option>
-                    <option value="2" >Madrid</option>
-                </select>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <label for="centro" class="form-label">Centro:</label><br>
+                    <select style="width:100%;height: 50%;"name="centro" required>
+                        <option value="">Centro</option>
+                        <?php foreach ($centros as $key => $value) {?>
+                            <option value="<?php echo $value?>"><?php echo $value?></option>
+                        <?php } ?>   
+                    </select>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="departamento" class="form-label">Departamento:</label>
+                    <select style="width:100%;height: 50%;"name="departamento" required>
+                        <option value="">Departamento</option>
+                        <?php foreach ($departamentos as $key => $value) {?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3 w-50">
-                <label for="departamento" class="form-label">Departamento:</label>
-                <select name="departamento" required>
-                    <option value="">Selecciona un departamento</option>
-                    <?php foreach ($departamentos as $key => $value) {?>
-                        <option value="<?php echo $key?>"><?php echo $value?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="mb-3 w-50">
-                <label for="tipo_bien" class="form-label">Tipo de Bien:</label>
-                <select name="tipo_bien" required>
-                <option value="">Selecciona tipo</option>
-                    <?php foreach ($tipo_bienes as $key => $value) {?>
-                        <option value="<?php echo $key?>"><?php echo $value?></option>
-                    <?php } ?>
-                </select>
-            </div>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <label for="tipo_bien" class="form-label">Tipo de Bien:</label><br>
+                    <select style="width:100%;height: 50%;" name="tipo_bien" required>
+                    <option value="">tipo de bien</option>
+                        <?php foreach ($tipo_bienes as $key => $value) {?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                        <?php } ?>
+                    </select>
+                </div>
 
 
-            <div class="mb-3 w-50">
-                <label for="precio" class="form-label">Precio:</label>
-                <input type="number" name="precio" step="0.01" class="form-control"  required>
+                <div class="mb-3 col-6">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" name="precio" step="0.01" class="form-control"  required>
+                </div>
             </div>
             <div class="d-flex justify-content-center mt-5">
             <div class="button-container mt-5">
