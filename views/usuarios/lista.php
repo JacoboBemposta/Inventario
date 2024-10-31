@@ -20,7 +20,8 @@ if (isset($_SESSION['usuarios'])) {
             <tr>
                 <th style="text-align: center;">Nombre</th>
                 <th style="text-align: center;">Usuario</th>
-                <th style="text-align: center;">Tipo de Usuario</th>
+                <th style="text-align: center;">E-mail</th>
+                <th style="text-align: center;">Rol</th>
                 <th style="text-align: center;">Acciones</th>
             </tr>
         </thead>
@@ -29,8 +30,9 @@ if (isset($_SESSION['usuarios'])) {
                 <tr>
                     <td style="text-align: center;"><?php echo $usuario['nombre']; ?></td>
                     <td style="text-align: center;"><?php echo $usuario['usuario']; ?></td>
+                    <td style="text-align: center;"><?php echo $usuario['email']; ?></td>
                     <td style="text-align: center;"><?php echo $usuario['tipo_usuario']; ?></td>
-                    <td style="min-width: 15vw;text-align: center;" ;>
+                    <td style="min-width: 13vw;text-align: center;" ;>
                         <!-- Botón editar-->
                         <button
                             onclick="window.location.href='<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=editar&usuario=<?php echo $usuario['id']; ?>'"

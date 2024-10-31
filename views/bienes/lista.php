@@ -97,7 +97,7 @@ if (isset($_SESSION['bienestotal'])) {
 
 
     <!-- Formulario para la generación de etiquetas -->
-    <div class="container d-flex flex-column justify-content-center align-items-center mt-5 " style="min-height: 50vh;">
+    <div class=" d-flex flex-column justify-content-center align-items-center mt-5 " style="min-height: 50vh;">
         <form action="" method="post" id="form-generar-etiquetas" style="width: 100%;">
             <input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
             <table class="display" id="bienes-table" style="width: 100%; box-sizing: border-box;" cellpadding="5" cellspacing="0">
@@ -106,11 +106,11 @@ if (isset($_SESSION['bienestotal'])) {
                             <th style="text-align: center;min-width:3vw;">
                                 <input type="checkbox" id="seleccionarTodos"> <!-- Checkbox para seleccionar todos -->
                             </th>
-                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Cuenta</th>
-                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:23vw">Descripción</th>
-                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Fecha alta</th>
-                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Codigo</th>
-                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:8vw">Estado</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:10vw">Cuenta</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:25vw">Descripción</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;">Fecha alta</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:7vw">Codigo</th>
+                            <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw">Estado</th>
                             <th style="text-align: center; padding: 10px;min-height:7vh;min-width:6vw" hidden>Precio</th>
                             <th style="text-align: center; padding: 10px;min-height:7vh;min-width:5vw" hidden>Centro</th>
                             <th style="text-align: center; padding: 10px;min-height:7vh;min-width:9vw " hidden>Departamento</th>

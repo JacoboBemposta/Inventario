@@ -115,10 +115,8 @@ class BienesTest extends TestCase
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
 
         // Insertamos un bien 
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, estado, activo)
-            VALUES ('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', '2024-10-19', $entradaBienId, 1, 1)
-        ");
+        $this->bienes->agregarBien('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', $entradaBienId);
+        
         $bienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Ejecuta el método y verifica el resultado
@@ -131,7 +129,6 @@ class BienesTest extends TestCase
             'centro' => '1',
             'departamento' => 'SIGA',
             'tipo_bien' => 'OR',
-            'fecha_alta' => '2024-10-19',
             'entrada_bien_id' => (string) $entradaBienId,
             'estado' => '1',
             'activo' => '1',
@@ -149,7 +146,7 @@ class BienesTest extends TestCase
         unset($resultado['fecha_baja']);
         unset($resultado['causa_baja']);
         unset($resultado['porcentaje_amortizacion']);
-    
+        unset($resultado['fecha_alta']);
         $this->assertEquals($resultadoEsperado, $resultado);
     }
     
@@ -214,18 +211,11 @@ class BienesTest extends TestCase
         $proveedorId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Inserta una entrada
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO entradas_bienes (descripcion, cuenta_contable, fecha_inicio_amortizacion, porcentaje_amortizacion, numero_factura, fecha_compra, proveedor_id)
-            VALUES ('Entrada de Prueba', '12345', '2024-10-01', '10.00', '123456', '2024-09-15', $proveedorId)
-        ");
+        $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
         
         // Inserta un bien 
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, estado, activo)
-            VALUES ('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', '2024-10-19', $entradaBienId, 1, 1)
-        ");
-    
+        $this->bienes->agregarBien('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', $entradaBienId);
         // Ejecuta el método con todos los filtros
         $resultado = $this->bienes->buscarfiltro('1', 'SIGA', 'OR', '1', '2024-10-18', '2024-10-20', 'Bien', '54321');
         
@@ -238,7 +228,6 @@ class BienesTest extends TestCase
             'centro' => '1',
             'departamento' => 'SIGA',
             'tipo_bien' => 'OR',
-            'fecha_alta' => '2024-10-19',
             'entrada_bien_id' => (string) $entradaBienId,
             'estado' => '1',
             'activo' => '1',
@@ -360,10 +349,7 @@ class BienesTest extends TestCase
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
       
         // Insertar un bien para editar
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo)
-            VALUES ('Bien Original', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 1)
-        ");
+        $this->bienes->agregarBien('Bien Original', '1.00', '1', 'SIGA', 'OR', $entradaBienId);
         $bienId = $this->bienes->getDbConnection()->lastInsertId();
       
 
@@ -417,7 +403,7 @@ class BienesTest extends TestCase
         $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
       
-        // Insertar un bien para editar
+        // Insertar un bien para editar (usamos el comando sql por no poder agregar un bien inactivo)
         $this->bienes->getDbConnection()->exec("
             INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo)
             VALUES ('Bien Inactivo', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 0)
@@ -482,7 +468,7 @@ class BienesTest extends TestCase
         $this->entradas->agregarEntrada('Entrada de Prueba', '12345', $proveedorId, '2024-10-01', '2024-10-01', 10.00, 1000, '12345');
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
-        // Insertar bienes
+        // Insertar bienes (usamos SQL para poder indicar campo activo)
         $this->bienes->getDbConnection()->exec("
             INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo, estado)
             VALUES ('Bien 1 Activo', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 1, 1)  -- estado 1 representa Activo
@@ -526,10 +512,8 @@ class BienesTest extends TestCase
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Insertar un bien activo
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo, estado)
-            VALUES ('Bien Activo', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 1, 1)
-        ");
+        $this->bienes->agregarBien('Bien Activo', '1.00', '1', 'SIGA', 'OR', $entradaBienId);
+
         $bienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Intentar cambiar el estado a null
@@ -557,10 +541,7 @@ class BienesTest extends TestCase
         $entradaBienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Insertar un bien activo
-        $this->bienes->getDbConnection()->exec("
-            INSERT INTO bienes (descripcion, precio, centro, departamento, tipo_bien, fecha_alta, entrada_bien_id, activo, estado)
-            VALUES ('Bien Activo', '100.00', '1', 'SIGA', 'OR', NOW(), $entradaBienId, 1, 1)
-        ");
+        $this->bienes->agregarBien('Bien de Prueba', '1.00', '1', 'SIGA', 'OR', $entradaBienId);
         $bienId = $this->bienes->getDbConnection()->lastInsertId();
     
         // Intentar cambiar el estado a un valor aleatorio (como 99)

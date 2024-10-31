@@ -18,7 +18,7 @@ class Usuario
     {
         return $this->db;
     }
-    
+
     // Obtener todos los usuarios
     public function obtenerTodos(){
 
@@ -40,20 +40,20 @@ class Usuario
     }
 
     // Añadir un usuario
-    public function agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario){
+    public function agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario,$email){
         // Validaciones de entrada
-        if (empty($nombre) || empty($usuario) || empty($contrasena) || empty($tipo_usuario)) {
+        if (empty($nombre) || empty($usuario) || empty($contrasena) || empty($tipo_usuario)|| empty($email)) {
             return false; // No se permite la inserción
         }        
 
-        $sql = "INSERT INTO usuarios (nombre, usuario, contrasena, tipo_usuario) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (nombre, usuario, contrasena, tipo_usuario, email) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         $hashed_password = password_hash($contrasena, PASSWORD_BCRYPT);
-        $stmt->execute([$nombre, $usuario, $hashed_password, $tipo_usuario]);
+        $stmt->execute([$nombre, $usuario, $hashed_password, $tipo_usuario,$email]);
     }
 
     // Editar un usuario
-    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario){
+    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario,$emial){
         // Verifica si el usuario existe
         $sql = "SELECT * FROM usuarios WHERE id = ?";
         $stmt = $this->db->prepare($sql);
@@ -92,5 +92,37 @@ class Usuario
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$usuario]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function guardarTokenRecuperacion($email, $token, $expiracion){
+        $sql = "INSERT INTO tokens (email, token, expiracion) VALUES (?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([$email, $token, $expiracion]);   
+           
+    }
+
+    public function compruebatoken($mail,$token){
+        $sql = "SELECT * FROM tokens WHERE email = ? AND token = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$mail,$token]);
+        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function comprobarmail($mail){
+        $sql = "SELECT * FROM usuarios WHERE email = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$mail]);
+        $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function editarpass($pass,$mail){
+        $sql = "UPDATE usuarios SET contrasena = ? where email = ?";
+        $stmt = $this->db->prepare($sql);
+        $hashed_password = password_hash($pass, PASSWORD_BCRYPT);
+        $stmt->execute([$hashed_password,$mail]);
+        $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->rowCount() > 0;
     }
 }

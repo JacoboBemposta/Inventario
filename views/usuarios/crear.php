@@ -16,7 +16,10 @@ include_once "../../csrf.php";
             <label for="nombre" class="form-label">Nombre:</label>
             <input type="text" name="nombre" class="form-control" required>
         </div>
-
+        <div class="mb-3">
+            <label for="email" class="form-label">email:</label>
+            <input type="email" name="email" class="form-control" required >
+        </div>       
         <div class="mb-3">
             <label for="usuario" class="form-label">Usuario:</label>
             <input type="text" name="usuario" class="form-control" required>

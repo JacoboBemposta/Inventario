@@ -65,8 +65,7 @@ class ProveedorTest extends TestCase
         $this->assertEquals('Proveedor 1', $resultado['nombre']);
     }
 
-    public function testObtenerUnoConIdInactivo()
-    {
+    public function testObtenerUnoConIdInactivo(){
 
         // Insertamos un proveedor inactivo
         $this->proveedores->getDbConnection()->exec("INSERT INTO proveedores (nombre,activo) VALUES ('Proveedor 1','0')");

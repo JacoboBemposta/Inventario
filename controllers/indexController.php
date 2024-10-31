@@ -50,6 +50,7 @@ if ($ctrl == "usuarios") {
             break;
             //comprueba que el usuario y la contraseña son correctos
         case 'login':
+            
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                     $_SESSION["error"] = "Error en el envio del formulario";
@@ -62,13 +63,16 @@ if ($ctrl == "usuarios") {
                 $pass = htmlspecialchars($_POST["password"]);
                 $user = $objeto->login($usuario);
                 if ($user != null) {
+                    
                     if ($user[0]["usuario"] !== "Invitado") {
                         // Si el usuario y la contraseña son correctos
+                        
                         if (strcasecmp($usuario, $user[0]["usuario"]) == 0 && password_verify($pass, $user[0]["contrasena"])) {
                             $_SESSION["login"] = $user[0]["usuario"];
                             $_SESSION["tipo_usuario"] = $user[0]["tipo_usuario"];
                             header("Location: " . USR_PATH . "Bienvenida.php");
                         } else {
+                            
                             // Si la contraseña no coincide
                             $_SESSION["login"] = "Invitado";
                             $_SESSION["error"] = "Contraseña incorrecta";
@@ -84,10 +88,46 @@ if ($ctrl == "usuarios") {
             break;
         case 'logout':
             $_SESSION["login"] = "Invitado";
-            header("Location: " . ROOT_PATH) . "inicio.php";
+            header("Location: " . ROOT_PATH . "inicio.php");
+            break;
+        case 'recuperar':    
+            $objeto->recuperarpass();
+            break;
+        
+        case 'comprobartoken':
+            $token = $_GET["token"];
+            $mail = $_GET["mail"];
+            $validado = $objeto->comprobartoken($mail,$token);
+            $_SESSION["validado"]=$validado;
             break;
 
+        case 'editarpass':
 
+            $mail = $_GET["mail"];
+            $token = $_GET["token"];
+            $pass = $_POST["pass"];
+            $nuevapass = $_POST["nuevapass"];
+            if($pass!=$nuevapass) {
+                $_SESSION["error"] = "Las contraseñas no coinciden";
+                header('Location: ' . USR_PATH . 'cambiarpass.php?mail=' . urlencode($email) . '&token=' . urlencode($token));
+            }else{
+                $mailOK = $objeto->comprobarmail($mail);
+                if($mailOK){
+                    $actualizado = $objeto->editarpass($pass,$mail,);
+                    if($actualizado = 1){
+                        $_SESSION["success"] = "Contraseña actualizada";
+                        header("Location: " . ROOT_PATH . "inicio.php");
+                    }else {
+                        $_SESSION["error"] = "No se ha podido actualizar la contraseña";
+                        header("Location: " . ROOT_PATH . "error.php");
+                    }
+                }
+                
+            }
+
+
+            $_SESSION["validado"]=$validado;
+            break;            
         default:
             # code...
             break;

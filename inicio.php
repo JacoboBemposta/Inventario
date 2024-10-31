@@ -26,8 +26,14 @@ include_once 'csrf.php';
 
 <body>
 	<div class="container d-flex flex-column justify-content-center align-items-center">
+
 		<div class="container-c">
 			<div class="wrap-login">
+			<div class="container">
+					<h3 style="white-space: nowrap; font-size:1.3em; text-align: center; margin-bottom: 20px;">
+                        <?php if (isset($_SESSION["success"])) echo $_SESSION["success"]; unset($_SESSION["success"])  ?>
+                    </h3>
+                </div>
 				<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=login" method="post">
 					<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
 					<!-- LOGO -->
@@ -45,12 +51,17 @@ include_once 'csrf.php';
 					</div>
 					<!-- BOTÓN -->
 					<div class="container-login-form-btn">
-						<div class="wrap-login-form-btn">
+						<div class="wrap-login-form-btn col-6">
 							<div class="login-form-bgbtn"></div>
 							<button type="submit" name="btnEntrar" class="login-form-btn">ENTRAR</button>
 						</div>
-					</div>
+					</div>					
 				</form>
+				<div class="container-login-form-btn mt-5">
+					<div class="wrap-login-form-btn d-flex flex-column justify-content-center align-items-center">
+						<a href="<?php echo USR_PATH ?>recuperar.php">Recuperar contraseña</a>
+					</div>
+				</div>		
 			</div>
 		</div>
 	</div>

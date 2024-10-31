@@ -34,7 +34,6 @@ class UsuarioTest extends TestCase
             $this->assertEquals('Usuario 2', $resultados[1]['nombre']);        
     }
 
-
     public function testObtenerTodosNoInactivo(){
         //Insertamos 2 usuarios
         $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN');
@@ -65,7 +64,6 @@ class UsuarioTest extends TestCase
         $this->assertEquals('Usuario 1', $resultado['nombre']);  // Cambié [0] por [] para que coincida con la estructura.
     }
     
-
     public function testObtenerUnoConIdInactivo(){
         // Insertamos un usuario inactivo
         $this->usuarios->agregarUsuario('Usuario 2', 'user2', '5678', 'USER');
@@ -107,7 +105,6 @@ class UsuarioTest extends TestCase
             $this->assertFalse($resultado, 'El USUARIO no debe ser agregado con datos faltantes.');    
         
     }
-
 
     public function testeditarUsuario(){
         //Insertamos un usuario

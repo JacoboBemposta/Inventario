@@ -32,6 +32,7 @@ class ComposerStaticInitf6ce8ff6c8ab7ac7db4920dbabc05a13
             'PhpParser\\' => 10,
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\Math\\' => 15,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'F' => 
         array (
@@ -69,6 +70,10 @@ class ComposerStaticInitf6ce8ff6c8ab7ac7db4920dbabc05a13
         'PhpOffice\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/math/src/Math',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'FontLib\\' => 
         array (
