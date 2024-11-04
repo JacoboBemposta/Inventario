@@ -10,7 +10,7 @@ if (isset($_SESSION["error"])) {
 } else $mensaje = "Error sin definir";
 if(isset($_SESSION["success"])){
     $mensaje=$_SESSION["success"];
-    unset($_SESSION["error"]);
+    unset($_SESSION["success"]);
 };
 
 ?>
@@ -31,22 +31,5 @@ if(isset($_SESSION["success"])){
                 </div>
             </div>
         </div>
- 
- 
-            <div class="container d-flex flex-column justify-content-center align-items-center">
-                <div class="container-c">
-                    <div class="wrap-error">
-                        <h1 style="text-align: center;">ERROR</h1>
-                        <h2 style="text-align: center;"><?php echo $mensaje ?></h2><br>
-                        <div class="container-volver">
-                            <a href="<?php echo USR_PATH; ?>Bienvenida.php">
-                                <img src="<?php echo ROOT_PATH; ?>public/images/reintentar.PNG" class="iconovolver" alt="" srcset="">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-  
     
-
 </body>

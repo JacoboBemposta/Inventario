@@ -51,6 +51,7 @@ if (isset($_SESSION['entradas'])) {
 
 <!-- Vista de la página-->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
+  <?php include_once('../error.php'); ?>
   <!-- Título centrado -->
   <h1 class="text-center">Lista de Entradas</h1>
   <!-- Tabla entradas-->

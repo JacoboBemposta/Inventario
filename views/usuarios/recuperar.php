@@ -28,6 +28,7 @@ include_once '../../csrf.php';
 	<div class="container d-flex flex-column justify-content-center align-items-center">
 		<div class="container-c">
 			<div class="wrap-login">
+            <?php include_once('../error.php'); ?>
 				<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=recuperar" method="post">
 					<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
 					<!-- LOGO -->
@@ -45,7 +46,14 @@ include_once '../../csrf.php';
 						</div>
 					</div>					
 				</form>
+                
+                <div class="container-login-form-btn mt-5">
+					<div class="wrap-login-form-btn d-flex flex-column justify-content-center align-items-center">
+						<a href="<?php echo ROOT_PATH ?>inicio.php">Volver</a>
+					</div>
+				</div>	
 			</div>
+            
 		</div>
 	</div>
 </body>

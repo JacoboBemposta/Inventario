@@ -53,7 +53,7 @@ class Usuario
     }
 
     // Editar un usuario
-    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario,$emial){
+    public function editarUsuario($id, $nombre, $contrasena, $tipo_usuario){
         // Verifica si el usuario existe
         $sql = "SELECT * FROM usuarios WHERE id = ?";
         $stmt = $this->db->prepare($sql);
@@ -116,6 +116,7 @@ class Usuario
         $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $stmt->rowCount() > 0;
     }
+    
 
     public function editarpass($pass,$mail){
         $sql = "UPDATE usuarios SET contrasena = ? where email = ?";

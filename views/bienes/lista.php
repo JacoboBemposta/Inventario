@@ -22,6 +22,7 @@ if (isset($_SESSION['bienestotal'])) {
 <script src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-moment.js"></script>
 <!-- Vista de la lista de bienes -->
 <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 50vh;">
+    <?php include_once('../error.php'); ?>
     <h1 class="text-center">Lista de Bienes</h1>
     <div class="container">
         <!-- Formulario de búsqueda -->

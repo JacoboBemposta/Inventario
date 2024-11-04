@@ -78,7 +78,7 @@ if ($_SESSION["login"] != "Invitado") { ?>
                             <!-- Botón de desconectar -->
                             <?php if ($_SESSION["login"] !== "Invitado") { ?>
                                 <a href="<?php echo ROOT_PATH; ?>controllers/indexController.php?ctrl=usuarios&opcion=logout" class="btn btn-link">
-                                    <img src="<?php echo ROOT_PATH; ?>public/images/logout.png" alt="Desconectar" style="width: 1.5vw; height: 1.5vh;">
+                                    <img src="<?php echo ROOT_PATH; ?>public/images/logout.png" alt="Desconectar" style="width: 2vw; height: 2vh;">
                                 </a>
                             <?php } ?>
                         </li>

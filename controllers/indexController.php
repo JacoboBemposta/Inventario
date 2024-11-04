@@ -54,7 +54,7 @@ if ($ctrl == "usuarios") {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!isset($_POST['csrf_token']) || !validarTokenCSRF($_POST['csrf_token'])) {
                     $_SESSION["error"] = "Error en el envio del formulario";
-                    header("Location: " . ROOT_PATH . "error.php");
+                    header("Location: " . ROOT_PATH . "inicio.php");
                 }
                 destruirTokenCSRF();
                 $validar = "";
@@ -76,13 +76,13 @@ if ($ctrl == "usuarios") {
                             // Si la contraseña no coincide
                             $_SESSION["login"] = "Invitado";
                             $_SESSION["error"] = "Contraseña incorrecta";
-                            header("Location: " . ROOT_PATH . "error.php");
+                            header("Location: " . ROOT_PATH . "inicio.php");
                         }
                     }
                 } else {
                     // Si el usuario no existe
                     $_SESSION["error"] = "El usuario $usuario no existe";
-                    header("Location: " . ROOT_PATH . "error.php");
+                    header("Location: " . ROOT_PATH . "inicio.php");
                 }
             }
             break;
@@ -116,7 +116,7 @@ if ($ctrl == "usuarios") {
                     $actualizado = $objeto->editarpass($pass,$mail,);
                     if($actualizado = 1){
                         $_SESSION["success"] = "Contraseña actualizada";
-                        header("Location: " . ROOT_PATH . "inicio.php");
+                        header("Location: " . ROOT_PATH . "error.php");
                     }else {
                         $_SESSION["error"] = "No se ha podido actualizar la contraseña";
                         header("Location: " . ROOT_PATH . "error.php");
@@ -195,7 +195,7 @@ if ($ctrl == "usuarios") {
         case 'eliminar':
             $eliminado = $objeto->eliminarEntrada($_GET['entrada']);
             if (!$eliminado) {
-                header("Location: " . ROOT_PATH . "error.php");
+                header("Location: " . ENT_PATH . "lista.php");
             } else {
                 $objeto->listarEntradas();
                 header("Location: " . ENT_PATH . 'lista.php');

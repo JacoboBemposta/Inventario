@@ -20,10 +20,10 @@ class UsuarioTest extends TestCase
 
     public function testObtenerTodosconExito(){
         //Insertamos 2 usuarios
-        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN','prueba1@gmail.com');
         $ID1 = $this->usuarios->getDbConnection()->lastInsertId();
 
-        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO');
+        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO','prueba2@gmail.com');
         $ID2 = $this->usuarios->getDbConnection()->lastInsertId();
                 
         $resultados = $this->usuarios->obtenerTodos();
@@ -36,10 +36,10 @@ class UsuarioTest extends TestCase
 
     public function testObtenerTodosNoInactivo(){
         //Insertamos 2 usuarios
-        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN','prueba@gmail.com');
         $ID1 = $this->usuarios->getDbConnection()->lastInsertId();
 
-        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO');
+        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO','prueba2@gmail.com');
         $ID2 = $this->usuarios->getDbConnection()->lastInsertId();
             
         //Insertamos 1 proveedor inactivo
@@ -56,7 +56,7 @@ class UsuarioTest extends TestCase
 
     public function testObtenerUno(){
         // Insertamos un usuario activo
-        $this->usuarios->agregarUsuario('Usuario 1', 'user1', '1234', 'ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1', 'user1', '1234', 'ADMIN','prueba@gmail.com');
         $ID = $this->usuarios->getDbConnection()->lastInsertId();    
         $resultado = $this->usuarios->obtenerUno($ID);   
         
@@ -66,7 +66,7 @@ class UsuarioTest extends TestCase
     
     public function testObtenerUnoConIdInactivo(){
         // Insertamos un usuario inactivo
-        $this->usuarios->agregarUsuario('Usuario 2', 'user2', '5678', 'USER');
+        $this->usuarios->agregarUsuario('Usuario 2', 'user2', '5678', 'USER','prueba@gmail.com');
         $inactivoID = $this->usuarios->getDbConnection()->lastInsertId();
         
         // Marcamos el usuario como inactivo
@@ -88,7 +88,7 @@ class UsuarioTest extends TestCase
     }
 
     public function testagregarUsuario(){
-        $this->usuarios->agregarUsuario('Usuario 1', 'user1', '1234', 'ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1', 'user1', '1234', 'ADMIN','prueba@gmail.com');
         $proveedorId = $this->usuarios->getDbConnection()->lastInsertId();   
         
         $resultado=$this->usuarios->obtenerUno($proveedorId);
@@ -100,7 +100,7 @@ class UsuarioTest extends TestCase
     public function testagregarUsuarionull(){
 
             //Insertamos un usuario con valores null
-            $resultado = $this->usuarios->agregarUsuario('', '', '1234', 'ADMIN');
+            $resultado = $this->usuarios->agregarUsuario('', '', '1234', 'ADMIN','prueba@gmail.com');
     
             $this->assertFalse($resultado, 'El USUARIO no debe ser agregado con datos faltantes.');    
         
@@ -108,7 +108,7 @@ class UsuarioTest extends TestCase
 
     public function testeditarUsuario(){
         //Insertamos un usuario
-        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN','prueba1@gmail.com');
         $ID = $this->usuarios->getDbConnection()->lastInsertId();
 
         $this->usuarios->editarUsuario($ID,'Usuario Editado','','EMPLEADO');
@@ -121,17 +121,17 @@ class UsuarioTest extends TestCase
 
     public function testeditarUsuarioInexistente(){
 
-        $resultado = $this->usuarios->editarUsuario(99999 , 'Usuario Editado','','ADMIN');        ;
+        $resultado = $this->usuarios->editarUsuario(99999 , 'Usuario Editado','','ADMIN','prueba@gmail.com');        ;
 
         $this->assertFalse($resultado, 'No se debe obtener un usuario inexistente.');  
     }
 
     public function testeliminarUsuario(){
         //Insertamos 2 usuarios
-        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN');
+        $this->usuarios->agregarUsuario('Usuario 1','user1','1234','ADMIN','prueba1@gmail.com');
         $ID1 = $this->usuarios->getDbConnection()->lastInsertId();
 
-        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO');
+        $this->usuarios->agregarUsuario('Usuario 2','user2','1234','EMPLEADO','prueba2@gmail.com');
         $ID2 = $this->usuarios->getDbConnection()->lastInsertId();
 
         //Eliminamos el usuario 2

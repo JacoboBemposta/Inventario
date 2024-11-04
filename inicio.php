@@ -34,6 +34,7 @@ include_once 'csrf.php';
                         <?php if (isset($_SESSION["success"])) echo $_SESSION["success"]; unset($_SESSION["success"])  ?>
                     </h3>
                 </div>
+				<?php include_once('views/error.php'); ?>
 				<form action="<?php echo ROOT_PATH ?>controllers/indexController.php?ctrl=usuarios&opcion=login" method="post">
 					<input type="hidden" name="csrf_token" value="<?php echo generarTokenCSRF(); ?>"> <!-- Incluye el token CSRF -->
 					<!-- LOGO -->

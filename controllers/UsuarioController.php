@@ -86,7 +86,8 @@ class UsuarioController
                 $_SESSION["error"] = "Formato incorrecto";
                 header("Location: " . USR_PATH . "crear.php");
                 die;
-            }            
+            }       
+
             $usuario = $_POST["usuario"];
             if ($usuario != strip_tags($usuario)) {
                 // Si contiene etiquetas HTML, lanzar un error
@@ -103,6 +104,12 @@ class UsuarioController
             }
             $tipo_usuario = htmlspecialchars($_POST["tipo_usuario"]);
             $user = new Usuario();
+            $user -> comprobarmail($email);
+            if($user!=null){
+                $_SESSION["error"] = "El correo ya existe";
+                header("Location: " . USR_PATH . "crear.php");
+                die;
+            }
             $user->agregarUsuario($nombre, $usuario, $contrasena, $tipo_usuario,$email);
         }
     }
@@ -138,7 +145,12 @@ class UsuarioController
                 header("Location: " . USR_PATH . "crear.php");
                 die;
             }      
-
+        $comrpobarmail=$usuario->comprobarmail($email);
+        if($comrpobarmail == null){
+            $_SESSION["error"] = "El email no existe";
+            header("Location: " . USR_PATH . "recuperar.php");
+            die;
+        }
         // Generar un token único de recuperación
         $token = bin2hex(random_bytes(50)); // 50 bytes para un token seguro
         $expiracion = date("Y-m-d H:i:s", strtotime("+1 hour")); // Expira en 1 hora
@@ -150,18 +162,18 @@ class UsuarioController
         // Crear el enlace de recuperación de contraseña
         $linkRecuperacion = MAIL_PATH . "/cambiarpass.php?mail=" . $email  . "&token=" . $token;
 
-        echo $linkRecuperacion;
+
         // Enviar el correo de recuperación (se requiere configuración de correo)
         $asunto = "Link cambio de Contraseña";
         $mensaje = "Haz clic en el siguiente enlace para restablecer tu contraseña: 
                     <a href='" . $linkRecuperacion . "'>Restablecer contraseña</a>";
-        $cabeceras = "From: jacobo.bemposta@gmail.com\r\n";
+        $cabeceras = "From: no-reply@siga.com\r\n";
         $cabeceras .= "Content-Type: text/plain; charset=UTF-8";
 
         require_once ("../config/phpmailer.php");        
-    
+        
         if (enviarCorreoRecuperacion($email, $asunto, $mensaje)) {
-            $_SESSION["success"] = "Revisa tu correo electrónico para recuperar tu contraseña.";
+            $_SESSION["success"] = "Hemos enviado un link al correo electrónico para cambiar la contraseña.";
 
             header("Location: " . ROOT_PATH . "error.php");
         } else {

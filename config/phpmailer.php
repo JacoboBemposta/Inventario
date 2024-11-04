@@ -26,15 +26,13 @@ function enviarCorreoRecuperacion($email, $asunto, $mensaje) {
             )
         );
         // Configuración del correo
-        $mail->setFrom('jacobo.bemposta@gmail.com', 'Jbempos');
-        $mail->addAddress('jacobo.bemposta@gmail.com');
+        $mail->setFrom('no-reply@siga.com', 'No Reply');
+        $mail->addAddress($email);
         
         // Contenido del correo
         $mail->isHTML(true);
         $mail->Subject = $asunto;
         $mail->Body = $mensaje;
-
-        
 
         $mail->send();
         

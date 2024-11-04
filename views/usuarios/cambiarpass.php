@@ -17,7 +17,7 @@ if (isset($_GET['mail'])) {
     $_SESSION['error'] = "El mail no se ha recibido.";
     header("Location:".ROOT_PATH." error.php");
 }
-$validacionOK=$_SESSION["validado"];
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -42,10 +42,7 @@ $validacionOK=$_SESSION["validado"];
 
 <body>
 <?php
-if(isset($token)&&isset($mail)){
-
-    if($validacionOK = 1){ ?>
-
+if(isset($token)&&isset($mail)){?>
         <div class="container d-flex flex-column justify-content-center align-items-center">
 		<div class="container-c">
 			<div class="wrap-login">
@@ -84,10 +81,6 @@ if(isset($token)&&isset($mail)){
         $_SESSION["error"]="No se ha podido validar el mail";
         header("Location: " . ROOT_PATH . "error.php");
     }
-}else {
-    $_SESSION["error"]="No se ha podido validar el mail";
-    header("Location: " . ROOT_PATH . "error.php");
-}
 ?>
 
 </body>
